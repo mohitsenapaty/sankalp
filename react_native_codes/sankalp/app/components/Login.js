@@ -89,7 +89,7 @@ export default class Login extends React.Component{
 
     try{
       //alert("a"); 
-      fetch(GLOB_IP_DEV+'/login/', {
+      fetch(GLOB_IP_PROD+'/login/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

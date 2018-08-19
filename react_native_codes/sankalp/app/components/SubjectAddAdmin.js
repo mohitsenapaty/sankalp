@@ -195,7 +195,7 @@ export default class SubjectAddAdmin extends React.Component{
   addSubjects = () =>{
     try{
       //alert("a"); 
-      fetch(GLOB_IP_DEV+'/addSubjects/'+ this.state.user_token+'/', {
+      fetch(GLOB_IP_PROD+'/addSubjects/'+ this.state.user_token+'/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

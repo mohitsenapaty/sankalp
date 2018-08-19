@@ -114,7 +114,7 @@ export default class SubjectViewAdmin extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(GLOB_IP_DEV+'/fetchAllSubjects/'+this.state.user_token+'/', {
+      fetch(GLOB_IP_PROD+'/fetchAllSubjects/'+this.state.user_token+'/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -145,7 +145,45 @@ export default class SubjectViewAdmin extends React.Component{
     catch(error){
       alert(error);
     }
+
+    this.timer = setInterval(()=> this.refreshSubjects(), 10000)
     
+  }
+  refreshSubjects = async() =>{
+    //alert("refresh");
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(GLOB_IP_PROD+'/fetchAllSubjects/'+this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'numberOfSubjects':res.data.length,'subjectDataList':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
   }
   displaySubjectByRow(){
     /*
