@@ -21,9 +21,13 @@ import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import DrawerLayout from 'react-native-drawer-layout';
 import MenuAdmin from './MenuAdmin';
+import stylesLogin, {globalAssets} from './globalExports';
+import {stylesAdmin} from './globalExports';
 //import Login from './Login';
 var GLOB_IP_PROD='http://52.27.104.46'
 var GLOB_IP_DEV='http://127.0.0.1:8000'
+
+var IP_IN_USE=GLOB_IP_PROD
 
 //type Props = {};
 export default class Adminarea extends React.Component{
@@ -129,26 +133,26 @@ export default class Adminarea extends React.Component{
             />}
         >
           <ActionBar
-            containerStyle={styles.bar}
+            containerStyle={stylesAdmin.bar}
             backgroundColor="#33cc33"
             leftIconName={'menu'}
             onLeftPress={this.toggleDrawer}/>
-        <ScrollView style={styles.Container}>
+        <ScrollView style={stylesAdmin.Container}>
         
         <Text>Welcome {this.state.user_session.user_name}</Text>
         <Text>Welcome {this.state.user_session.name}</Text>
         <Text>Welcome {this.state.user_session.email}</Text>
         <Text>Welcome {this.state.user_session.phone}</Text>
-        <TouchableOpacity onPress={this.logout} style={styles.ButtonContainer}>
+        <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
           <Text>LOG OUT</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToStudentPage} style={styles.ButtonContainer}>
+        <TouchableOpacity onPress={this.goToStudentPage} style={stylesAdmin.ButtonContainer}>
           <Text>Student Details</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToTeacherPage} style={styles.ButtonContainer}>
+        <TouchableOpacity onPress={this.goToTeacherPage} style={stylesAdmin.ButtonContainer}>
           <Text>Teacher Details</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToSubjectPage} style={styles.ButtonContainer}>
+        <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
           <Text>Subject Details</Text>
         </TouchableOpacity>      
       </ScrollView>
@@ -210,44 +214,3 @@ export default class Adminarea extends React.Component{
 }
 
 
-const styles = StyleSheet.create({
-  Container:{
-    flex:1,
-    padding:20,
-
-  },
-  screen: {
-    backgroundColor: '#33cc33',
-    flex: 1,
-    paddingTop: 10,
-    alignItems: 'center',
-    //padding: 10
-  },
-  ButtonContainer:{
-    alignSelf: 'stretch',
-    margin: 20,
-    padding: 20,
-    backgroundColor: 'blue',
-    borderWidth: 1,
-    backgroundColor: 'rgba(255,255,255, 0.6)',
-    alignItems: 'center'
-  },
-});
-
-/*
-<TouchableOpacity onPress={this.goToKYCPage} style={styles.ButtonContainer}>
-          <Text>KYC Status:{this.state.kycDone}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToBankPage} style={styles.ButtonContainer}>
-          <Text>Payment details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToMarketPage} style={styles.ButtonContainer}>
-          <Text>Market</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToWalletPage} style={styles.ButtonContainer}>
-          <Text>Wallet</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToTradePage} style={styles.ButtonContainer}>
-          <Text>Trade</Text>
-        </TouchableOpacity>    
-*/

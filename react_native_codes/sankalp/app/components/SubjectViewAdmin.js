@@ -14,6 +14,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
   ScrollView,
+  Alert,
 
 } from 'react-native';
 //import { Navigator } from 'react-native-deprecated-custom-components';
@@ -21,9 +22,13 @@ import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import DrawerLayout from 'react-native-drawer-layout';
 import MenuAdmin from './MenuAdmin';
+import stylesLogin, {globalAssets} from './globalExports';
+import {stylesAdmin} from './globalExports';
 //import Login from './Login';
 var GLOB_IP_PROD='http://52.27.104.46'
 var GLOB_IP_DEV='http://127.0.0.1:8000'
+
+var IP_IN_USE=GLOB_IP_PROD
 
 //type Props = {};
 export default class SubjectViewAdmin extends React.Component{
@@ -114,7 +119,7 @@ export default class SubjectViewAdmin extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(GLOB_IP_PROD+'/fetchAllSubjects/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllSubjects/'+this.state.user_token+'/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -153,7 +158,7 @@ export default class SubjectViewAdmin extends React.Component{
     //alert("refresh");
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(GLOB_IP_PROD+'/fetchAllSubjects/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllSubjects/'+this.state.user_token+'/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -202,8 +207,17 @@ export default class SubjectViewAdmin extends React.Component{
     
     return this.state.subjectDataList.map((row_set, i)=>{
       return (
-        <View key={i}>
-          <Text>{row_set.subject_id} {row_set.subject_name} {row_set.subject_code} {row_set.is_major}</Text>
+        <View key={i} style={{
+          flex:1,
+          flexDirection:'row',
+          justifyContent:'space-between',
+          alignItems:'center',
+        }}>
+          <Text>{row_set.subject_id} </Text>
+          <Text>{row_set.subject_name} </Text>
+          <Text>{row_set.subject_code} </Text>
+          <Text>{row_set.is_major}</Text>
+          <Text onPress={()=>{this.deleteSubjectAlert(row_set.subject_name)}}>Delete Subject</Text>
         </View>
       );
     });
@@ -213,7 +227,7 @@ export default class SubjectViewAdmin extends React.Component{
     //fetch list of subjects
     if (this.state.numberOfSubjects == 0){
       return(
-        <View style={styles.InputContainer}>
+        <View style={stylesAdmin.InputContainer}>
           <Text>Currently no subjects have been added yet.</Text>
 
         </View>
@@ -222,7 +236,7 @@ export default class SubjectViewAdmin extends React.Component{
     else{
       //alert(this.state.subjectDataList);
       return(
-        <View style={styles.InputContainer}>
+        <View style={stylesAdmin.InputContainer}>
           <Text>Currently these subjects have been added yet.</Text>
           { this.displaySubjectByRow() }
         </View>
@@ -250,18 +264,18 @@ export default class SubjectViewAdmin extends React.Component{
             />}
         >
           <ActionBar
-            containerStyle={styles.bar}
+            containerStyle={stylesAdmin.bar}
             backgroundColor="#33cc33"
             leftIconName={'menu'}
             onLeftPress={this.toggleDrawer}/>
-        <ScrollView style={styles.Container}>
+        <ScrollView style={stylesAdmin.Container}>
         
         <Text>Subjects Added as follows</Text>
         {this.displaySubjects()}
-        <TouchableOpacity onPress={this.logout} style={styles.ButtonContainer}>
+        <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
           <Text>LOG OUT</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToAddSubjectPage} style={styles.ButtonContainer}>
+        <TouchableOpacity onPress={this.goToAddSubjectPage} style={stylesAdmin.ButtonContainer}>
           <Text>Click here to add subjects</Text>
         </TouchableOpacity>      
       </ScrollView>
@@ -288,7 +302,50 @@ export default class SubjectViewAdmin extends React.Component{
     //alert("logging out");
     //this.props.navigation.navigate('Login');
   }
+  deleteSubjectAlert = (i) =>{
+    Alert.alert(
+      'Confirm Delete Subject',
+      'Do you want to add the subject ' + i + '?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => this.deleteSubject(i)},
+      ],
+      { cancelable: false }
+    );
+  }
+  deleteSubject = (i) =>{
+    //alert("Will delete " + i);
+    try{
+      //alert("a"); 
+      fetch(globalAssets.IP_IN_USE+'/deleteSubjects/'+ this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          subjectName: i,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          alert("Subject deleted successfully.")
 
+        }
+        else{alert("Error deleting subject, subject name or subject code might exist already.");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+  }
   goToProfilePage = () =>{
     this.props.navigation.navigate('Adminarea');
   }
@@ -323,45 +380,3 @@ export default class SubjectViewAdmin extends React.Component{
 
 }
 
-
-const styles = StyleSheet.create({
-  Container:{
-    flex:1,
-    padding:20,
-
-  },
-  screen: {
-    backgroundColor: '#33cc33',
-    flex: 1,
-    paddingTop: 10,
-    alignItems: 'center',
-    //padding: 10
-  },
-  ButtonContainer:{
-    alignSelf: 'stretch',
-    margin: 20,
-    padding: 20,
-    backgroundColor: 'blue',
-    borderWidth: 1,
-    backgroundColor: 'rgba(255,255,255, 0.6)',
-    alignItems: 'center'
-  },
-});
-
-/*
-<TouchableOpacity onPress={this.goToKYCPage} style={styles.ButtonContainer}>
-          <Text>KYC Status:{this.state.kycDone}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToBankPage} style={styles.ButtonContainer}>
-          <Text>Payment details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToMarketPage} style={styles.ButtonContainer}>
-          <Text>Market</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToWalletPage} style={styles.ButtonContainer}>
-          <Text>Wallet</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToTradePage} style={styles.ButtonContainer}>
-          <Text>Trade</Text>
-        </TouchableOpacity>    
-*/

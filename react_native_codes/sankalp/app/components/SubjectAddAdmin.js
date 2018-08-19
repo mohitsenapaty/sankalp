@@ -24,9 +24,13 @@ import ActionBar from 'react-native-action-bar';
 import ModalDropdown from 'react-native-modal-dropdown';
 import DrawerLayout from 'react-native-drawer-layout';
 import MenuAdmin from './MenuAdmin';
+import stylesLogin, {globalAssets} from './globalExports';
+import {stylesAdmin} from './globalExports';
 //import Login from './Login';
 var GLOB_IP_PROD='http://52.27.104.46'
 var GLOB_IP_DEV='http://127.0.0.1:8000'
+
+var IP_IN_USE=GLOB_IP_PROD
 
 //type Props = {};
 export default class SubjectAddAdmin extends React.Component{
@@ -138,21 +142,21 @@ export default class SubjectAddAdmin extends React.Component{
             />}
         >
           <ActionBar
-            containerStyle={styles.bar}
+            containerStyle={stylesAdmin.bar}
             backgroundColor="#33cc33"
             leftIconName={'menu'}
             onLeftPress={this.toggleDrawer}/>
-        <ScrollView style={styles.Container}>
+        <ScrollView style={stylesAdmin.Container}>
         
           <Text>Add subjects here.</Text>
-          <View style={styles.InputContainer}>
-            <TextInput style={styles.Input} onChangeText={(subjectName)=>this.setState({subjectName})} value={this.state.subjectName}  placeholder='Subject Name e.g. ENGLISH'></TextInput>
-            <TextInput secureTextEntry={true} onChangeText={(subjectCode)=>this.setState({subjectCode})} value={this.state.subjectCode} style={styles.Input} placeholder='Subject Code e.g. ENG'></TextInput>
+          <View style={stylesAdmin.InputContainer}>
+            <TextInput style={stylesAdmin.Input} onChangeText={(subjectName)=>this.setState({subjectName})} value={this.state.subjectName}  placeholder='Subject Name e.g. ENGLISH'></TextInput>
+            <TextInput onChangeText={(subjectCode)=>this.setState({subjectCode})} value={this.state.subjectCode} style={stylesAdmin.Input} placeholder='Subject Code e.g. ENG'></TextInput>
             <Text>Set if the subject is Major or Minor: </Text>
             <ModalDropdown options={['Major', 'Minor']} defaultValue='Major' onSelect={this.selectedMajorMethod}>
         
             </ModalDropdown>
-            <TouchableOpacity onPress={() => this.addSubjectsAlert()} style={styles.ButtonContainer}>
+            <TouchableOpacity onPress={() => this.addSubjectsAlert()} style={stylesAdmin.ButtonContainer}>
               <Text>ADD Subject</Text>
             </TouchableOpacity>
           </View>    
@@ -195,7 +199,7 @@ export default class SubjectAddAdmin extends React.Component{
   addSubjects = () =>{
     try{
       //alert("a"); 
-      fetch(GLOB_IP_PROD+'/addSubjects/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/addSubjects/'+ this.state.user_token+'/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -266,45 +270,3 @@ export default class SubjectAddAdmin extends React.Component{
 
 }
 
-
-const styles = StyleSheet.create({
-  Container:{
-    flex:1,
-    padding:20,
-
-  },
-  screen: {
-    backgroundColor: '#33cc33',
-    flex: 1,
-    paddingTop: 10,
-    alignItems: 'center',
-    //padding: 10
-  },
-  ButtonContainer:{
-    alignSelf: 'stretch',
-    margin: 20,
-    padding: 20,
-    backgroundColor: 'blue',
-    borderWidth: 1,
-    backgroundColor: 'rgba(255,255,255, 0.6)',
-    alignItems: 'center'
-  },
-});
-
-/*
-<TouchableOpacity onPress={this.goToKYCPage} style={styles.ButtonContainer}>
-          <Text>KYC Status:{this.state.kycDone}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToBankPage} style={styles.ButtonContainer}>
-          <Text>Payment details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToMarketPage} style={styles.ButtonContainer}>
-          <Text>Market</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToWalletPage} style={styles.ButtonContainer}>
-          <Text>Wallet</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToTradePage} style={styles.ButtonContainer}>
-          <Text>Trade</Text>
-        </TouchableOpacity>    
-*/

@@ -7,6 +7,7 @@ var app = express();
 var loginRouter = require('./login.route');
 var fetchAllSubjectsRouter = require('./fetchAllSubjects.route');
 var addSubjectRouter = require('./addSubject.route');
+var deleteSubjectRouter = require('./deleteSubject.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/login', loginRouter);
 app.use('/fetchAllSubjects', fetchAllSubjectsRouter);
 app.use('/addSubjects', addSubjectRouter);
+app.use('/deleteSubjects', deleteSubjectRouter);
 
 const server = http.createServer(app);
 server.listen(8000, ()=>{
