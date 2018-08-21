@@ -71,6 +71,7 @@ export default class Login extends React.Component{
       //json_value = JSON.stringify(value);
       //alert(json_value);
       if (session_type == 'Admin') this.props.navigation.navigate('Adminarea');
+      else if (session_type == 'Teacher') this.props.navigation.navigate('Teacherarea');
     }
   }
 
@@ -133,8 +134,46 @@ export default class Login extends React.Component{
               })
             });
           }
+          else if (this.state.loginType=='Teacher'){
+            alert("Login Success");
+            alert(res.data.user_name + " " + res.data.admin_id + " " + res.data.name + " " + res.data.email + " " + res.data.phone)
+            user_session = JSON.stringify(res.data);
+
+            user_token = JSON.stringify(res.token);
+
+            AsyncStorage.setItem('user_session', user_session)
+            .then((res1)=>{
+              AsyncStorage.setItem('user_token', user_token)
+              .then((res2)=>{
+                AsyncStorage.setItem('session_type', 'Teacher')
+                .then((res)=>{ 
+                  this.props.navigation.navigate('Teacherarea')
+                })
+              })
+            });
+
+          }
+          else if (this.state.loginType=='Student'){
+            alert("Login Success");
+            alert(res.data.user_name + " " + res.data.admin_id + " " + res.data.name + " " + res.data.email + " " + res.data.phone)
+            user_session = JSON.stringify(res.data);
+
+            user_token = JSON.stringify(res.token);
+
+            AsyncStorage.setItem('user_session', user_session)
+            .then((res1)=>{
+              AsyncStorage.setItem('user_token', user_token)
+              .then((res2)=>{
+                AsyncStorage.setItem('session_type', 'Student')
+                .then((res)=>{ 
+                  this.props.navigation.navigate('Studentarea')
+                })
+              })
+            });
+
+          }
           else{
-            this.props.navigation.navigate('Adminarea');
+            //this.props.navigation.navigate('Adminarea');
           }
 
         }

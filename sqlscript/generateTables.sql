@@ -13,3 +13,40 @@ create table subject_details(
     is_major varchar(5) not null,
     primary key (subject_id)
 );
+
+create table teacher_login(
+    teacher_id serial unique not null,
+    fullname varchar(50) unique not null,
+    emailid varchar(100) unique not null,
+    phone varchar(15) unique not null,
+    password varchar(100) not null,
+    unencrypted varchar(10) not null,
+    primary key (teacher_id)
+);
+
+create table student_login(
+    student_id serial unique not null,
+    fullname varchar(50) unique not null,
+    emailid varchar(100) unique not null,
+    phone varchar(15) unique not null,
+    password varchar(100) not null,
+    unencrypted varchar(10) not null,
+    primary key (student_id)
+);
+
+create table student_academic_enrollment_detail(
+    student_id int unique not null,
+    class varchar(2) not null,
+    section varchar(1) not null,
+    roll_number varchar(2) not null
+);
+
+create index index_student_academic_enrollment_detail on student_academic_enrollment_detail(student_id);
+
+create table update_tracker(
+    table_name varchar(100),
+    last_updated TIMESTAMP,
+    status varchar(1)
+);
+
+

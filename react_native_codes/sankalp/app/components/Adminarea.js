@@ -185,6 +185,7 @@ export default class Adminarea extends React.Component{
   }
   goToStudentPage = () =>{
     alert("student page");
+    this.props.navigation.navigate('StudentViewAdmin');
 
   }
   goToSubjectPage = () =>{
@@ -193,6 +194,7 @@ export default class Adminarea extends React.Component{
   }
   goToTeacherPage = () =>{
     alert("teacher page");
+    this.props.navigation.navigate('TeacherViewAdmin');
   }
   /*
   goToKYCPage = () =>{

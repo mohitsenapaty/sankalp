@@ -19,17 +19,28 @@ import {
 
 import Login from './app/components/Login';
 import Adminarea from './app/components/Adminarea';
+import Teacherarea from './app/components/Teacherarea';
+import Studentarea from './app/components/Studentarea';
 import SubjectViewAdmin from './app/components/SubjectViewAdmin';
 import SubjectAddAdmin from './app/components/SubjectAddAdmin';
+import TeacherViewAdmin from './app/components/TeacherViewAdmin';
+import TeacherAddAdmin from './app/components/TeacherAddAdmin';
+import StudentViewAdmin from './app/components/StudentViewAdmin';
+import StudentAddAdmin from './app/components/StudentAddAdmin';
 import {StackNavigator} from 'react-navigation';
 
 const NavigationApp = StackNavigator(
   {
     Login:{screen: Login},
-    //Teacherarea:{screen: Teacherarea},
+    Teacherarea:{screen: Teacherarea},
+    Studentarea:{screen: Studentarea},
     Adminarea:{screen: Adminarea},
     SubjectViewAdmin:{screen: SubjectViewAdmin},
     SubjectAddAdmin:{screen: SubjectAddAdmin},
+    TeacherViewAdmin:{screen: TeacherViewAdmin},
+    TeacherAddAdmin:{screen: TeacherAddAdmin},
+    StudentViewAdmin:{screen: StudentViewAdmin},
+    StudentAddAdmin:{screen: StudentAddAdmin},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

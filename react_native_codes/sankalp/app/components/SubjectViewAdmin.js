@@ -151,11 +151,15 @@ export default class SubjectViewAdmin extends React.Component{
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshSubjects(), 10000)
+    this.timer = setInterval(()=> this.refreshSubjects(), 60000)
     
   }
   refreshSubjects = async() =>{
     //alert("refresh");
+    var isFocused = this.props.navigation.isFocused();    
+    //alert(isFocused);
+    if (!isFocused)
+      return;
     try{
       //alert("aaa" + this.state.user_id); 
       fetch(globalAssets.IP_IN_USE+'/fetchAllSubjects/'+this.state.user_token+'/', {
@@ -353,10 +357,11 @@ export default class SubjectViewAdmin extends React.Component{
     alert("student page");
   }
   goToSubjectPage = () =>{
-    alert("subject page");
+    alert("already on subject page");
   }
   goToTeacherPage = () =>{
     alert("teacher page");
+    this.props.navigation.navigate('TeacherViewAdmin');
   }
   goToAddSubjectPage = () =>{
     this.props.navigation.navigate('SubjectAddAdmin');

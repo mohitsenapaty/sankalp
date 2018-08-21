@@ -59,10 +59,84 @@ router.post('/', function(req, resp, next){
     });
   }
   else if (loginType == 'Teacher'){
+    var db_client = new pg.Client(conString);
+    db_client.connect(function(err_){
 
+      if (err_){
+        console.log(err); resp.send(login_data);
+      }
+      
+      db_client.query("SELECT * FROM teacher_login WHERE emailid=$1 AND password=$2;", [username, enc_pwd], function(err, res)
+      {
+        if (err){
+          console.log(err); 
+          resp.send(login_data);
+          db_client.end(function(err1){
+
+            if (err1){console.log(err1);}
+          });
+        }
+        else
+        { //console.log(res);
+          console.log(res.rows.length);
+          if (res.rows.length==1){
+            var api_key = crypto.createCipher('aes-128-cbc', 'shatabdi');
+            var got_id = api_key.update((res.rows[0].teacher_id).toString(), 'utf8', 'hex');
+            got_id += api_key.final('hex');
+            console.log("successful login " + got_id);
+            login_data['data'] = res.rows[0];
+            login_data['success'] = 1;
+            login_data['token'] = got_id;
+          }
+          resp.send(login_data);
+          //close connection
+          db_client.end(function(err1){
+
+            if (err1){console.log(err1);}
+          });
+        }
+      });
+    });
   }
   else if (loginType == 'Student'){
+    var db_client = new pg.Client(conString);
+    db_client.connect(function(err_){
 
+      if (err_){
+        console.log(err); resp.send(login_data);
+      }
+      console.log(username + " " + password + " " + enc_pwd);
+      db_client.query("select a.*,b.class,b.section,b.roll_number from student_login a join student_academic_enrollment_detail b on a.student_id = b.student_id WHERE emailid=$1 AND password=$2;", [username, enc_pwd], function(err, res)
+      {
+        if (err){
+          console.log(err); 
+          resp.send(login_data);
+          db_client.end(function(err1){
+
+            if (err1){console.log(err1);}
+          });
+        }
+        else
+        { //console.log(res);
+          console.log(res.rows.length);
+          if (res.rows.length==1){
+            var api_key = crypto.createCipher('aes-128-cbc', 'shatabdi');
+            var got_id = api_key.update((res.rows[0].student_id).toString(), 'utf8', 'hex');
+            got_id += api_key.final('hex');
+            console.log("successful login " + got_id);
+            login_data['data'] = res.rows[0];
+            login_data['success'] = 1;
+            login_data['token'] = got_id;
+          }
+          resp.send(login_data);
+          //close connection
+          db_client.end(function(err1){
+
+            if (err1){console.log(err1);}
+          });
+        }
+      });
+    });
   }
   else{
     resp.send(login_data);
