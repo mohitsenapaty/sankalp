@@ -49,4 +49,22 @@ create table update_tracker(
     status varchar(1)
 );
 
+create table teacher_subject_detail(
+    teacher_id int,
+    subject_id int,
+    class varchar(5),
+    section varchar(1),
+    primary key ( subject_id, class, section)
+);
+
+
+create index index_teacher_subject_detail on teacher_subject_detail(teacher_id);
+
+create table student_subject_detail(
+    student_id int,
+    subject_id int,
+    primary key (student_id, subject_id)
+);
+
+create index index_student_subject_detail on student_subject_detail(student_id);
 

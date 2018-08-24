@@ -251,6 +251,8 @@ export default class StudentViewAdmin extends React.Component{
           <Text>Class:     {row_set.class}</Text>
           <Text>Section:   {row_set.section}</Text>
           <Text>RollNumber:{row_set.roll_number}</Text>
+          <Text onPress={()=>{this.goToViewAssignSubjectPage(row_set)}}>View Subjects Assigned to Student</Text>
+          <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Student</Text>
           <Text></Text>
           <Text onPress={()=>{this.deleteStudentAlert(row_set.fullname)}}>Delete Student.</Text>
         </View>
@@ -315,12 +317,25 @@ export default class StudentViewAdmin extends React.Component{
             }}>
               <Text>Select Class: </Text>
               <ModalDropdown options={allClass} defaultValue={allClass[0]} onSelect={this.selectedClassMethod}
+                style={{
+                  borderWidth: 0,
+                  borderRadius: 3,
+                  width:60,
+                  backgroundColor: 'cornflowerblue',
+                }}
                 dropdownStyle={{
                   flex:1, width: 60, height: 420,
               }}>          
               </ModalDropdown>
               <Text>Select Section: </Text>
-              <ModalDropdown options={allSec} defaultValue={allSec[0]} onSelect={this.selectedSecMethod}>
+              <ModalDropdown options={allSec} defaultValue={allSec[0]} onSelect={this.selectedSecMethod}
+                style={{
+                  borderWidth: 0,
+                  borderRadius: 3,
+                  width:20,
+                  backgroundColor: 'cornflowerblue',
+                }}
+              >
           
               </ModalDropdown>
             </View>
@@ -389,10 +404,10 @@ export default class StudentViewAdmin extends React.Component{
         //alert(res.success);
         //alert("a");
         if (res.success === 1){
-          alert("Teacher deleted successfully.")
+          alert("Student deleted successfully.")
 
         }
-        else{alert("Error deleting teacher. Try again.");}
+        else{alert("Error deleting student. Try again.");}
       })
       .done();
     }
@@ -432,6 +447,12 @@ export default class StudentViewAdmin extends React.Component{
     catch(error){
       alert(error);
     }
+  }
+  goToViewAssignSubjectPage = (i) =>{
+    alert(i);
+  }
+  goToAssignSubjectPage = (i) =>{
+    this.props.navigation.navigate('AssignSubjectsToStudentAdmin', {i},);
   }
   goToProfilePage = () =>{
     this.props.navigation.navigate('Adminarea');

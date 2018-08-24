@@ -237,6 +237,7 @@ export default class TeacherAddAdmin extends React.Component{
   }
   goToStudentPage = () =>{
     alert("student page");
+    this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
     alert("subject page");

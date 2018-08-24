@@ -139,23 +139,29 @@ export default class Adminarea extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
         
-        <Text>Welcome {this.state.user_session.user_name}</Text>
-        <Text>Welcome {this.state.user_session.name}</Text>
-        <Text>Welcome {this.state.user_session.email}</Text>
-        <Text>Welcome {this.state.user_session.phone}</Text>
-        <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text>LOG OUT</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToStudentPage} style={stylesAdmin.ButtonContainer}>
-          <Text>Student Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToTeacherPage} style={stylesAdmin.ButtonContainer}>
-          <Text>Teacher Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
-          <Text>Subject Details</Text>
-        </TouchableOpacity>      
-      </ScrollView>
+          <Text>Welcome {this.state.user_session.user_name}</Text>
+          <Text>Welcome {this.state.user_session.name}</Text>
+          <Text>Welcome {this.state.user_session.email}</Text>
+          <Text>Welcome {this.state.user_session.phone}</Text>
+          <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
+            <Text>LOG OUT</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.goToStudentPage} style={stylesAdmin.ButtonContainer}>
+            <Text>Student Details</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.goToTeacherPage} style={stylesAdmin.ButtonContainer}>
+            <Text>Teacher Details</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
+            <Text>Subject Details</Text>
+          </TouchableOpacity> 
+          <TouchableOpacity onPress={this.goToAssignSubjectToClassPage} style={stylesAdmin.ButtonContainer}>
+            <Text>Assign Subject to Class.</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.goToExamsPage} style={stylesAdmin.ButtonContainer}>
+            <Text>Assign Subject to Class.</Text>
+          </TouchableOpacity>      
+        </ScrollView>
     </DrawerLayout>
       
     );  
@@ -195,6 +201,13 @@ export default class Adminarea extends React.Component{
   goToTeacherPage = () =>{
     alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
+  }
+  goToAssignSubjectToClassPage = () =>{
+    alert("assign subject to Class");
+    this.props.navigation.navigate('AddSubjectToClassAdmin');
+  }
+  goToExamsPage = () =>{
+    alert("Exams page");
   }
   /*
   goToKYCPage = () =>{

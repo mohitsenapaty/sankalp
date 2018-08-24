@@ -27,6 +27,9 @@ import TeacherViewAdmin from './app/components/TeacherViewAdmin';
 import TeacherAddAdmin from './app/components/TeacherAddAdmin';
 import StudentViewAdmin from './app/components/StudentViewAdmin';
 import StudentAddAdmin from './app/components/StudentAddAdmin';
+import AddSubjectToClassAdmin from './app/components/AddSubjectToClassAdmin';
+import AssignSubjectsToTeacherAdmin from './app/components/AssignSubjectsToTeacherAdmin';
+import AssignSubjectsToStudentAdmin from './app/components/AssignSubjectsToStudentAdmin';
 import {StackNavigator} from 'react-navigation';
 
 const NavigationApp = StackNavigator(
@@ -41,6 +44,9 @@ const NavigationApp = StackNavigator(
     TeacherAddAdmin:{screen: TeacherAddAdmin},
     StudentViewAdmin:{screen: StudentViewAdmin},
     StudentAddAdmin:{screen: StudentAddAdmin},
+    AddSubjectToClassAdmin:{screen: AddSubjectToClassAdmin},
+    AssignSubjectsToTeacherAdmin:{screen: AssignSubjectsToTeacherAdmin},
+    AssignSubjectsToStudentAdmin:{screen: AssignSubjectsToStudentAdmin},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

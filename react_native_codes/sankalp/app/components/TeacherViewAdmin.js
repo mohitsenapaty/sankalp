@@ -196,39 +196,6 @@ export default class TeacherViewAdmin extends React.Component{
       alert(error);
     }
   }
-  displaySubjectByRow(){
-    /*
-    const rowSetItems = this.state.subjectDataList.map(
-      (d)=>{
-        <View key={d.subject_id}>
-          <Text>{d.subject_id}</Text>
-        </View>
-      }
-    );
-    return(
-      <View>
-        {rowSetItems}
-      </View>
-    );*/
-    
-    return this.state.subjectDataList.map((row_set, i)=>{
-      return (
-        <View key={i} style={{
-          flex:1,
-          flexDirection:'row',
-          justifyContent:'space-between',
-          alignItems:'center',
-        }}>
-          <Text>{row_set.subject_id} </Text>
-          <Text>{row_set.subject_name} </Text>
-          <Text>{row_set.subject_code} </Text>
-          <Text>{row_set.is_major}</Text>
-          <Text onPress={()=>{this.deleteSubjectAlert(row_set.subject_name)}}>Delete Subject</Text>
-        </View>
-      );
-    });
-    
-  }
   displayTeacherByRow(){
     return this.state.teacherDataList.map((row_set, i)=>{
       return (
@@ -242,29 +209,11 @@ export default class TeacherViewAdmin extends React.Component{
           <Text>Mobile:    {row_set.phone} </Text>
           <Text>Password:  {row_set.unencrypted}</Text>
           <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
+          <Text onPress={()=>{this.goToViewAssignSubjectPage(row_set)}}>View Subjects Assigned to Teacher</Text>
+          <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Teacher</Text>
         </View>
       );
     });
-  }
-  displaySubjects(){
-    //fetch list of subjects
-    if (this.state.numberOfSubjects == 0){
-      return(
-        <View style={stylesAdmin.InputContainer}>
-          <Text>Currently no subjects have been added yet.</Text>
-
-        </View>
-      );
-    }
-    else{
-      //alert(this.state.subjectDataList);
-      return(
-        <View style={stylesAdmin.InputContainer}>
-          <Text>Currently these subjects have been added yet.</Text>
-          { this.displaySubjectByRow() }
-        </View>
-      );
-    }
   }
   displayTeachers(){
     //fetch list of subjects
@@ -320,7 +269,7 @@ export default class TeacherViewAdmin extends React.Component{
           </ScrollView>
           <View>
             <TouchableOpacity onPress={this.goToAddTeacherPage} style={stylesAdmin.ButtonContainer}>
-              <Text>Click here to add students</Text>
+              <Text>Click here to add teachers.</Text>
             </TouchableOpacity> 
           </View>
         </View>
@@ -346,6 +295,12 @@ export default class TeacherViewAdmin extends React.Component{
     //navigate('Login');
     //alert("logging out");
     //this.props.navigation.navigate('Login');
+  }
+  goToViewAssignSubjectPage = (i) =>{
+    alert(i);
+  }
+  goToAssignSubjectPage = (i) =>{
+    this.props.navigation.navigate('AssignSubjectsToTeacherAdmin', {i},);
   }
   deleteTeacherAlert = (i) =>{
     Alert.alert(
@@ -429,6 +384,7 @@ export default class TeacherViewAdmin extends React.Component{
   }
   goToStudentPage = () =>{
     alert("student page");
+    this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
     alert("subject page");

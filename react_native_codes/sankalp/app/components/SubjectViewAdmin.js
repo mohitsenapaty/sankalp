@@ -355,6 +355,7 @@ export default class SubjectViewAdmin extends React.Component{
   }
   goToStudentPage = () =>{
     alert("student page");
+    this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
     alert("already on subject page");

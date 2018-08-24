@@ -235,6 +235,7 @@ export default class SubjectAddAdmin extends React.Component{
   }
   goToStudentPage = () =>{
     alert("student page");
+    this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
     alert("subject page");
@@ -242,6 +243,7 @@ export default class SubjectAddAdmin extends React.Component{
   }
   goToTeacherPage = () =>{
     alert("teacher page");
+    this.props.navigation.navigate('TeacherViewAdmin');
   }
   goToAddSubjectPage = () =>{
     this.props.navigation.navigate('SubjectAddAdmin');
