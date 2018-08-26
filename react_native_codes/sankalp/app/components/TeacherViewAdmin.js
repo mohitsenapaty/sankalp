@@ -209,7 +209,7 @@ export default class TeacherViewAdmin extends React.Component{
           <Text>Mobile:    {row_set.phone} </Text>
           <Text>Password:  {row_set.unencrypted}</Text>
           <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
-          <Text onPress={()=>{this.goToViewAssignSubjectPage(row_set)}}>View Subjects Assigned to Teacher</Text>
+          <Text> </Text>
           <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Teacher</Text>
         </View>
       );
@@ -397,22 +397,6 @@ export default class TeacherViewAdmin extends React.Component{
   goToAddTeacherPage = () =>{
     this.props.navigation.navigate('TeacherAddAdmin');
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
-  }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
-  }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
-  }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
-  }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }
 

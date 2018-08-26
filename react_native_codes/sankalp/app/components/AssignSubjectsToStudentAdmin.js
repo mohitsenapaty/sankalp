@@ -302,14 +302,13 @@ export default class assignSubjectsToStudent extends React.Component{
       return (
         <View key={i} style={{
           flex:1,
-          flexDirection:'row',
-          justifyContent:'space-between',
-          alignItems:'center',
+          borderBottomColor: 'black',
+          borderBottomWidth: 1,
         }}>
-          <Text>{row_set.subject_name} </Text>
-          <Text>{row_set.subject_code} </Text>
-          <Text>{row_set.is_major}</Text>
-          <Text>{row_set.fullname}</Text>
+          <Text>Subject Name:                 {row_set.subject_name} </Text>
+          <Text>Subject Code:                 {row_set.subject_code} </Text>
+          <Text>Subject Type:                 {row_set.is_major}</Text>
+          <Text>Teacher Name:                 {row_set.fullname}</Text>
           <Text onPress={()=>{this.deleteSubjectAssignmentAlert(row_set.subject_name,row_set.subject_id)}}>Delete Assignment</Text>
         </View>
       );

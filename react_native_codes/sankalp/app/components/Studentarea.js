@@ -149,6 +149,12 @@ export default class Studentarea extends React.Component{
         <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
           <Text>LOG OUT</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
+          <Text>View Subjects</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.goToExamPage} style={stylesAdmin.ButtonContainer}>
+          <Text>View Exams</Text>
+        </TouchableOpacity>
             
       </ScrollView>
     </DrawerLayout>
@@ -184,7 +190,11 @@ export default class Studentarea extends React.Component{
   }
   goToSubjectPage = () =>{
     alert("subject page");
-    this.props.navigation.navigate('SubjectViewAdmin');
+    this.props.navigation.navigate('SubjectViewStudent');
+  }
+  goToExamPage = () =>{
+    alert("exam page");
+    this.props.navigation.navigate('ExamViewStudent');
   }
   goToTeacherPage = () =>{
     alert("teacher page");

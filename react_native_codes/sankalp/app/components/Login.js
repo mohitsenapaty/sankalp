@@ -72,6 +72,7 @@ export default class Login extends React.Component{
       //alert(json_value);
       if (session_type == 'Admin') this.props.navigation.navigate('Adminarea');
       else if (session_type == 'Teacher') this.props.navigation.navigate('Teacherarea');
+      else if (session_type == 'Student') this.props.navigation.navigate('Studentarea');
     }
   }
 

@@ -159,7 +159,7 @@ export default class Adminarea extends React.Component{
             <Text>Assign Subject to Class.</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.goToExamsPage} style={stylesAdmin.ButtonContainer}>
-            <Text>Assign Subject to Class.</Text>
+            <Text>View Exam Details</Text>
           </TouchableOpacity>      
         </ScrollView>
     </DrawerLayout>
@@ -208,6 +208,7 @@ export default class Adminarea extends React.Component{
   }
   goToExamsPage = () =>{
     alert("Exams page");
+    this.props.navigation.navigate('ExamViewAdmin');
   }
   /*
   goToKYCPage = () =>{

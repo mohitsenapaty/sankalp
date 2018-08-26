@@ -88,7 +88,48 @@ router.post('/:pwd/', function(req, resp, next){
 
   }
   else if (loginType == 'Student'){
+    var db_client = new pg.Client(conString);
+    db_client.connect(function(err_){
 
+      if (err_){
+        console.log(err); resp.send(login_data);
+      }
+
+      db_client.query("select c.*,d.fullname from student_subject_detail a left outer join teacher_subject_detail b on a.subject_id=b.subject_id join subject_details c on c.subject_id=a.subject_id left outer join teacher_login d on b.teacher_id=d.teacher_id where student_id=$1;"
+        ,[userID]
+        , function(err, res)
+      {
+        if (err){
+          console.log(err); 
+          resp.send(login_data);
+          db_client.end(function(err1){
+
+            if (err1){console.log(err1);}
+          });
+        }
+        else
+        { //console.log(res);
+          console.log(res.rows.length);
+
+          var data_arr = [];
+          for (var i = 0; i < res.rows.length; i++){
+            data_arr.push(res.rows[i]);
+          }
+          //var data_dict = {'data_arr':data_arr}
+          console.log(data_arr);
+          login_data['data'] = data_arr;
+          login_data['success'] = 1;
+          login_data['token'] = got_id;
+
+          resp.send(login_data);
+          //close connection
+          db_client.end(function(err1){
+
+            if (err1){console.log(err1);}
+          });
+        }
+      });
+    });
   }
   else{
     resp.send(login_data);

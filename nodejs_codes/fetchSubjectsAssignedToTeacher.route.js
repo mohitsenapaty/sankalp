@@ -82,7 +82,48 @@ router.post('/:pwd/', function(req, resp, next){
     });
   }
   else if (loginType == 'Teacher'){
+    var db_client = new pg.Client(conString);
+    db_client.connect(function(err_){
 
+      if (err_){
+        console.log(err); resp.send(login_data);
+      }
+
+      db_client.query("SELECT a.*, b.* FROM teacher_subject_detail a JOIN subject_details b on a.subject_id=b.subject_id where a.teacher_id=$1;"
+        ,[userID]
+        , function(err, res)
+      {
+        if (err){
+          console.log(err); 
+          resp.send(login_data);
+          db_client.end(function(err1){
+
+            if (err1){console.log(err1);}
+          });
+        }
+        else
+        { //console.log(res);
+          console.log(res.rows.length);
+
+          var data_arr = [];
+          for (var i = 0; i < res.rows.length; i++){
+            data_arr.push(res.rows[i]);
+          }
+          //var data_dict = {'data_arr':data_arr}
+          console.log(data_arr);
+          login_data['data'] = data_arr;
+          login_data['success'] = 1;
+          login_data['token'] = got_id;
+
+          resp.send(login_data);
+          //close connection
+          db_client.end(function(err1){
+
+            if (err1){console.log(err1);}
+          });
+        }
+      });
+    });
   }
   else if (loginType == 'Student'){
 

@@ -30,6 +30,16 @@ import StudentAddAdmin from './app/components/StudentAddAdmin';
 import AddSubjectToClassAdmin from './app/components/AddSubjectToClassAdmin';
 import AssignSubjectsToTeacherAdmin from './app/components/AssignSubjectsToTeacherAdmin';
 import AssignSubjectsToStudentAdmin from './app/components/AssignSubjectsToStudentAdmin';
+import ExamViewAdmin from './app/components/ExamViewAdmin';
+import ExamAddAdmin from './app/components/ExamAddAdmin';
+import SubjectViewTeacher from './app/components/SubjectViewTeacher';
+import ExamViewTeacher from './app/components/ExamViewTeacher';
+import SingleExamViewTeacher from './app/components/SingleExamViewTeacher';
+import AssignGradeTeacher from './app/components/AssignGradeTeacher';
+import ViewGradeTeacher from './app/components/ViewGradeTeacher';
+import SubjectViewStudent from './app/components/SubjectViewStudent';
+import ExamViewStudent from './app/components/ExamViewStudent';
+import ViewGradeStudent from './app/components/ViewGradeStudent';
 import {StackNavigator} from 'react-navigation';
 
 const NavigationApp = StackNavigator(
@@ -47,6 +57,16 @@ const NavigationApp = StackNavigator(
     AddSubjectToClassAdmin:{screen: AddSubjectToClassAdmin},
     AssignSubjectsToTeacherAdmin:{screen: AssignSubjectsToTeacherAdmin},
     AssignSubjectsToStudentAdmin:{screen: AssignSubjectsToStudentAdmin},
+    ExamViewAdmin:{screen: ExamViewAdmin},
+    ExamAddAdmin:{screen: ExamAddAdmin},
+    SubjectViewTeacher:{screen: SubjectViewTeacher},
+    ExamViewTeacher:{screen: ExamViewTeacher},
+    SingleExamViewTeacher:{screen: SingleExamViewTeacher},
+    AssignGradeTeacher:{screen: AssignGradeTeacher},
+    ViewGradeTeacher:{screen: ViewGradeTeacher},
+    SubjectViewStudent:{screen: SubjectViewStudent},
+    ExamViewStudent:{screen: ExamViewStudent},
+    ViewGradeStudent:{screen: ViewGradeStudent},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

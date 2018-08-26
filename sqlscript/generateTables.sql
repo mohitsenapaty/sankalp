@@ -68,3 +68,23 @@ create table student_subject_detail(
 
 create index index_student_subject_detail on student_subject_detail(student_id);
 
+create table exam_group_detail(
+    exam_group_id serial unique not null,
+    exam_group_name varchar(100) not null,
+    exam_group_date varchar(30) not null,
+    exam_group_type varchar(20) not null,
+    primary key (exam_group_id)
+);
+
+create table exam_group_scoring(
+    exam_group_id int not null,
+    subject_id int not null,
+    student_id int not null,
+    max_score int,
+    cur_score int,
+    percentage numeric(6,2),
+    grade varchar(3),
+    primary key (exam_group_id, subject_id, student_id)
+);
+
+create index index_exam_group_scoring on exam_group_scoring(student_id);

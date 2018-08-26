@@ -169,12 +169,25 @@ export default class StudentAddAdmin extends React.Component{
             }}>
               <Text>Select Class: </Text>
               <ModalDropdown options={allClass} defaultValue={allClass[0]} onSelect={this.selectedClassMethod}
+                style={{
+                  borderWidth: 0,
+                  borderRadius: 3,
+                  width:60,
+                  backgroundColor: 'cornflowerblue',
+                }}
                 dropdownStyle={{
                   flex:1, width: 60, height: 420,
               }}>          
               </ModalDropdown>
               <Text>Select Section: </Text>
-              <ModalDropdown options={allSec} defaultValue={allSec[0]} onSelect={this.selectedSecMethod}>
+              <ModalDropdown options={allSec} defaultValue={allSec[0]} onSelect={this.selectedSecMethod}
+                style={{
+                  borderWidth: 0,
+                  borderRadius: 3,
+                  width:60,
+                  backgroundColor: 'cornflowerblue',
+                }}
+              >
           
               </ModalDropdown>
             </View>

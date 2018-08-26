@@ -143,6 +143,12 @@ export default class Teacherarea extends React.Component{
         <Text>Welcome {this.state.user_session.fullname}</Text>
         <Text>Welcome {this.state.user_session.emailid}</Text>
         <Text>Welcome {this.state.user_session.phone}</Text>
+        <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
+          <Text>View Assigned Subjects and Classes.</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.goToExamPage} style={stylesAdmin.ButtonContainer}>
+          <Text>View Exams.</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
           <Text>LOG OUT</Text>
         </TouchableOpacity>
@@ -181,28 +187,16 @@ export default class Teacherarea extends React.Component{
   }
   goToSubjectPage = () =>{
     alert("subject page");
-    this.props.navigation.navigate('SubjectViewAdmin');
+    this.props.navigation.navigate('SubjectViewTeacher');
   }
   goToTeacherPage = () =>{
     alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
+  goToExamPage = () =>{
+    alert("exam page");
+    this.props.navigation.navigate('ExamViewTeacher');
   }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
-  }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
-  }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
-  }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }
 

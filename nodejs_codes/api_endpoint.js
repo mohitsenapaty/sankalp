@@ -23,6 +23,13 @@ var deleteSubjectAssignedToStudentRouter = require('./deleteSubjectAssignedToStu
 var assignSubjectToClassRouter = require('./assignSubjectToClass.route');
 var fetchClassSubjectsRouter = require('./fetchClassSubjects.route');
 var deleteSubjectAssignedToClassRouter = require('./deleteSubjectAssignedToClass.route');
+var deleteExamRouter = require('./deleteExam.route');
+var fetchExamsRouter = require('./fetchExams.route');
+var addExamRouter = require('./addExam.route');
+var fetchExamSubjectsForTeacherRouter = require('./fetchExamSubjectsForTeacher.route');
+var fetchStudentsForSubjectRouter = require('./fetchStudentsForSubject.route');
+var fetchSubjectsForStudentRouter = require('./fetchSubjectsForStudent.route');
+var upgradeMarksForStudentRouter = require('./upgradeMarksForStudent.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -46,6 +53,13 @@ app.use('/deleteSubjectAssignedToStudent', deleteSubjectAssignedToStudentRouter)
 app.use('/assignSubjectToClass', assignSubjectToClassRouter);
 app.use('/fetchClassSubjects', fetchClassSubjectsRouter);
 app.use('/deleteSubjectAssignedToClass', deleteSubjectAssignedToClassRouter);
+app.use('/addExams', addExamRouter);
+app.use('/deleteExams', deleteExamRouter);
+app.use('/fetchAllExams', fetchExamsRouter);
+app.use('/fetchExamSubjectsForTeacher', fetchExamSubjectsForTeacherRouter);
+app.use('/fetchStudentsForSubject', fetchStudentsForSubjectRouter);
+app.use('/upgradeMarksForStudent', upgradeMarksForStudentRouter);
+app.use('/fetchSubjectsForStudent', fetchSubjectsForStudentRouter);
 
 const server = http.createServer(app);
 server.listen(8000, ()=>{
