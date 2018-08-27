@@ -8,22 +8,16 @@ var fullname = 'Aaaa BBBBaaa';
 var class_ = '3';
 var section = 'A';
 var session = '2018-2019';
-var str1 = `
-aa aa
 
-bb bb 
+var subjects = ['HINDI', 'ENGLISH', 'MATHEMATICS', 'SCIENCE', 'SOCIAL STUDIES'];
+var grades = ['A', 'A+', 'B+', 'B', 'C'];
 
-`;
-var str2 = `
+var tableRowString = ``;
 
-aaaaaaaa
-
-nnnnnnnn
-
-`;
-
-var str3 = str1+str2;
-console.log(str3);
+for (var i = 0; i < subjects.length; i++){
+  var rowString = `<tr><td>${subjects[i]}</td><td>${grades[i]}</td></tr>`;
+  tableRowString+=rowString;
+}
 
 var writeString = `
 
@@ -157,30 +151,7 @@ var writeString = `
                       <th style="width:100%">Subject</th>
                       <th>Grade</th>
                     </tr>
-                    <tr>
-                        <td>aaa</td>
-                        <td>A+</td>
-                    </tr>
-                    <tr>
-                        <td>aaa</td>
-                        <td>A+</td>
-                    </tr>
-                    <tr>
-                        <td>aaa</td>
-                        <td>A+</td>
-                    </tr>
-                    <tr>
-                        <td>aaa</td>
-                        <td>A+</td>
-                    </tr>
-                    <tr>
-                        <td>aaa</td>
-                        <td>A+</td>
-                    </tr>
-                    <tr>
-                        <td>aaa</td>
-                        <td>A+</td>
-                    </tr>
+                    ${tableRowString}
                 </table>
                 </div>
             </div>

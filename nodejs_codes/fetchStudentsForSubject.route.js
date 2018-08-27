@@ -16,6 +16,7 @@ router.post('/:pwd/', function(req, resp, next){
   var subject_Id = req.body.subject_id;
   var subject_id = parseInt(subject_Id,10);
   var loginType = req.body.loginType;
+  var exam_group_id = req.body.exam_group_id;
   
   var login_data = {'success':0,'data':[],'token':''};
   //console.log(SHA224(password, "utf8").toString('hex'));
@@ -47,8 +48,8 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select distinct a.*, b.fullname,c.class,c.section,d.roll_number from exam_group_scoring a join student_login b on a.student_id=b.student_id join teacher_subject_detail c on c.subject_id=a.subject_id join student_academic_enrollment_detail d on a.student_id=d.student_id where a.subject_id=$2 and c.teacher_id=$1 order by d.roll_number;"
-        ,[userID, subject_id]
+      db_client.query("select distinct a.*, b.fullname,c.class,c.section,d.roll_number from exam_group_scoring a join student_login b on a.student_id=b.student_id join teacher_subject_detail c on c.subject_id=a.subject_id join student_academic_enrollment_detail d on a.student_id=d.student_id where a.subject_id=$2 and c.teacher_id=$1 and a.exam_group_id=$3 order by d.roll_number;"
+        ,[userID, subject_id, exam_group_id]
         , function(err, res)
       {
         if (err){
@@ -91,8 +92,8 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select distinct a.*, b.fullname,c.class,c.section,d.roll_number from exam_group_scoring a join student_login b on a.student_id=b.student_id join teacher_subject_detail c on c.subject_id=a.subject_id join student_academic_enrollment_detail d on a.student_id=d.student_id where a.subject_id=$2 and c.teacher_id=$1 order by d.roll_number;"
-        ,[userID, subject_id]
+      db_client.query("select distinct a.*, b.fullname,c.class,c.section,d.roll_number from exam_group_scoring a join student_login b on a.student_id=b.student_id join teacher_subject_detail c on c.subject_id=a.subject_id join student_academic_enrollment_detail d on a.student_id=d.student_id where a.subject_id=$2 and c.teacher_id=$1 and a.exam_group_id=$3 order by d.roll_number;"
+        ,[userID, subject_id, exam_group_id]
         , function(err, res)
       {
         if (err){

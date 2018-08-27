@@ -48,7 +48,7 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select c.*,d.fullname from student_subject_detail a left outer join teacher_subject_detail b on a.subject_id=b.subject_id join subject_details c on c.subject_id=a.subject_id left outer join teacher_login d on b.teacher_id=d.teacher_id where student_id=$1;"
+      db_client.query("select distinct c.*,d.fullname from student_subject_detail a left outer join teacher_subject_detail b on a.subject_id=b.subject_id join subject_details c on c.subject_id=a.subject_id left outer join teacher_login d on b.teacher_id=d.teacher_id join student_academic_enrollment_detail e on e.student_id=a.student_id where a.student_id=$1 and e.class=b.class and e.section=b.section;"
         ,[student_id]
         , function(err, res)
       {
@@ -95,7 +95,7 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select c.*,d.fullname from student_subject_detail a left outer join teacher_subject_detail b on a.subject_id=b.subject_id join subject_details c on c.subject_id=a.subject_id left outer join teacher_login d on b.teacher_id=d.teacher_id where student_id=$1;"
+      db_client.query("select distinct c.*,d.fullname from student_subject_detail a left outer join teacher_subject_detail b on a.subject_id=b.subject_id join subject_details c on c.subject_id=a.subject_id left outer join teacher_login d on b.teacher_id=d.teacher_id join student_academic_enrollment_detail e on e.student_id=a.student_id where a.student_id=$1 and e.class=b.class and e.section=b.section;"
         ,[userID]
         , function(err, res)
       {

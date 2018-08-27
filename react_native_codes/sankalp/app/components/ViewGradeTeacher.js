@@ -139,6 +139,7 @@ export default class ViewGradeTeacher extends React.Component{
           user_id: this.state.user_id,
           subject_id: this.state.subjectObject.subject_id,
           loginType: this.state.loginType,
+          exam_group_id:this.state.examObject.exam_group_id
         }),
       })
       .then((response) => response.json())

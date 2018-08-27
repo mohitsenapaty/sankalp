@@ -90,3 +90,16 @@ create table exam_group_scoring(
 create index index_exam_group_scoring on exam_group_scoring(student_id);
 
 alter table exam_group_detail add column session varchar(20) default '2018-2019';
+
+create table exam_group_reports_single(
+    exam_group_id int not null,
+    student_id int not null,
+    report_loc varchar(200) not null,
+    remote_link varchar(200) not null,
+    status varchar(20) not null,
+    primary key (exam_group_id, student_id)
+);
+
+create index index_exam_group_reports_single on exam_group_reports_single(student_id);
+
+

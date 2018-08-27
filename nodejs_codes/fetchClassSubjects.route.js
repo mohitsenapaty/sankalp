@@ -46,7 +46,7 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select distinct e.*,d.fullname from student_subject_detail a join student_academic_enrollment_detail c on a.student_id=c.student_id left outer join teacher_subject_detail b join teacher_login d on b.teacher_id=d.teacher_id on a.subject_id=b.subject_id join subject_details e on a.subject_id=e.subject_id where c.class=$1 and c.section=$2;"
+      db_client.query("select distinct e.*,d.fullname from student_subject_detail a join student_academic_enrollment_detail c on a.student_id=c.student_id left outer join teacher_subject_detail b on a.subject_id=b.subject_id join teacher_login d on b.teacher_id=d.teacher_id join subject_details e on a.subject_id=e.subject_id where c.class=$1 and c.section=$2 and b.class=$1 and b.section=$2;"
         ,[class_, section]
         , function(err, res)
       {
