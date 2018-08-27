@@ -35,6 +35,7 @@ var GLOB_IP_DEV='http://127.0.0.1:8000'
 var IP_IN_USE=GLOB_IP_PROD
 
 const allClass = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+const sessions = ['2018-2019', '2019-2020', '2020-2021', '2021-2022'];
 
 //type Props = {};
 export default class ExamAddAdmin extends React.Component{
@@ -55,6 +56,7 @@ export default class ExamAddAdmin extends React.Component{
       'exam_group_classes':[],
       isAllClassesChecked:true,
       classesCheckedArray:{},
+      'session':'2018-2019',
     };
 
     for (var i = 0; i < allClass.length; i++){
@@ -262,6 +264,10 @@ export default class ExamAddAdmin extends React.Component{
             <ModalDropdown options={['Full', 'Unit']} defaultValue='Full' onSelect={this.selectedExamTypeMethod}>
         
             </ModalDropdown>
+            <Text>Select Exam Session:</Text>
+            <ModalDropdown options={sessions} defaultValue={sessions[0]} onSelect={this.selectedSessionMethod}>
+        
+            </ModalDropdown>
             <Text>Enter Maximum marks for major subjects:</Text>
             <TextInput style={stylesAdmin.Input} onChangeText={(exam_maximum_major_subject_marks)=>this.onChangeMajorSubjectMarks(exam_maximum_major_subject_marks)} value={this.state.exam_maximum_major_subject_marks}  placeholder='Maximum Marks for Major Subjects'></TextInput>
             <Text>Enter Minimum marks for major subjects:</Text>
@@ -348,7 +354,8 @@ export default class ExamAddAdmin extends React.Component{
           max_major_marks: this.state.exam_maximum_major_subject_marks,
           max_minor_marks: this.state.exam_maximum_minor_subject_marks,
           all_class_selected: all_class_selected,
-          classes_selected: classes_selected
+          classes_selected: classes_selected,
+          session: this.state.session
         }),
       })
       .then((response) => response.json())
@@ -412,6 +419,11 @@ export default class ExamAddAdmin extends React.Component{
     //alert({idx} + " " + {value});
     //alert("1");
     this.setState({'exam_group_type':value});
+  }
+  selectedSessionMethod = (idx, value) => {
+    //alert({idx} + " " + {value});
+    //alert("1");
+    this.setState({'session':value});
   }
 
 }

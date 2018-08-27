@@ -424,6 +424,10 @@ export default class AssignGradeTeacher extends React.Component{
   }
   giveGrade = () =>{
     var percent = (this.state.scored_marks/this.state.max_marks)*100;
+    var grade = Math.floor(percent/14);
+    if (grade > 6) grade = 6;
+    var gradeArr=['A+', 'A', 'B+', 'B', 'C', 'D', 'E'];
+    var charGrade = gradeArr[6-grade];
     //alert(percent);
     try{
       //alert("a"); 
@@ -442,6 +446,7 @@ export default class AssignGradeTeacher extends React.Component{
           max_marks: this.state.max_marks,
           cur_score: this.state.scored_marks,
           percentage: percent,
+          grade: charGrade
         }),
       })
       .then((response) => response.json())
