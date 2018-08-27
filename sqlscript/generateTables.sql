@@ -88,3 +88,5 @@ create table exam_group_scoring(
 );
 
 create index index_exam_group_scoring on exam_group_scoring(student_id);
+
+alter table exam_group_detail add column session varchar(20) default '2018-2019';

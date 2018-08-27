@@ -22,6 +22,7 @@ router.post('/:pwd/', function(req, resp, next){
   var cur_score = parseInt(CUR_score,10);
   var percentage = req.body.percentage;
   var loginType = req.body.loginType;
+  var grade = req.body.grade;
   
   var login_data = {'success':0,'data':[],'token':''};
   //console.log(SHA224(password, "utf8").toString('hex'));
@@ -53,8 +54,8 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("update exam_group_scoring set max_score=$4,cur_score=$5,percentage=$6 where exam_group_id=$1 and subject_id=$2 and student_id=$3;"
-        ,[exam_group_id, subject_id, student_id, max_score, cur_score, percentage]
+      db_client.query("update exam_group_scoring set max_score=$4,cur_score=$5,percentage=$6,grade=$7 where exam_group_id=$1 and subject_id=$2 and student_id=$3;"
+        ,[exam_group_id, subject_id, student_id, max_score, cur_score, percentage,grade]
         , function(err, res)
       {
         if (err){
@@ -93,8 +94,8 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("update exam_group_scoring set max_score=$4,cur_score=$5,percentage=$6 where exam_group_id=$1 and subject_id=$2 and student_id=$3;"
-        ,[exam_group_id, subject_id, student_id, max_score, cur_score, percentage]
+      db_client.query("update exam_group_scoring set max_score=$4,cur_score=$5,percentage=$6,grade=$7 where exam_group_id=$1 and subject_id=$2 and student_id=$3;"
+        ,[exam_group_id, subject_id, student_id, max_score, cur_score, percentage,grade]
         , function(err, res)
       {
         if (err){

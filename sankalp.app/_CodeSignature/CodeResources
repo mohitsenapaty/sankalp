@@ -6,7 +6,7 @@
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
 		<data>
-		qJ2hHjw5riiQ7CMI3j08QY1AwY8=
+		Oq3w/PoYwDIpjhalCBNiDGYu7QU=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -52,6 +52,38 @@
 		<data>
 		/Uk8GH8V3uK9pizrbRL4bECusn8=
 		</data>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box.png</key>
+		<data>
+		6i++X9LuQ21EtNCpqvNLCuu7zas=
+		</data>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box@2x.png</key>
+		<data>
+		n0Nio8cYZ9nIHhScozvGyq7ZsAU=
+		</data>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box@3x.png</key>
+		<data>
+		5R2Pd6bxmKB9xs5xXE2izFskof8=
+		</data>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box_outline_blank.png</key>
+		<data>
+		CnyAl+TlBe5tLw1a/bibxIPYG+Y=
+		</data>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box_outline_blank@2x.png</key>
+		<data>
+		BtTDBjgvxP5kY3EqPagHm+wXFcM=
+		</data>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box_outline_blank@3x.png</key>
+		<data>
+		UUORX5CBLKKhO8krJUhol/Zo5Jg=
+		</data>
+		<key>assets/node_modules/react-native-check-box/img/ic_indeterminate_check_box.png</key>
+		<data>
+		grtV7Q9ppdp47V+KjHKdc0xjr14=
+		</data>
+		<key>assets/node_modules/react-native-datepicker/date_icon.png</key>
+		<data>
+		JPnp8lrjefhZkeqBwJEz6Avr5Oo=
+		</data>
 		<key>assets/node_modules/react-navigation/src/views/assets/back-icon-mask.png</key>
 		<data>
 		twCElRF9b860vkYvLPGRVtwtBcA=
@@ -70,7 +102,7 @@
 		</data>
 		<key>main.jsbundle</key>
 		<data>
-		QwowYFZgAO2i/lUCw6+nyFdLfkw=
+		AZgkdo/y0UCXVQ07q+G9a+2ri5k=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -79,11 +111,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			qJ2hHjw5riiQ7CMI3j08QY1AwY8=
+			Oq3w/PoYwDIpjhalCBNiDGYu7QU=
 			</data>
 			<key>hash2</key>
 			<data>
-			Fqm/ILl1AFbzX+xSmtFsRYUOLEqoH5Ca/jFaPc1gUBo=
+			GnXuSN8682S2ZsdesUI9dXt+KP14D9MFmnZhpAGRrj8=
 			</data>
 		</dict>
 		<key>assets/app/img/background_cc.jpg</key>
@@ -185,6 +217,94 @@
 			5VEnH6zEiD8JMkXPayrgbdmTsRoANXcCGHBHJJ5x+gA=
 			</data>
 		</dict>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			6i++X9LuQ21EtNCpqvNLCuu7zas=
+			</data>
+			<key>hash2</key>
+			<data>
+			VSMVo/LjH7FTfkfZqRBeEE8ezylWQFzeSvYOBov758s=
+			</data>
+		</dict>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box@2x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			n0Nio8cYZ9nIHhScozvGyq7ZsAU=
+			</data>
+			<key>hash2</key>
+			<data>
+			BrMf2+4k/b9oAw5j+vPCkwIErCLbsh9SnDg9A8NJPOQ=
+			</data>
+		</dict>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box@3x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			5R2Pd6bxmKB9xs5xXE2izFskof8=
+			</data>
+			<key>hash2</key>
+			<data>
+			WLCRSBe09prFy0LYhFrNNhxdsNMxGGEedWpjKHir2Jw=
+			</data>
+		</dict>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box_outline_blank.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			CnyAl+TlBe5tLw1a/bibxIPYG+Y=
+			</data>
+			<key>hash2</key>
+			<data>
+			qpxuLq36yf7Aqh+FQncHAbYa3ZeNnNIcazSG2avw2pI=
+			</data>
+		</dict>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box_outline_blank@2x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			BtTDBjgvxP5kY3EqPagHm+wXFcM=
+			</data>
+			<key>hash2</key>
+			<data>
+			BKnw5ARTHoP7+3IlOrk0mggVM+OkdWYGBuElyUyxvw4=
+			</data>
+		</dict>
+		<key>assets/node_modules/react-native-check-box/img/ic_check_box_outline_blank@3x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			UUORX5CBLKKhO8krJUhol/Zo5Jg=
+			</data>
+			<key>hash2</key>
+			<data>
+			uIBjSy9SYvOZXYMQZjrAFdJzxTLy00E4K+mrkZVjM+I=
+			</data>
+		</dict>
+		<key>assets/node_modules/react-native-check-box/img/ic_indeterminate_check_box.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			grtV7Q9ppdp47V+KjHKdc0xjr14=
+			</data>
+			<key>hash2</key>
+			<data>
+			Pix2EEjpgswkcJR6NLQHBluspyfsacHzJSzXhAA5SGM=
+			</data>
+		</dict>
+		<key>assets/node_modules/react-native-datepicker/date_icon.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			JPnp8lrjefhZkeqBwJEz6Avr5Oo=
+			</data>
+			<key>hash2</key>
+			<data>
+			antkI7spgQrTcaH+Ee+tmdwythpOZdTIS/V3I+ZGBlI=
+			</data>
+		</dict>
 		<key>assets/node_modules/react-navigation/src/views/assets/back-icon-mask.png</key>
 		<dict>
 			<key>hash</key>
@@ -233,11 +353,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			QwowYFZgAO2i/lUCw6+nyFdLfkw=
+			AZgkdo/y0UCXVQ07q+G9a+2ri5k=
 			</data>
 			<key>hash2</key>
 			<data>
-			WwUQJ8wwu7wbU3c3eCXuq0H++oOdhpd82ckmZCWdCwc=
+			qMyZGoCFyk/EtOWmK7wHHRn7fvM7VdpfKKR3iSuO0lU=
 			</data>
 		</dict>
 	</dict>
