@@ -213,6 +213,7 @@ export default class ExamViewAdmin extends React.Component{
           <Text onPress={()=>{this.deleteExamAlert(row_set.exam_group_name)}}>Delete Exam.</Text>
           
           <Text onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam</Text>
+          <Text onPress={()=>{this.declareExamAlert(row_set)}}>Declare Exam Results</Text>
         </View>
       );
     });
@@ -296,7 +297,49 @@ export default class ExamViewAdmin extends React.Component{
     //this.props.navigation.navigate('Login');
   }
 
+  declareExamAlert = (row_set) =>{
+    Alert.alert(
+      'Confirm Declare Results',
+      'Do you want to declare exam results for exam ' + row_set.exam_group_name + '?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => this.declareExam(row_set)},
+      ],
+      { cancelable: false }
+    );
+  }
+  declareExam = (row_set) =>{
+    try{
+      //alert("a"); 
+      fetch(globalAssets.IP_IN_USE+'/declareExams/'+ this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          exam_group_id: row_set.exam_group_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          alert("Exam deleted successfully.")
 
+        }
+        else{alert("Error deleting exam. Try again.");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+  }
   goToProfilePage = () =>{
     this.props.navigation.navigate('Adminarea');
   }
@@ -321,6 +364,7 @@ export default class ExamViewAdmin extends React.Component{
   }
   goToSingleExamPage = (i) =>{
     alert(i);
+    this.props.navigation.navigate('ExamStudentViewAdmin', {i});
   }
   deleteExamAlert = (i) =>{
     Alert.alert(
@@ -356,10 +400,10 @@ export default class ExamViewAdmin extends React.Component{
         //alert(res.success);
         //alert("a");
         if (res.success === 1){
-          alert("Exam deleted successfully.")
+          alert("Exam Declared successfully.")
 
         }
-        else{alert("Error deleting exam. Try again.");}
+        else{alert("Error declaring exam. Try again.");}
       })
       .done();
     }

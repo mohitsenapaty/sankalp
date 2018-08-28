@@ -40,6 +40,8 @@ import ViewGradeTeacher from './app/components/ViewGradeTeacher';
 import SubjectViewStudent from './app/components/SubjectViewStudent';
 import ExamViewStudent from './app/components/ExamViewStudent';
 import ViewGradeStudent from './app/components/ViewGradeStudent';
+import ExamStudentViewAdmin from './app/components/ExamStudentViewAdmin';
+import StudentViewGradeAdmin from './app/components/StudentViewGradeAdmin';
 import {StackNavigator} from 'react-navigation';
 
 const NavigationApp = StackNavigator(
@@ -67,6 +69,8 @@ const NavigationApp = StackNavigator(
     SubjectViewStudent:{screen: SubjectViewStudent},
     ExamViewStudent:{screen: ExamViewStudent},
     ViewGradeStudent:{screen: ViewGradeStudent},
+    ExamStudentViewAdmin:{screen: ExamStudentViewAdmin},
+    StudentViewGradeAdmin:{screen: StudentViewGradeAdmin},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

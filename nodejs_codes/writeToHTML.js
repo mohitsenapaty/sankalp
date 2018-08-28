@@ -1,6 +1,4 @@
 var fs = require('fs');
-var createStream = fs.createWriteStream("/Users/msenapaty/Documents/react_native_ios/sankalp/test.html");
-createStream.end();
 var async = require('async');
 var examname = 'Unit Test';
 var roll_number = '10';
@@ -111,14 +109,14 @@ var writeString = `
     <body>
         <div class="header" >
             <div class="topleft">
-                Year: 2018-2019
+                Year: ${session}
             </div>
             <div class="topcenter">Test Report Card - ${examname}</div>
             <div class="leftImg">Logo</div>
             <div class="schoolName">Kaanger Valley Academy</div>
             <div class="studentName">
-            AAAAA ZZZZZZZZ </br>
-            Class: 3c
+            ${fullname} </br>
+            Class: ${class_}${section}
             </div>
         </div>
         <hr align="center" noshade="false" width="100%">
@@ -128,11 +126,11 @@ var writeString = `
             </div>
             <hr align="center" noshade="false" width="96%" style="position:relative;top:6%">
             <div style="position:absolute;top:8%;left:2%;font-size:16px;">
-              Roll Number: 10 &emsp; Date of Birth: 10-10-2010 &emsp; Admission Number: 1
+              Roll Number: ${roll_number} &emsp; Date of Birth: 10-10-2010 &emsp; Admission Number: 1
               </br>
               Father's Name: aAAAA BbBbC &emsp; Mother's Name: xcxca Asamsa
               </br>
-              Teacher's Name: bckjsackvbkd bdsakj
+              Class Teacher's Name: bckjsackvbkd bdsakj
               </br>
             </div>
             <div id="rcorners3">
@@ -162,7 +160,7 @@ var writeString = `
 `;
 
 writeToHtml = (cb) =>{
-	var writeStream = fs.createWriteStream("/Users/msenapaty/Documents/react_native_ios/sankalp/test.html");
+	var writeStream = fs.createWriteStream('/Users/msenapaty/Documents/react_native_ios/sankalp/'+fullname+examname+'.html');
 	writeStream.write(writeString);
 	writeStream.end();
   console.log('1');
@@ -171,38 +169,21 @@ writeToHtml = (cb) =>{
 
 writeToPDF = (cb) =>{
 	var pdf = require('html-pdf');
-	var html = fs.readFileSync('/Users/msenapaty/Documents/react_native_ios/sankalp/test.html', 'utf8');
+	var html = fs.readFileSync('/Users/msenapaty/Documents/react_native_ios/sankalp/'+fullname+examname+'.html', 'utf8');
 	var options = { format: 'A4' };
 
-	pdf.create(html, options).toFile('/Users/msenapaty/Documents/react_native_ios/sankalp/test.pdf', function(err, res) {
-	  if (err) return console.log(err);
+	pdf.create(html, options).toFile('/Users/msenapaty/Documents/react_native_ios/sankalp/'+fullname+examname+'.pdf', function(err, res) {
+	  if (err) {return cb(null,console.log(err));}
 	  console.log(res); // { filename: '/app/businesscard.pdf' }
     return cb(null, "2");
 	});
   //return 3;
 
 }
-var tasks = [
-  function a(){
-    var writeStream = fs.createWriteStream("/Users/msenapaty/Documents/react_native_ios/sankalp/test.html");
-  writeStream.write(writeString);
-  writeStream.end();
-  console.log('1');
-  },
-  function b(){
-    var pdf = require('html-pdf');
-  var html = fs.readFileSync('/Users/msenapaty/Documents/react_native_ios/sankalp/test.html', 'utf8');
-  var options = { format: 'A4' };
-
-  pdf.create(html, options).toFile('/Users/msenapaty/Documents/react_native_ios/sankalp/test.pdf', function(err, res) {
-    if (err) return console.log(err);
-    console.log(res); // { filename: '/app/businesscard.pdf' }
-  });
-  }
-];
 async.waterfall([writeToHtml, writeToPDF], (err, result)=>{
   if (err){console.log(err);}
   else{
-    console.log("success");
+
+    console.log("success" + result);
   }
 });

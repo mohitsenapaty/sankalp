@@ -18,6 +18,7 @@ import {
 
 } from 'react-native';
 //import { Navigator } from 'react-native-deprecated-custom-components';
+import RNFetchBlob from 'react-native-fetch-blob'
 import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import DrawerLayout from 'react-native-drawer-layout';
@@ -47,6 +48,7 @@ export default class ViewGradeStudent extends React.Component{
       'examDataList':[],
       'loginType':'Student',
       'examObject':props.navigation.state.params.i,
+      'isPDFPresent':false,
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -155,6 +157,45 @@ export default class ViewGradeStudent extends React.Component{
       alert(error);
     }
 
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchPDFPresent/'+this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          exam_group_id: this.state.examObject.exam_group_id
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          if (res.data.length > 0)
+          {
+            this.setState({'isPDFPresent':true});
+          }
+          //this.setState({'examDataList':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
     this.timer = setInterval(()=> this.refreshTeachers(), 30000)
     
   }
@@ -192,6 +233,45 @@ export default class ViewGradeStudent extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchPDFPresent/'+this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          exam_group_id: this.state.examObject.exam_group_id
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          if (res.data.length > 0)
+          {
+            this.setState({'isPDFPresent':true});
+          }
+          //this.setState({'examDataList':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{}
       })
       .done();
     }
@@ -238,6 +318,25 @@ export default class ViewGradeStudent extends React.Component{
       );
     }
   }
+  displayPDFDownloadLink(){
+    if (this.state.isPDFPresent == false){
+      return(
+        <View>
+
+        </View>
+      );
+    }
+    else{
+      //alert(this.state.subjectDataList);
+      return(
+        <View >
+          <Text onPress={()=>{this.downloadPDF()}}>
+            PDF Download Link
+          </Text>
+        </View>
+      );
+    }
+  }
   render() {
 
     return (
@@ -271,11 +370,50 @@ export default class ViewGradeStudent extends React.Component{
             {this.displayExams()}
           </ScrollView>
           <View>
+            {this.displayPDFDownloadLink()}
+            <TouchableOpacity onPress={this.goToPDFPage} style={stylesLogin.ButtonContainer}>
+              <Text>Generate PDF</Text>
+            </TouchableOpacity>
           </View>
         </View>
     </DrawerLayout>
       
     );  
+  }
+  goToPDFPage = () =>{
+    alert("PDF page");
+    //this.state.examObject.exam_group_id
+    //this.state.user_id
+    try{
+      //alert("a"); 
+      fetch(globalAssets.IP_IN_USE+'/generatePDFSingleStudent/'+ this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          exam_group_id: this.state.examObject.exam_group_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          alert("Exam Declared successfully.")
+
+        }
+        else{alert("Error declaring exam. Try again.");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
   }
   logout = () => {
     try{
@@ -296,8 +434,39 @@ export default class ViewGradeStudent extends React.Component{
     //alert("logging out");
     //this.props.navigation.navigate('Login');
   }
+  downloadPDF = () =>{
+    try{
+      //alert("a"); 
+      let dirs = RNFetchBlob.fs.dirs;
+      RNFetchBlob
+      .config({
+        useDownloadManager : true, 
+        fileCache : true,
+        path : dirs.DocumentDir + '/report.pdf'
+      })
+      .fetch('POST', globalAssets.IP_IN_USE+'/fetchReportPDF/'+ this.state.user_token+'/',
+        {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          exam_group_id: this.state.examObject.exam_group_id,
+        })
+      )
+      .then((response) => {
+        var fpath = response.path()
+        alert("file was saved to " + fpath);
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+    
 
-
+  }
   goToProfilePage = () =>{
     this.props.navigation.navigate('Studentarea');
   }

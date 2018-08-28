@@ -196,6 +196,23 @@ export default class ExamViewStudent extends React.Component{
       alert(error);
     }
   }
+  examResultsDisplay(row_set){
+    if (row_set.results_declared == 'Y'){
+      return(
+        <View>          
+          <Text onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam Results</Text>
+        </View>
+      );
+    }
+    else{
+      return(
+        <View>          
+          <Text >Results have not been declared.</Text>
+        </View>
+      );
+    }
+
+  }
   displayExamsByRow(){
     return this.state.examDataList.map((row_set, i)=>{
       return (
@@ -207,10 +224,8 @@ export default class ExamViewStudent extends React.Component{
           <Text>Exam Group Name:     {row_set.exam_group_name} </Text>
           <Text>Exam Group Date:     {row_set.exam_group_date} </Text>
           <Text>Exam Group Type:     {row_set.exam_group_type} </Text>
+          {this.examResultsDisplay(row_set)}
           
-          <Text> </Text>
-          
-          <Text onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam</Text>
         </View>
       );
     });

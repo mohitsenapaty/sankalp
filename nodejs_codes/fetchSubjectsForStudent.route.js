@@ -15,6 +15,7 @@ router.post('/:pwd/', function(req, resp, next){
   var exam_group_Id = req.body.exam_group_id;
   var exam_group_id = parseInt(exam_group_Id, 10);
   //var teacher_name = req.body.teacher_name;
+  var student_id = req.body.student_id;
   var loginType = req.body.loginType;
   
   var login_data = {'success':0,'data':[],'token':''};
@@ -48,7 +49,7 @@ router.post('/:pwd/', function(req, resp, next){
       }
 
       db_client.query("select a.*,b.* from exam_group_scoring a join subject_details b on a.subject_id=b.subject_id where a.student_id=$1 and a.exam_group_id=$2;"
-        ,[userID, subject_id]
+        ,[student_id, exam_group_Id]
         , function(err, res)
       {
         if (err){
@@ -92,7 +93,7 @@ router.post('/:pwd/', function(req, resp, next){
       }
 
       db_client.query("select a.*,b.* from exam_group_scoring a join subject_details b on a.subject_id=b.subject_id where a.student_id=$1 and a.exam_group_id=$2;"
-        ,[userID, subject_id]
+        ,[userID, exam_group_Id]
         , function(err, res)
       {
         if (err){
@@ -136,7 +137,7 @@ router.post('/:pwd/', function(req, resp, next){
       }
 
       db_client.query("select a.*,b.* from exam_group_scoring a join subject_details b on a.subject_id=b.subject_id where a.student_id=$1 and a.exam_group_id=$2;"
-        ,[userID, exam_group_id]
+        ,[userID, exam_group_Id]
         , function(err, res)
       {
         if (err){

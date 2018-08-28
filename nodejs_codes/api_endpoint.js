@@ -30,6 +30,11 @@ var fetchExamSubjectsForTeacherRouter = require('./fetchExamSubjectsForTeacher.r
 var fetchStudentsForSubjectRouter = require('./fetchStudentsForSubject.route');
 var fetchSubjectsForStudentRouter = require('./fetchSubjectsForStudent.route');
 var upgradeMarksForStudentRouter = require('./upgradeMarksForStudent.route');
+var fetchAllStudentsForExamRouter = require('./fetchAllStudentsForExam.route');
+var declareExamsRouter = require('./declareExams.route');
+var generatePDFSingleStudentRouter = require('./generatePDFSingleStudent.route');
+var fetchReportPDFRouter = require('./fetchReportPDF.route');
+var fetchPDFPresentRouter = require('./fetchPDFPresent.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -56,10 +61,15 @@ app.use('/deleteSubjectAssignedToClass', deleteSubjectAssignedToClassRouter);
 app.use('/addExams', addExamRouter);
 app.use('/deleteExams', deleteExamRouter);
 app.use('/fetchAllExams', fetchExamsRouter);
+app.use('/declareExams', declareExamsRouter);
 app.use('/fetchExamSubjectsForTeacher', fetchExamSubjectsForTeacherRouter);
 app.use('/fetchStudentsForSubject', fetchStudentsForSubjectRouter);
 app.use('/upgradeMarksForStudent', upgradeMarksForStudentRouter);
 app.use('/fetchSubjectsForStudent', fetchSubjectsForStudentRouter);
+app.use('/fetchAllStudentsForExam', fetchAllStudentsForExamRouter);
+app.use('/generatePDFSingleStudent', generatePDFSingleStudentRouter);
+app.use('/fetchReportPDF', fetchReportPDFRouter);
+app.use('/fetchPDFPresent', fetchPDFPresentRouter);
 
 const server = http.createServer(app);
 server.listen(8000, ()=>{

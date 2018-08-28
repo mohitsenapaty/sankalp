@@ -102,4 +102,5 @@ create table exam_group_reports_single(
 
 create index index_exam_group_reports_single on exam_group_reports_single(student_id);
 
+alter table exam_group_detail add column results_declared varchar(1) default 'N';
 
