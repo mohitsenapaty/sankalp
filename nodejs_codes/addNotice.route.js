@@ -107,11 +107,11 @@ router.post('/:pwd/', function(req, resp, next){
                 }
                 phoneStr+=res1_.rows[res1_.rows.length-1].phone;
                 console.log(phoneStr);
-                var myJSONObject = {"From":"SANKALP", "Msg":message, "To":phoneStr};
+                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
 
                 request(
                   {
-                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/PSMS", 
+                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
                     method:"POST", 
                     json:true, 
                     body:myJSONObject
@@ -205,11 +205,11 @@ router.post('/:pwd/', function(req, resp, next){
                   phoneStr+=res1_.rows[i].phone+",";
                 }
                 phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                var myJSONObject = {"From":"SANKALP", "Msg":message, "To":phoneStr};
+                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
 
                 request(
                   {
-                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/PSMS", 
+                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
                     method:"POST", 
                     json:true, 
                     body:myJSONObject
@@ -303,11 +303,11 @@ router.post('/:pwd/', function(req, resp, next){
                   phoneStr+=res1_.rows[i].phone+",";
                 }
                 phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                var myJSONObject = {"From":"SANKALP", "Msg":message, "To":phoneStr};
+                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
 
                 request(
                   {
-                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/PSMS", 
+                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
                     method:"POST", 
                     json:true, 
                     body:myJSONObject
@@ -402,11 +402,11 @@ router.post('/:pwd/', function(req, resp, next){
                   phoneStr+=res1_.rows[i].phone+",";
                 }
                 phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                var myJSONObject = {"From":"SANKALP", "Msg":message, "To":phoneStr};
+                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
 
                 request(
                   {
-                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/PSMS", 
+                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
                     method:"POST", 
                     json:true, 
                     body:myJSONObject
@@ -502,11 +502,11 @@ router.post('/:pwd/', function(req, resp, next){
                     phoneStr+=res1_.rows[i].phone+",";
                   }
                   phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                  var myJSONObject = {"From":"SANKALP", "Msg":message, "To":phoneStr};
+                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
 
                   request(
                     {
-                      url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/PSMS", 
+                      url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
                       method:"POST", 
                       json:true, 
                       body:myJSONObject

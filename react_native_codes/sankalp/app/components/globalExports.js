@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {StyleSheet} from 'react-native';
 
-var GLOB_IP_PROD='http://52.27.104.46'
+var GLOB_IP_PROD='http://52.27.104.46/api'
 var GLOB_IP_DEV='http://127.0.0.1:8000/api'
 
 export const globalAssets = {
