@@ -42,6 +42,11 @@ import ExamViewStudent from './app/components/ExamViewStudent';
 import ViewGradeStudent from './app/components/ViewGradeStudent';
 import ExamStudentViewAdmin from './app/components/ExamStudentViewAdmin';
 import StudentViewGradeAdmin from './app/components/StudentViewGradeAdmin';
+import CreateNoticeAdmin from './app/components/CreateNoticeAdmin';
+import ReceivedNoticeViewTeacher from './app/components/ReceivedNoticeViewTeacher';
+import SingleReceivedNoticeViewTeacher from './app/components/SingleReceivedNoticeViewTeacher';
+import ReceivedNoticeViewStudent from './app/components/ReceivedNoticeViewStudent';
+import SingleReceivedNoticeViewStudent from './app/components/SingleReceivedNoticeViewStudent';
 import {StackNavigator} from 'react-navigation';
 
 const NavigationApp = StackNavigator(
@@ -71,6 +76,11 @@ const NavigationApp = StackNavigator(
     ViewGradeStudent:{screen: ViewGradeStudent},
     ExamStudentViewAdmin:{screen: ExamStudentViewAdmin},
     StudentViewGradeAdmin:{screen: StudentViewGradeAdmin},
+    CreateNoticeAdmin:{screen: CreateNoticeAdmin},
+    ReceivedNoticeViewTeacher:{screen: ReceivedNoticeViewTeacher},
+    SingleReceivedNoticeViewTeacher:{screen: SingleReceivedNoticeViewTeacher},
+    ReceivedNoticeViewStudent:{screen: ReceivedNoticeViewStudent},
+    SingleReceivedNoticeViewStudent:{screen: SingleReceivedNoticeViewStudent},    
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

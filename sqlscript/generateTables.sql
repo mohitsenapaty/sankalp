@@ -104,3 +104,22 @@ create index index_exam_group_reports_single on exam_group_reports_single(studen
 
 alter table exam_group_detail add column results_declared varchar(1) default 'N';
 
+create table notification_detail(
+    notification_id serial unique not null,
+    notification_creator varchar(15) not null,
+    creator_id int,
+    subject varchar(100),
+    message varchar(450),
+    created_at TIMESTAMP,
+    primary key (notification_id)
+);
+
+create index index_notification_detail on notification_detail(creator_id);
+
+create table notification_target(
+    notification_id int not null,
+    target_type varchar(20) not null,
+    target_id int,
+    target_class varchar(5),
+    target_section varchar(1)
+);

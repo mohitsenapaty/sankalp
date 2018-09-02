@@ -160,6 +160,9 @@ export default class Adminarea extends React.Component{
           </TouchableOpacity>
           <TouchableOpacity onPress={this.goToExamsPage} style={stylesAdmin.ButtonContainer}>
             <Text>View Exam Details</Text>
+          </TouchableOpacity> 
+          <TouchableOpacity onPress={this.goToNoticePage} style={stylesAdmin.ButtonContainer}>
+            <Text>Create Notice</Text>
           </TouchableOpacity>      
         </ScrollView>
     </DrawerLayout>
@@ -209,6 +212,10 @@ export default class Adminarea extends React.Component{
   goToExamsPage = () =>{
     alert("Exams page");
     this.props.navigation.navigate('ExamViewAdmin');
+  }
+  goToNoticePage = () =>{
+    alert("notice page");
+    this.props.navigation.navigate('CreateNoticeAdmin');
   }
   /*
   goToKYCPage = () =>{

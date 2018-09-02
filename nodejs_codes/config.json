@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "route": "/index",
+      "address": "http://localhost:8001"
+    },
+    {
+      "route": "/api",
+      "address": "http://localhost:8002"
+    }
+  ]
+}

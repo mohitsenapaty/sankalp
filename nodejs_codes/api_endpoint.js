@@ -4,6 +4,7 @@ var SHA224 = require('sha224');
 var multer = require('multer');
 var express = require('express');
 var app = express();
+var indexRouter = require('./index.route');
 var loginRouter = require('./login.route');
 var fetchAllSubjectsRouter = require('./fetchAllSubjects.route');
 var addSubjectRouter = require('./addSubject.route');
@@ -35,10 +36,14 @@ var declareExamsRouter = require('./declareExams.route');
 var generatePDFSingleStudentRouter = require('./generatePDFSingleStudent.route');
 var fetchReportPDFRouter = require('./fetchReportPDF.route');
 var fetchPDFPresentRouter = require('./fetchPDFPresent.route');
+var addNoticeRouter = require('./addNotice.route');
+var fetchNoticeForTeachersRouter = require('./fetchNoticeForTeachers.route');
+var fetchNoticeForStudentsRouter = require('./fetchNoticeForStudents.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('', indexRouter);
 app.use('/login', loginRouter);
 app.use('/fetchAllSubjects', fetchAllSubjectsRouter);
 app.use('/addSubjects', addSubjectRouter);
@@ -70,9 +75,12 @@ app.use('/fetchAllStudentsForExam', fetchAllStudentsForExamRouter);
 app.use('/generatePDFSingleStudent', generatePDFSingleStudentRouter);
 app.use('/fetchReportPDF', fetchReportPDFRouter);
 app.use('/fetchPDFPresent', fetchPDFPresentRouter);
+app.use('/addNotice', addNoticeRouter);
+app.use('/fetchReceivedTeacherNotifications', fetchNoticeForTeachersRouter);
+app.use('/fetchReceivedStudentNotifications', fetchNoticeForStudentsRouter);
 
 const server = http.createServer(app);
-server.listen(8000, ()=>{
+server.listen(8002, ()=>{
   console.log('Server started!');
 });
 
