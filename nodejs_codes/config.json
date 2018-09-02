@@ -2,11 +2,11 @@
   "routes": [
     {
       "route": "/index",
-      "address": "http://localhost:8001"
+      "address": "http://127.0.0.1:8001"
     },
     {
       "route": "/api",
-      "address": "http://localhost:8002"
+      "address": "http://127.0.0.1:8002"
     }
   ]
 }
