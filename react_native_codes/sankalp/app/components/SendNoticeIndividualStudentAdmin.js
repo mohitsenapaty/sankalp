@@ -33,12 +33,9 @@ var GLOB_IP_DEV='http://127.0.0.1:8000'
 
 var IP_IN_USE=GLOB_IP_PROD
 
-const allClass = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-const allSec = ['A', 'B', 'C'];
-const noticeForArr = ['All', 'Teacher', 'Student'];
 
 //type Props = {};
-export default class CreateNoticeAdmin extends React.Component{
+export default class SendNoticeIndividualStudentAdmin extends React.Component{
   
   constructor(props){
     super(props);
@@ -53,18 +50,14 @@ export default class CreateNoticeAdmin extends React.Component{
       'selectedClass':'1',
       'selectedSec':'A',
       'roll_number':'',
-      'noticeFor':'All',
+      'noticeFor':'Student',
       isAllClassesChecked:true,
       classesCheckedArray:{},
       isAllSectionsChecked:true,
       sectionsCheckedArray:{},
+      studentObject: props.navigation.state.params.i,
+      singleStudent: true,
     };
-    for (var i = 0; i < allClass.length; i++){
-      this.state.classesCheckedArray[allClass[i]] = true;
-    }
-    for (var i = 0; i < allClass.length; i++){
-      this.state.sectionsCheckedArray[allSec[i]] = true;
-    }
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
 
@@ -348,20 +341,12 @@ export default class CreateNoticeAdmin extends React.Component{
               justifyContent:'space-between',
               alignItems:'center',
             }}>
-              <Text>Notice For? </Text>
-              <ModalDropdown options={noticeForArr} defaultValue={noticeForArr[0]} onSelect={this.selectedNoticeForMethod}
-                style={{
-                  borderWidth: 0,
-                  borderRadius: 3,
-                  width:60,
-                  backgroundColor: 'cornflowerblue',
-                }}
-                dropdownStyle={{
-                  flex:1, width: 60, height: 420,
-              }}>          
-              </ModalDropdown>
+              <Text>Notice For {this.state.studentObject.fullname} </Text>
+              <Text>Roll Number: {this.state.studentObject.roll_number} </Text>
+              <Text>Class: {this.state.studentObject.class} </Text>
+              <Text>Section: {this.state.studentObject.section} </Text>
             </View>
-            {this.displayOption()}
+
             <TextInput style={stylesAdmin.Input} onChangeText={(subject)=>this.setState({subject})} value={this.state.subject}  placeholder='Subject (within 100 words)'></TextInput>
             <TextInput style={stylesAdmin.Input} multiline style={{ height: 100, backgroundColor: '#ccc' }}
             onChangeText={(message)=>this.setState({message})} value={this.state.message}  placeholder='Full message within 450 words'></TextInput>
@@ -409,31 +394,6 @@ export default class CreateNoticeAdmin extends React.Component{
   }
   addNotice = () =>{
 
-    var all_class_selected = false;
-    var classes_selected = [];
-    var all_section_selected = false;
-    var sections_selected = [];
-    if (this.state.isAllClassesChecked == true){
-      all_class_selected = true;
-    }
-    else{
-      for (var i = 0; i < allClass.length; i++){
-        if (this.state.classesCheckedArray[allClass[i]] == true){
-          classes_selected.push(allClass[i]);
-        }
-      }
-    }
-    if (this.state.isAllSectionsChecked == true){
-      all_section_selected = true;
-    }
-    else{
-      for (var i = 0; i < allSec.length; i++){
-        if (this.state.sectionsCheckedArray[allSec[i]] == true){
-          sections_selected.push(allSec[i]);
-        }
-      }
-    }
-
     try{
       //alert("a"); 
       fetch(globalAssets.IP_IN_USE+'/addNotice/'+ this.state.user_token+'/', {
@@ -445,14 +405,15 @@ export default class CreateNoticeAdmin extends React.Component{
         body: JSON.stringify({
           user_id: this.state.user_id,
           loginType: this.state.loginType,
-          all_class_selected: this.state.isAllClassesChecked,
-          classes_selected: classes_selected,
-          all_section_selected: this.state.isAllSectionsChecked,
-          sections_selected: sections_selected,
+          all_class_selected: false,
+          classes_selected: [],
+          all_section_selected: false,
+          sections_selected: [],
           noticeFor: this.state.noticeFor,
           subject: this.state.subject,
           message: this.state.message,
-          singleStudent: false,
+          singleStudent: this.state.singleStudent,
+          student_id: this.state.studentObject.student_id,
 
         }),
       })

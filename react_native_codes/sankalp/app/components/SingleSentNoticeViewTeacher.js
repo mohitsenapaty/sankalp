@@ -14,6 +14,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
   ScrollView,
+  Alert,
 
 } from 'react-native';
 //import { Navigator } from 'react-native-deprecated-custom-components';
@@ -30,14 +31,20 @@ var GLOB_IP_DEV='http://127.0.0.1:8000'
 var IP_IN_USE=GLOB_IP_PROD
 
 //type Props = {};
-export default class Teacherarea extends React.Component{
+export default class SingleSentNoticeViewTeacher extends React.Component{
   
   constructor(props){
     super(props);
     this.state={
       'user_session':{},
+      'user_id':'',
       'drawerClosed':true,
       'user_token':'',
+      'numberOfSubjects':0,
+      'subjectDataList':[],
+      'loginType':'Teacher',
+      current_id:0,
+      'noticeObject':props.navigation.state.params.i,
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -75,7 +82,8 @@ export default class Teacherarea extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_session':obj_value});
-
+      this.setState({'user_id':obj_value.teacher_id});
+      //alert(obj_value);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -87,7 +95,6 @@ export default class Teacherarea extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
-      //alert(this.state.user_token);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -110,6 +117,8 @@ export default class Teacherarea extends React.Component{
     else{
       this.props.navigation.navigate('Login');
     }
+
+    //this.timer = setInterval(()=> this.refreshSubjects(), 30000)
     
   }
   render() {
@@ -138,31 +147,24 @@ export default class Teacherarea extends React.Component{
             leftIconName={'menu'}
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
-        
-        <Text>Welcome {this.state.user_session.teacher_id}</Text>
-        <Text>Welcome {this.state.user_session.fullname}</Text>
-        <Text>Welcome {this.state.user_session.emailid}</Text>
-        <Text>Welcome {this.state.user_session.phone}</Text>
-        <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Assigned Subjects and Classes and send Notices.</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToExamPage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Exams.</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToReceivedNoticePage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Received Notices.</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToSentNoticePage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Sent Notices.</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text>LOG OUT</Text>
-        </TouchableOpacity>
-            
+          <Text>Notice ID:        {this.state.noticeObject.notification_id} </Text>
+          <Text>Notice subject:   {this.state.noticeObject.subject} </Text>
+          <Text>Created At:       {this.state.noticeObject.created_at} </Text>
+          <Text>Notice For:       {this.state.noticeObject.target_type}</Text>
+          <Text>Creator:          {this.state.noticeObject.notification_creator}</Text>
+          <Text>Notice Body</Text>
+          <Text></Text>
+          <Text>{this.state.noticeObject.message}</Text>
+        <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
+          <Text>Go Back</Text>
+        </TouchableOpacity>     
       </ScrollView>
     </DrawerLayout>
       
     );  
+  }
+  goBack = () =>{
+    this.props.navigation.navigate('SentNoticeViewTeacher');
   }
   logout = () => {
     try{
@@ -183,33 +185,26 @@ export default class Teacherarea extends React.Component{
     //alert("logging out");
     //this.props.navigation.navigate('Login');
   }
-
   goToProfilePage = () =>{
     this.props.navigation.navigate('Teacherarea');
   }
   goToStudentPage = () =>{
     //alert("student page");
-
+    this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
-    //alert("subject page");
+    //alert("already on subject page");
     this.props.navigation.navigate('SubjectViewTeacher');
   }
   goToTeacherPage = () =>{
     //alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
   }
-  goToExamPage = () =>{
-    //alert("exam page");
-    this.props.navigation.navigate('ExamViewTeacher');
+  goToAddSubjectPage = () =>{
+    this.props.navigation.navigate('SubjectAddAdmin');
   }
-  goToReceivedNoticePage = () =>{
-    this.props.navigation.navigate('ReceivedNoticeViewTeacher');
-  }
-  goToSentNoticePage = () =>{
-    this.props.navigation.navigate('SentNoticeViewTeacher');
+  ViewNotice = (i) =>{
+
   }
 
 }
-
-

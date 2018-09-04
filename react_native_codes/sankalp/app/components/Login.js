@@ -76,18 +76,10 @@ export default class Login extends React.Component{
     }
   }
 
-  register = () => {
-    alert("Register");
-    this.props.navigation.navigate('Registerarea');
-  }
-
   selectedPayMethod = (idx, value) => {
     //alert({idx} + " " + {value});
     //alert("1");
     this.setState({'loginType':value});
-  }
-  login1 = () => {
-    alert("Hello " + this.state.username + this.state.password + this.state.loginType);
   }
   login = () => {
     //alert('login' + this.state.username + this.state.password);
@@ -116,7 +108,7 @@ export default class Login extends React.Component{
           if (this.state.loginType=='Admin'){
             
             alert("Login Success");
-            alert(res.data.user_name + " " + res.data.admin_id + " " + res.data.name + " " + res.data.email + " " + res.data.phone)
+            //alert(res.data.user_name + " " + res.data.admin_id + " " + res.data.name + " " + res.data.email + " " + res.data.phone)
             user_session = JSON.stringify(res.data);
             
             user_token = JSON.stringify(res.token);
@@ -137,7 +129,7 @@ export default class Login extends React.Component{
           }
           else if (this.state.loginType=='Teacher'){
             alert("Login Success");
-            alert(res.data.user_name + " " + res.data.admin_id + " " + res.data.name + " " + res.data.email + " " + res.data.phone)
+            //alert(res.data.user_name + " " + res.data.admin_id + " " + res.data.name + " " + res.data.email + " " + res.data.phone)
             user_session = JSON.stringify(res.data);
 
             user_token = JSON.stringify(res.token);
@@ -156,7 +148,7 @@ export default class Login extends React.Component{
           }
           else if (this.state.loginType=='Student'){
             alert("Login Success");
-            alert(res.data.user_name + " " + res.data.admin_id + " " + res.data.name + " " + res.data.email + " " + res.data.phone)
+            //alert(res.data.user_name + " " + res.data.admin_id + " " + res.data.name + " " + res.data.email + " " + res.data.phone)
             user_session = JSON.stringify(res.data);
 
             user_token = JSON.stringify(res.token);

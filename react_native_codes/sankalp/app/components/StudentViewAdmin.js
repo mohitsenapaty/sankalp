@@ -252,7 +252,9 @@ export default class StudentViewAdmin extends React.Component{
           <Text>Section:   {row_set.section}</Text>
           <Text>RollNumber:{row_set.roll_number}</Text>
           <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Student</Text>
+          <Text onPress={()=>{this.goToSendNotice(row_set)}}>Send Notice to Student</Text>
           <Text onPress={()=>{this.deleteStudentAlert(row_set.fullname)}}>Delete Student.</Text>
+          <Text></Text>
         </View>
       );
     });
@@ -413,38 +415,8 @@ export default class StudentViewAdmin extends React.Component{
       alert(error);
     }
   }
-  deleteSubject = (i) =>{
-    //alert("Will delete " + i);
-    try{
-      //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteSubjects/'+ this.state.user_token+'/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id,
-          loginType: this.state.loginType,
-          subjectName: i,
-        }),
-      })
-      .then((response) => response.json())
-      .then((res) => {
-        //console.log(res);
-        //alert(res.success);
-        //alert("a");
-        if (res.success === 1){
-          alert("Subject deleted successfully.")
-
-        }
-        else{alert("Error deleting subject, subject name or subject code might exist already.");}
-      })
-      .done();
-    }
-    catch(error){
-      alert(error);
-    }
+  goToSendNotice = (i) => {
+    this.props.navigation.navigate('SendNoticeIndividualStudentAdmin', {i},);
   }
   goToViewAssignSubjectPage = (i) =>{
     alert(i);
@@ -459,11 +431,11 @@ export default class StudentViewAdmin extends React.Component{
     alert("already on student page");
   }
   goToSubjectPage = () =>{
-    alert("subject page");
+    //alert("subject page");
     this.props.navigation.navigate('SubjectViewAdmin');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
+    //alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
   }
   goToAddStudentPage = () =>{
@@ -479,22 +451,6 @@ export default class StudentViewAdmin extends React.Component{
     //alert("1");
     this.setState({'selectedSec':value});
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
-  }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
-  }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
-  }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
-  }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }
 

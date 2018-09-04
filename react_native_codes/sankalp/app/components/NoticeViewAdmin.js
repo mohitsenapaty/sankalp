@@ -14,6 +14,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
   ScrollView,
+  Alert,
 
 } from 'react-native';
 //import { Navigator } from 'react-native-deprecated-custom-components';
@@ -30,14 +31,19 @@ var GLOB_IP_DEV='http://127.0.0.1:8000'
 var IP_IN_USE=GLOB_IP_PROD
 
 //type Props = {};
-export default class Teacherarea extends React.Component{
+export default class NoticeViewAdmin extends React.Component{
   
   constructor(props){
     super(props);
     this.state={
       'user_session':{},
+      'user_id':'',
       'drawerClosed':true,
       'user_token':'',
+      'numberOfSubjects':0,
+      'subjectDataList':[],
+      'loginType':'Admin',
+      current_id:0,
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -75,7 +81,8 @@ export default class Teacherarea extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_session':obj_value});
-
+      this.setState({'user_id':obj_value.admin_id});
+      //alert(obj_value);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -87,7 +94,6 @@ export default class Teacherarea extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
-      //alert(this.state.user_token);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -99,7 +105,7 @@ export default class Teacherarea extends React.Component{
       obj_value = JSON.stringify(value);
 
       //alert(obj_value);
-      if (obj_value == '"Teacher"'){
+      if (obj_value == '"Admin"'){
         //alert("1");
       }
       else{
@@ -110,7 +116,137 @@ export default class Teacherarea extends React.Component{
     else{
       this.props.navigation.navigate('Login');
     }
+
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchAllNotifications/'+this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'subjectDataList':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    this.timer = setInterval(()=> this.refreshSubjects(), 30000)
     
+  }
+  refreshSubjects = async() =>{
+    //alert("refresh");
+    var isFocused = this.props.navigation.isFocused();    
+    //alert(isFocused);
+    if (!isFocused)
+      return;
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchAllNotifications/'+this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'numberOfSubjects':res.data.length,'subjectDataList':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+  }
+  displayNoticesByRow(){
+    /*
+    const rowSetItems = this.state.subjectDataList.map(
+      (d)=>{
+        <View key={d.subject_id}>
+          <Text>{d.subject_id}</Text>
+        </View>
+      }
+    );
+    return(
+      <View>
+        {rowSetItems}
+      </View>
+    );*/
+    
+    return this.state.subjectDataList.map((row_set, i)=>{
+      return (
+        <View key={i} style={{
+          flex:1,
+          borderBottomColor: 'black',
+          borderBottomWidth: 1,
+        }}>
+          <Text>Notice ID:        {row_set.notification_id} </Text>
+          <Text>Notice subject:   {row_set.subject} </Text>
+          <Text>Created At:       {row_set.created_at} </Text>
+          <Text>Notice For:       {row_set.target_type}</Text>
+          <Text>Creator:          {row_set.notification_creator}</Text>
+          <Text></Text>
+          <Text onPress={()=>{this.ViewNotice(row_set)}}>Click here to View message.</Text>
+        </View>
+      );
+    });
+    
+  }
+  displayNotices(){
+    //fetch list of subjects
+    if (this.state.subjectDataList.length == 0){
+      return(
+        <View style={stylesAdmin.InputContainer}>
+          <Text>Currently no subjects have been added yet.</Text>
+
+        </View>
+      );
+    }
+    else{
+      //alert(this.state.subjectDataList);
+      return(
+        <View style={stylesAdmin.InputContainer}>
+          <Text>Currently these subjects have been added yet.</Text>
+          { this.displayNoticesByRow() }
+        </View>
+      );
+    }
   }
   render() {
 
@@ -139,26 +275,11 @@ export default class Teacherarea extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
         
-        <Text>Welcome {this.state.user_session.teacher_id}</Text>
-        <Text>Welcome {this.state.user_session.fullname}</Text>
-        <Text>Welcome {this.state.user_session.emailid}</Text>
-        <Text>Welcome {this.state.user_session.phone}</Text>
-        <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Assigned Subjects and Classes and send Notices.</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToExamPage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Exams.</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToReceivedNoticePage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Received Notices.</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.goToSentNoticePage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Sent Notices.</Text>
-        </TouchableOpacity>
+        <Text>Notices Added as follows</Text>
+        {this.displayNotices()}
         <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
           <Text>LOG OUT</Text>
-        </TouchableOpacity>
-            
+        </TouchableOpacity>     
       </ScrollView>
     </DrawerLayout>
       
@@ -183,33 +304,26 @@ export default class Teacherarea extends React.Component{
     //alert("logging out");
     //this.props.navigation.navigate('Login');
   }
-
   goToProfilePage = () =>{
-    this.props.navigation.navigate('Teacherarea');
+    this.props.navigation.navigate('Adminarea');
   }
   goToStudentPage = () =>{
-    //alert("student page");
-
+    alert("student page");
+    this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
-    //alert("subject page");
-    this.props.navigation.navigate('SubjectViewTeacher');
+    alert("already on subject page");
+    this.props.navigation.navigate('SubjectViewAdmin');
   }
   goToTeacherPage = () =>{
-    //alert("teacher page");
+    alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
   }
-  goToExamPage = () =>{
-    //alert("exam page");
-    this.props.navigation.navigate('ExamViewTeacher');
+  goToAddSubjectPage = () =>{
+    this.props.navigation.navigate('SubjectAddAdmin');
   }
-  goToReceivedNoticePage = () =>{
-    this.props.navigation.navigate('ReceivedNoticeViewTeacher');
-  }
-  goToSentNoticePage = () =>{
-    this.props.navigation.navigate('SentNoticeViewTeacher');
+  ViewNotice = (i) =>{
+    this.props.navigation.navigate('SingleNoticeViewAdmin', {i},);
   }
 
 }
-
-

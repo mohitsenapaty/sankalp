@@ -100,7 +100,7 @@ export default class Adminarea extends React.Component{
 
       //alert(obj_value);
       if (obj_value == '"Admin"'){
-        alert("1");
+        //alert("1");
       }
       else{
         this.props.navigation.navigate('Login');
@@ -163,6 +163,9 @@ export default class Adminarea extends React.Component{
           </TouchableOpacity> 
           <TouchableOpacity onPress={this.goToNoticePage} style={stylesAdmin.ButtonContainer}>
             <Text>Create Notice</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.goToViewNoticePage} style={stylesAdmin.ButtonContainer}>
+            <Text>View Notices</Text>
           </TouchableOpacity>      
         </ScrollView>
     </DrawerLayout>
@@ -193,29 +196,33 @@ export default class Adminarea extends React.Component{
     this.props.navigation.navigate('Adminarea');
   }
   goToStudentPage = () =>{
-    alert("student page");
+    //alert("student page");
     this.props.navigation.navigate('StudentViewAdmin');
 
   }
   goToSubjectPage = () =>{
-    alert("subject page");
+    //alert("subject page");
     this.props.navigation.navigate('SubjectViewAdmin');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
+    //alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
   }
   goToAssignSubjectToClassPage = () =>{
-    alert("assign subject to Class");
+    //alert("assign subject to Class");
     this.props.navigation.navigate('AddSubjectToClassAdmin');
   }
   goToExamsPage = () =>{
-    alert("Exams page");
+    //alert("Exams page");
     this.props.navigation.navigate('ExamViewAdmin');
   }
   goToNoticePage = () =>{
-    alert("notice page");
+    //alert("notice page");
     this.props.navigation.navigate('CreateNoticeAdmin');
+  }
+  goToViewNoticePage = () =>{
+    //alert("notice page");
+    this.props.navigation.navigate('NoticeViewAdmin');
   }
   /*
   goToKYCPage = () =>{

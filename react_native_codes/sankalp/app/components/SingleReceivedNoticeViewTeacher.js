@@ -185,62 +185,19 @@ export default class SingleReceivedNoticeViewTeacher extends React.Component{
     //alert("logging out");
     //this.props.navigation.navigate('Login');
   }
-  deleteSubjectAlert = (i) =>{
-    Alert.alert(
-      'Confirm Delete Subject',
-      'Do you want to add the subject ' + i + '?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Yes', onPress: () => this.deleteSubject(i)},
-      ],
-      { cancelable: false }
-    );
-  }
-  deleteSubject = (i) =>{
-    //alert("Will delete " + i);
-    try{
-      //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteSubjects/'+ this.state.user_token+'/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id,
-          loginType: this.state.loginType,
-          subjectName: i,
-        }),
-      })
-      .then((response) => response.json())
-      .then((res) => {
-        //console.log(res);
-        //alert(res.success);
-        //alert("a");
-        if (res.success === 1){
-          alert("Subject deleted successfully.")
-
-        }
-        else{alert("Error deleting subject, subject name or subject code might exist already.");}
-      })
-      .done();
-    }
-    catch(error){
-      alert(error);
-    }
-  }
   goToProfilePage = () =>{
     this.props.navigation.navigate('Teacherarea');
   }
   goToStudentPage = () =>{
-    alert("student page");
+    //alert("student page");
     this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
-    alert("already on subject page");
+    //alert("already on subject page");
+    this.props.navigation.navigate('SubjectViewTeacher');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
+    //alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
   }
   goToAddSubjectPage = () =>{
@@ -249,21 +206,5 @@ export default class SingleReceivedNoticeViewTeacher extends React.Component{
   ViewNotice = (i) =>{
 
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
-  }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
-  }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
-  }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
-  }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }

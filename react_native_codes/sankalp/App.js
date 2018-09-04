@@ -18,35 +18,59 @@ import {
 } from 'react-native';
 
 import Login from './app/components/Login';
+
 import Adminarea from './app/components/Adminarea';
 import Teacherarea from './app/components/Teacherarea';
 import Studentarea from './app/components/Studentarea';
+
 import SubjectViewAdmin from './app/components/SubjectViewAdmin';
 import SubjectAddAdmin from './app/components/SubjectAddAdmin';
 import TeacherViewAdmin from './app/components/TeacherViewAdmin';
 import TeacherAddAdmin from './app/components/TeacherAddAdmin';
 import StudentViewAdmin from './app/components/StudentViewAdmin';
 import StudentAddAdmin from './app/components/StudentAddAdmin';
+
 import AddSubjectToClassAdmin from './app/components/AddSubjectToClassAdmin';
 import AssignSubjectsToTeacherAdmin from './app/components/AssignSubjectsToTeacherAdmin';
 import AssignSubjectsToStudentAdmin from './app/components/AssignSubjectsToStudentAdmin';
+
 import ExamViewAdmin from './app/components/ExamViewAdmin';
 import ExamAddAdmin from './app/components/ExamAddAdmin';
+
 import SubjectViewTeacher from './app/components/SubjectViewTeacher';
+import StudentsInSubjectViewTeacher from './app/components/StudentsInSubjectViewTeacher';
+
 import ExamViewTeacher from './app/components/ExamViewTeacher';
 import SingleExamViewTeacher from './app/components/SingleExamViewTeacher';
 import AssignGradeTeacher from './app/components/AssignGradeTeacher';
 import ViewGradeTeacher from './app/components/ViewGradeTeacher';
+
 import SubjectViewStudent from './app/components/SubjectViewStudent';
+
 import ExamViewStudent from './app/components/ExamViewStudent';
 import ViewGradeStudent from './app/components/ViewGradeStudent';
+
 import ExamStudentViewAdmin from './app/components/ExamStudentViewAdmin';
 import StudentViewGradeAdmin from './app/components/StudentViewGradeAdmin';
+
 import CreateNoticeAdmin from './app/components/CreateNoticeAdmin';
+
 import ReceivedNoticeViewTeacher from './app/components/ReceivedNoticeViewTeacher';
 import SingleReceivedNoticeViewTeacher from './app/components/SingleReceivedNoticeViewTeacher';
+
 import ReceivedNoticeViewStudent from './app/components/ReceivedNoticeViewStudent';
 import SingleReceivedNoticeViewStudent from './app/components/SingleReceivedNoticeViewStudent';
+
+import NoticeViewAdmin from './app/components/NoticeViewAdmin';
+import SingleNoticeViewAdmin from './app/components/SingleNoticeViewAdmin';
+import SendNoticeIndividualStudentAdmin from './app/components/SendNoticeIndividualStudentAdmin';
+
+import CreateNoticeTeacher from './app/components/CreateNoticeTeacher';
+
+import SentNoticeViewTeacher from './app/components/SentNoticeViewTeacher';
+import SingleSentNoticeViewTeacher from './app/components/SingleSentNoticeViewTeacher';
+import SendNoticeIndividualStudentTeacher from './app/components/SendNoticeIndividualStudentTeacher';
+
 import {StackNavigator} from 'react-navigation';
 
 const NavigationApp = StackNavigator(
@@ -80,7 +104,15 @@ const NavigationApp = StackNavigator(
     ReceivedNoticeViewTeacher:{screen: ReceivedNoticeViewTeacher},
     SingleReceivedNoticeViewTeacher:{screen: SingleReceivedNoticeViewTeacher},
     ReceivedNoticeViewStudent:{screen: ReceivedNoticeViewStudent},
-    SingleReceivedNoticeViewStudent:{screen: SingleReceivedNoticeViewStudent},    
+    SingleReceivedNoticeViewStudent:{screen: SingleReceivedNoticeViewStudent}, 
+    NoticeViewAdmin:{screen: NoticeViewAdmin},
+    SingleNoticeViewAdmin:{screen: SingleNoticeViewAdmin}, 
+    CreateNoticeTeacher:{screen: CreateNoticeTeacher},  
+    SentNoticeViewTeacher:{screen: SentNoticeViewTeacher},
+    SingleSentNoticeViewTeacher:{screen: SingleSentNoticeViewTeacher},
+    SendNoticeIndividualStudentAdmin:{screen: SendNoticeIndividualStudentAdmin},
+    StudentsInSubjectViewTeacher:{screen: StudentsInSubjectViewTeacher},
+    SendNoticeIndividualStudentTeacher:{screen: SendNoticeIndividualStudentTeacher},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

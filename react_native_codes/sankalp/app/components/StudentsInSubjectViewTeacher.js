@@ -20,18 +20,21 @@ import {
 //import { Navigator } from 'react-native-deprecated-custom-components';
 import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
+import ModalDropdown from 'react-native-modal-dropdown';
 import DrawerLayout from 'react-native-drawer-layout';
 import MenuAdmin from './MenuAdmin';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
 //import Login from './Login';
-var GLOB_IP_PROD='http://52.27.104.46'
-var GLOB_IP_DEV='http://127.0.0.1:8000'
+var GLOB_IP_PROD='http://52.27.104.46';
+var GLOB_IP_DEV='http://127.0.0.1:8000';
 
-var IP_IN_USE=GLOB_IP_PROD
+var IP_IN_USE=GLOB_IP_PROD;
 
+const allClass = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+const allSec = ['A', 'B', 'C'];
 //type Props = {};
-export default class ReceivedNoticeViewTeacher extends React.Component{
+export default class StudentViewAdmin extends React.Component{
   
   constructor(props){
     super(props);
@@ -40,11 +43,16 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
       'user_id':'',
       'drawerClosed':true,
       'user_token':'',
-      'numberOfSubjects':0,
-      'subjectDataList':[],
-      'loginType':'Student',
-      current_id:0,
+      'numberOfTeachers':0,
+      'teacherDataList':[],
+      'studentDict':{},
+      'studentDataList':[],
+      'selectedClass':'1',
+      'selectedSec':'A',
+      'loginType':'Teacher',
+      'subjectObject':props.navigation.state.params.i,
     };
+
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
 
@@ -81,7 +89,7 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_session':obj_value});
-      this.setState({'user_id':obj_value.student_id});
+      this.setState({'user_id':obj_value.teacher_id});
       //alert(obj_value);
     }
     else{
@@ -94,6 +102,7 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
+      //alert(this.state.user_token);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -105,7 +114,7 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
       obj_value = JSON.stringify(value);
 
       //alert(obj_value);
-      if (obj_value == '"Student"'){
+      if (obj_value == '"Teacher"'){
         //alert("1");
       }
       else{
@@ -119,7 +128,7 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchReceivedStudentNotifications/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllStudentsForSubjectTeacher/'+this.state.user_token+'/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -128,6 +137,9 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
         body: JSON.stringify({
           user_id: this.state.user_id,
           loginType: this.state.loginType,
+          subject_id: this.state.subjectObject.subject_id,
+          class: this.state.subjectObject.class,
+          section: this.state.subjectObject.section,
         }),
       })
       .then((response) => response.json())
@@ -139,9 +151,9 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
           var ret_data = JSON.stringify(res.data);
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
-          this.setState({'subjectDataList':res.data});
-          //this.setState({'subjectDataList':res.data});
-          //alert(this.state.subjectDataList);
+          //this.setState({'numberOfTeachers':res.data.length,'teacherDataList':res.data});
+          this.setState({'studentDataList':res.data});
+          //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
       })
@@ -151,10 +163,10 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshSubjects(), 30000)
-    
+    this.timer = setInterval(()=> this.refreshStudents(), 30000);
+
   }
-  refreshSubjects = async() =>{
+  refreshStudents = async() =>{
     //alert("refresh");
     var isFocused = this.props.navigation.isFocused();    
     //alert(isFocused);
@@ -162,7 +174,7 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchReceivedTeacherNotifications/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllStudentsForSubjectTeacher/'+this.state.user_token+'/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -171,6 +183,9 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
         body: JSON.stringify({
           user_id: this.state.user_id,
           loginType: this.state.loginType,
+          subject_id: this.state.subjectObject.subject_id,
+          class: this.state.subjectObject.class,
+          section: this.state.subjectObject.section,
         }),
       })
       .then((response) => response.json())
@@ -182,9 +197,10 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
           var ret_data = JSON.stringify(res.data);
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
-          this.setState({'numberOfSubjects':res.data.length,'subjectDataList':res.data});
-          //this.setState({'subjectDataList':res.data});
-          //alert(this.state.subjectDataList);
+          //this.setState({'numberOfTeachers':res.data.length,'teacherDataList':res.data});
+
+          this.setState({'studentDataList':res.data});
+          //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
       })
@@ -193,57 +209,44 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
     catch(error){
       alert(error);
     }
+
   }
-  displayNoticesByRow(){
-    /*
-    const rowSetItems = this.state.subjectDataList.map(
-      (d)=>{
-        <View key={d.subject_id}>
-          <Text>{d.subject_id}</Text>
-        </View>
-      }
-    );
-    return(
-      <View>
-        {rowSetItems}
-      </View>
-    );*/
-    
-    return this.state.subjectDataList.map((row_set, i)=>{
+  displayStudentByRow(){
+    return this.state.studentDataList.map((row_set, i)=>{
       return (
         <View key={i} style={{
           flex:1,
           borderBottomColor: 'black',
           borderBottomWidth: 1,
         }}>
-          <Text>Notice ID:        {row_set.notification_id} </Text>
-          <Text>Notice subject:   {row_set.subject} </Text>
-          <Text>Created At:       {row_set.created_at} </Text>
-          <Text>Notice For:       {row_set.target_type}</Text>
-          <Text>Creator:          {row_set.notification_creator}</Text>
-          <Text></Text>
-          <Text onPress={()=>{this.ViewNotice(row_set)}}>Click here to View message.</Text>
+          <Text>Full Name: {row_set.fullname} </Text>
+          <Text>Class:     {row_set.class}</Text>
+          <Text>Section:   {row_set.section}</Text>
+          <Text>RollNumber:{row_set.roll_number}</Text>
+          <Text onPress={()=>{this.goToSendNotice(row_set)}}>Send Notice to Student</Text>
+
         </View>
       );
     });
-    
   }
-  displayNotices(){
+  displayStudents(){
     //fetch list of subjects
-    if (this.state.subjectDataList.length == 0){
+    //alert(this.state.studentDict[this.state.selectedClass][this.state.selectedSec].length);
+    if (this.state.studentDataList.length == 0){
       return(
         <View style={stylesAdmin.InputContainer}>
-          <Text>Currently no subjects have been added yet.</Text>
+          <Text>Currently no students have been added yet.</Text>
 
         </View>
       );
     }
     else{
       //alert(this.state.subjectDataList);
+      //alert(this.state.studentDict[this.state.selectedClass][this.state.selectedSec].length);
       return(
         <View style={stylesAdmin.InputContainer}>
-          <Text>Currently these subjects have been added yet.</Text>
-          { this.displayNoticesByRow() }
+          <Text>Currently these students have been added yet.</Text>
+          { this.displayStudentByRow() }
         </View>
       );
     }
@@ -273,17 +276,26 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
             backgroundColor="#33cc33"
             leftIconName={'menu'}
             onLeftPress={this.toggleDrawer}/>
-        <ScrollView style={stylesAdmin.Container}>
-        
-        <Text>Notices Added as follows</Text>
-        {this.displayNotices()}
-        <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text>LOG OUT</Text>
-        </TouchableOpacity>     
-      </ScrollView>
+        <View style={{flex:1,}}>
+          <ScrollView style={stylesAdmin.Container}>
+          
+            <Text>Students of Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
+            <Text>Subject: {this.state.subjectObject.subject_name}</Text>
+            {this.displayStudents()}
+                 
+          </ScrollView>
+          <View>
+            <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
+              <Text>Click here to go back</Text>
+            </TouchableOpacity> 
+          </View>
+        </View>
     </DrawerLayout>
       
     );  
+  }
+  goBack = () =>{
+    this.props.navigation.navigate('SubjectViewTeacher');
   }
   logout = () => {
     try{
@@ -304,25 +316,23 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
     //alert("logging out");
     //this.props.navigation.navigate('Login');
   }
+  goToSendNotice = (i) => {
+    this.props.navigation.navigate('SendNoticeIndividualStudentTeacher', {i},);
+  }
   goToProfilePage = () =>{
-    this.props.navigation.navigate('Studentarea');
+    this.props.navigation.navigate('Teacherarea');
   }
   goToStudentPage = () =>{
-    alert("student page");
-    this.props.navigation.navigate('StudentViewAdmin');
+    alert("already on student page");
   }
   goToSubjectPage = () =>{
-    alert("already on subject page");
+    //alert("subject page");
+    this.props.navigation.navigate('SubjectViewTeacher');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
-    //this.props.navigation.navigate('TeacherViewAdmin');
-  }
-  goToAddSubjectPage = () =>{
-    this.props.navigation.navigate('SubjectAddAdmin');
-  }
-  ViewNotice = (i) =>{
-    this.props.navigation.navigate('SingleReceivedNoticeViewStudent', {i},);
+    //alert("teacher page");
+    this.props.navigation.navigate('TeacherViewAdmin');
   }
 
 }
+

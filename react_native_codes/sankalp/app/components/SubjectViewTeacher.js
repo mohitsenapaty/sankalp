@@ -221,7 +221,8 @@ export default class SubjectViewTeacher extends React.Component{
           <Text>Subject Type:   {row_set.is_major}</Text>
           <Text>Class:          {row_set.class}</Text>
           <Text>Section:        {row_set.section}</Text>
-          <Text>Number of students: (Will be added later.)</Text>
+          <Text onPress={()=>{this.goToStudentsInSubject(row_set)}}>View Students enrolled in class.</Text>
+          <Text onPress={()=>{this.createNotice(row_set)}}>Send Class notice</Text>
         </View>
       );
     });
@@ -347,39 +348,29 @@ export default class SubjectViewTeacher extends React.Component{
       alert(error);
     }
   }
+  goToStudentsInSubject = (i) =>{
+    this.props.navigation.navigate('StudentsInSubjectViewTeacher', {i},)
+  }
   goToProfilePage = () =>{
     this.props.navigation.navigate('Teacherarea');
   }
   goToStudentPage = () =>{
-    alert("student page");
+    //alert("student page");
     this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
-    alert("already on subject page");
+    //alert("already on subject page");
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
+    //alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
   }
   goToAddSubjectPage = () =>{
     this.props.navigation.navigate('SubjectAddAdmin');
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
+  createNotice = (i) =>{
+    this.props.navigation.navigate('CreateNoticeTeacher', {i},);
   }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
-  }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
-  }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
-  }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }
 
