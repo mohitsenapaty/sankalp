@@ -6,7 +6,7 @@
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
 		<data>
-		rCD3RKH7eW9Cl/wfL9Ce2VPXlII=
+		x3LxF/j7f1FpACr1jWzUC6nhT5M=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -84,25 +84,25 @@
 		<data>
 		JPnp8lrjefhZkeqBwJEz6Avr5Oo=
 		</data>
-		<key>assets/node_modules/react-navigation/src/views/assets/back-icon-mask.png</key>
+		<key>assets/node_modules/react-navigation-stack/dist/views/assets/back-icon-mask.png</key>
 		<data>
 		twCElRF9b860vkYvLPGRVtwtBcA=
 		</data>
-		<key>assets/node_modules/react-navigation/src/views/assets/back-icon.png</key>
+		<key>assets/node_modules/react-navigation-stack/dist/views/assets/back-icon.png</key>
 		<data>
 		keLOi1inJdXs0IRSKnXqyhW57Aw=
 		</data>
-		<key>assets/node_modules/react-navigation/src/views/assets/back-icon@2x.png</key>
+		<key>assets/node_modules/react-navigation-stack/dist/views/assets/back-icon@2x.png</key>
 		<data>
 		rSvG8m4uPMSItIcsIF+N2tDJD8U=
 		</data>
-		<key>assets/node_modules/react-navigation/src/views/assets/back-icon@3x.png</key>
+		<key>assets/node_modules/react-navigation-stack/dist/views/assets/back-icon@3x.png</key>
 		<data>
 		8kFG8Vv7Hfrw4yVcFrhUhbHieBA=
 		</data>
 		<key>main.jsbundle</key>
 		<data>
-		DHqi+gJPoXM6yJR5FDZv3vrNgug=
+		2WGzk6Gg1Y+isd15xMoBItpoETQ=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -111,11 +111,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rCD3RKH7eW9Cl/wfL9Ce2VPXlII=
+			x3LxF/j7f1FpACr1jWzUC6nhT5M=
 			</data>
 			<key>hash2</key>
 			<data>
-			OzOdWErzp7Zid4DmkHQt1DtKmObNB/XmoALPJQ/t5EQ=
+			SdgoDeIse94Jj4Z+2xT+7m+z19mfHo+0btJxHIwpcpg=
 			</data>
 		</dict>
 		<key>assets/app/img/background_cc.jpg</key>
@@ -305,7 +305,7 @@
 			antkI7spgQrTcaH+Ee+tmdwythpOZdTIS/V3I+ZGBlI=
 			</data>
 		</dict>
-		<key>assets/node_modules/react-navigation/src/views/assets/back-icon-mask.png</key>
+		<key>assets/node_modules/react-navigation-stack/dist/views/assets/back-icon-mask.png</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -316,7 +316,7 @@
 			qPaOshDnK+iP+MqrK2VwfgeqJN7zzzEIZ75i1AijBds=
 			</data>
 		</dict>
-		<key>assets/node_modules/react-navigation/src/views/assets/back-icon.png</key>
+		<key>assets/node_modules/react-navigation-stack/dist/views/assets/back-icon.png</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -327,7 +327,7 @@
 			LN/rjlzN55dvcBL7jM5zryIpAp7iHU8VCf7RFIccbNg=
 			</data>
 		</dict>
-		<key>assets/node_modules/react-navigation/src/views/assets/back-icon@2x.png</key>
+		<key>assets/node_modules/react-navigation-stack/dist/views/assets/back-icon@2x.png</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -338,7 +338,7 @@
 			K3RDqaWOksoRpXW9wRWYYVpX3eMFzYznDWAmBrMCzZg=
 			</data>
 		</dict>
-		<key>assets/node_modules/react-navigation/src/views/assets/back-icon@3x.png</key>
+		<key>assets/node_modules/react-navigation-stack/dist/views/assets/back-icon@3x.png</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -353,11 +353,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			DHqi+gJPoXM6yJR5FDZv3vrNgug=
+			2WGzk6Gg1Y+isd15xMoBItpoETQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			dV7n5WoiAVSV0nlTL9D8qTRdFmgDPWnjJdr/qz/E1NE=
+			M5ku7cC4h9YhV5BNQkMapE3H8nmJ1fnGH7vla0pqPFU=
 			</data>
 		</dict>
 	</dict>

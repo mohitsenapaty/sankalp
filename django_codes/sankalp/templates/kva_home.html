@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>SANKALP</TITLE>
+    </HEAD>
+    <BODY>
+	<div class="header" id="myHeader">
+            <div class="main-header">
+            <h1>SANKALP FOR KVA</h1>
+            </div>
+            <div class="header_links">
+
+                <div class="hl_1"><h2><a href="/index/kva/home/">KVA Home</a></h2></div>
+                <div class="hl_2"><h2><a href="/team/">Team</a></h2></div>
+                <div class="hl_3"><h2><a href="/contact/">Contact</a></h2></div>
+                <div class="hl_4"><h2><a href="/blog/">Blog</a></h2></div>
+            </div>
+        </div>
+        <div class="content">
+            WELCOME TO KVA.
+            <a href="/index/kva/login_page/">Go To Login<a>
+            <div class="hl_5">
+
+                {% if is_logged_in == 0 %}
+                <h2>
+                <a href="/login_page/">Login</a>/<a href="/register_page/">Register</a>
+                </h2>
+                {% else %}
+                <h2 class="dropbtn1">
+                {{ username }}
+                </h2>
+                    {% if logintype == 'Teacher' %}
+                    <div class="dropdown-content1">
+                        <a href="/teacher_profile_info/" >Teacher Profile</a>
+                        <a href="/index/kva/log_out/" >Log Out</a>
+                    </div>
+                    {% elif logintype == 'Admin' %}
+                    <div class="dropdown-content1">
+                        <a href="/admin_profile_info/" >Student Profile</a>
+                        <a href="/index/kva/log_out/" >Log Out</a>
+                    </div>
+                    {% else %}
+                    <div class="dropdown-content1">
+                        <a href="/student_profile_info/" >Student Profile</a>
+                        <a href="/index/kva/log_out/" >Log Out</a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        </div>
+    </BODY>
+</HTML>

@@ -1,6 +1,8 @@
 const express = require('express');
 const proxy = require('http-proxy-middleware');
-
+const static_dev = '/var/www/emotion_detector/static/';
+const static_prod = '/var/www/emotion_detector/static/';
+const static_in_use = static_dev;
 // Config
 const { routes } = require('./config.json');
 
@@ -8,6 +10,8 @@ const app = express();
 
 var indexRouter = require('./index.route');
 app.use('', indexRouter);
+
+app.use('/static', express.static(static_in_use));
 
 for (route of routes) {
     console.log(route);

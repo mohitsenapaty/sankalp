@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>SANKALP - KVA</TITLE>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </HEAD>
+    <body>
+        <div class="header" id="myHeader">
+            <div class="main-header">
+            <h1>Learn With Dharna</h1>
+            </div>
+            <div class="header_links">
+                
+                <div class="hl_1"><h2><a href="/">Home</a></h2></div>
+                <div class="hl_2"><h2><a href="/team/">Team</a></h2></div>
+                <div class="hl_3"><h2><a href="/contact/">Contact</a></h2></div>
+                <div class="hl_4"><h2><a href="/blog/">Blog</a></h2></div>
+                <!--div class="hl_6"><h2><a href="/live_demo/">Live Demo</a></h2-->
+                
+                <div class="hl_5">
+                
+                {% if is_logged_in == 0 %} 
+                <h2>
+                <a href="/index/kva/login_page/">Login</a>
+                </h2>
+                {% else %}
+                <h2 class="dropbtn1">
+                {{ username }}
+                </h2>
+                    {% if logintype == 'Teacher' %}
+                    <div class="dropdown-content1">
+                        <a href="/teacher_profile_info/" >Teacher Profile</a>
+                        <a href="/index/kva/log_out/" >Log Out</a>
+                    </div>
+                    {% elif logintype == 'Admin' %}
+                    <div class="dropdown-content1">
+                        <a href="/admin_profile_info/" >Admin Profile</a>
+                        <a href="/index/kva/log_out/" >Log Out</a>
+                    </div>
+                    {% else %}
+                    <div class="dropdown-content1">
+                        <a href="/student_profile_info/" >Student Profile</a>
+                        <a href="/index/kva/log_out/" >Log Out</a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+                
+                </div>
+            </div>
+            <!--div style="clear: both;"></div--> 
+        </div>
+
+        <div class="content">
+            <div class="loggedin">
+            <div class="main">
+    {% if error_message != 'None' %}
+        <div><p>{{ error_message }}</p></div>
+    {% endif %}
+        {% if is_logged_in == 0 %}
+        <form name="LoginForm" action="/index/kva/login_page/" method="post">
+        {% csrf_token %}
+            Username: <input type="text" id="username" name="username"  placeholder="Username"> <br />
+            Password: <input type="password" id="password" name="password"  placeholder="Password"> <br />
+            Select Type:     <input type="radio" name="logintype" value="Student" checked> Student<br>
+                      <input type="radio" name="logintype" value="Teacher"> Teacher<br>
+                      <input type="radio" name="logintype" value="Admin"> Admin<br>
+            <button type="submit">Login</button>
+        </form>
+        {% else %}
+        <p>
+            You are already logged in.
+            Alternatively, click <a href="/log_out/">here<a> to Log out. 
+        <p>
+        {% endif %}
+    </div>
+            </div>
+        </div>
+        <div class="footer">
+            This is some sample Text.
+        </div>
+    </body>
+</html>

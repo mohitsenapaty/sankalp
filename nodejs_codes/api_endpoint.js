@@ -38,7 +38,10 @@ var fetchReportPDFRouter = require('./fetchReportPDF.route');
 var fetchPDFPresentRouter = require('./fetchPDFPresent.route');
 var addNoticeRouter = require('./addNotice.route');
 var fetchNoticeForTeachersRouter = require('./fetchNoticeForTeachers.route');
+var fetchSentNoticeForTeachersRouter = require('./fetchSentNoticeForTeachers.route');
 var fetchNoticeForStudentsRouter = require('./fetchNoticeForStudents.route');
+var fetchAllNotificationsRouter = require('./fetchAllNotifications.route');
+var fetchAllStudentsForSubjectTeacherRouter = require('./fetchAllStudentsForSubjectTeacher.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -77,7 +80,10 @@ app.use('/fetchReportPDF', fetchReportPDFRouter);
 app.use('/fetchPDFPresent', fetchPDFPresentRouter);
 app.use('/addNotice', addNoticeRouter);
 app.use('/fetchReceivedTeacherNotifications', fetchNoticeForTeachersRouter);
+app.use('/fetchSentTeacherNotifications', fetchSentNoticeForTeachersRouter);
 app.use('/fetchReceivedStudentNotifications', fetchNoticeForStudentsRouter);
+app.use('/fetchAllNotifications', fetchAllNotificationsRouter);
+app.use('/fetchAllStudentsForSubjectTeacher', fetchAllStudentsForSubjectTeacherRouter);
 
 const server = http.createServer(app);
 server.listen(8002, ()=>{

@@ -133,7 +133,7 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select * from notification_target a join notification_detail b on a.notification_id=b.notification_id where target_type='All' or target_type='All Student' or (target_type='Student' and target_id=$1) order by b.created_at desc;"
+      db_client.query("select distinct a.*,b.* from notification_target a join notification_detail b on a.notification_id=b.notification_id left outer join student_academic_enrollment_detail c on a.target_class=c.class and a.target_section=c.section where target_type='All' or target_type='All Student' or (target_type='Student' and target_id=$1) or (target_type='Student') order by b.created_at desc;"
         ,[userID]
         , function(err, res)
       {
