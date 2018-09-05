@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import *
 import hashlib
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
 def home(request):
@@ -101,5 +102,54 @@ def log_out(request):
     request.session.flush()
     template = 'kva_logged_out.html'
     return render(request, template, context)
+
+
+def admin_profile_info(request):
+    returnDict = {}
+    template = 'admin_profile_info.html'
+    is_logged_in = 0
+    if not request.session.get("type") == 'Admin':
+        return HttpResponseRedirect('/index/kva/home/')
+    _username = request.session.get("username")
+    if not _username == None:
+        #return HttpResponseRedirect('/combined_app/')
+        is_logged_in = 1
+
+        admin_object = AdminLogin.objects.get(user_name=_username)
+
+        if admin_object == None:
+            #return error page
+            template = 'kva_admin_profile_info.html'
+            returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"),'logintype':request.session.get('type'), 'error':'Some network or Internal Error. Try after some time.'}
+            return render(request, template, returnDict)
+
+        template = 'kva_admin_profile_info.html'
+        returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"),'logintype':request.session.get('type'), 'error':'None', 'admin_login':admin_object.__dict__}
+        return render(request, template, returnDict) 
+    else:
+        return HttpResponseRedirect('/index/kva/home')
+
+
+def teacher_excel_upload(request):
+    excel_file = request.FILES.get("excel_file")
+    fs = FileSystemStorage()
+    filename = fs.save("teacher_excel.xls", excel_file)
+    if filename:
+        return render(request, 'kva_teacher_excel_upload.html', {'msg':'Upload Successful'})
+    else:
+        return render(request, 'kva_teacher_excel_upload.html', {'msg':'Upload Failed'})
+
+
+def student_excel_upload(request):
+    excel_file = request.FILES.get("excel_file")
+    class_ = request.POST.get("class")
+    section = request.POST.get("section")
+    fs = FileSystemStorage()
+    file_name = class_+"_" + section + "_student_excel.xls"
+    filename = fs.save(file_name, excel_file)
+    if filename:
+        return render(request, 'kva_student_excel_upload.html', {'msg':'Upload Successful'})
+    else:
+        return render(request, 'kva_student_excel_upload.html', {'msg':'Upload Failed'})
 
 

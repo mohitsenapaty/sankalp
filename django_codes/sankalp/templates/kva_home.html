@@ -21,12 +21,11 @@
         </div>
         <div class="content">
             WELCOME TO KVA.
-            <a href="/index/kva/login_page/">Go To Login<a>
             <div class="hl_5">
 
                 {% if is_logged_in == 0 %}
                 <h2>
-                <a href="/login_page/">Login</a>/<a href="/register_page/">Register</a>
+                    <a href="/index/kva/login_page/">Go To Login<a>
                 </h2>
                 {% else %}
                 <h2 class="dropbtn1">
@@ -39,7 +38,7 @@
                     </div>
                     {% elif logintype == 'Admin' %}
                     <div class="dropdown-content1">
-                        <a href="/admin_profile_info/" >Student Profile</a>
+                        <a href="/index/kva/admin_profile_info/" >Student Profile</a>
                         <a href="/index/kva/log_out/" >Log Out</a>
                     </div>
                     {% else %}
