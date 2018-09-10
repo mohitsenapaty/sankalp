@@ -21,7 +21,7 @@ import {
 import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import DrawerLayout from 'react-native-drawer-layout';
-import MenuAdmin from './MenuAdmin';
+import MenuStudent from './MenuStudent';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
 //import Login from './Login';
@@ -133,11 +133,11 @@ export default class SingleReceivedNoticeViewTeacher extends React.Component{
           drawerPosition={DrawerLayout.positions.left}
           onDrawerOpen={this.setDrawerState}
           onDrawerClose={this.setDrawerState}
-          renderNavigationView={() => <MenuAdmin 
+          renderNavigationView={() => <MenuStudent
               _goToProfilePage={()=>this.goToProfilePage()}
-              _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToExamPage={()=>this.goToExamPage()}
+              _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -230,40 +230,29 @@ export default class SingleReceivedNoticeViewTeacher extends React.Component{
     }
   }
   goToProfilePage = () =>{
-    this.props.navigation.navigate('Teacherarea');
+    this.props.navigation.navigate('Studentarea');
   }
   goToStudentPage = () =>{
-    alert("student page");
-    this.props.navigation.navigate('StudentViewAdmin');
+    //alert("student page");
+
   }
   goToSubjectPage = () =>{
-    alert("already on subject page");
+    //alert("subject page");
+    this.props.navigation.navigate('SubjectViewStudent');
+  }
+  goToExamPage = () =>{
+    //alert("exam page");
+    this.props.navigation.navigate('ExamViewStudent');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
-    this.props.navigation.navigate('TeacherViewAdmin');
+    //alert("teacher page");
+    //this.props.navigation.navigate('TeacherViewAdmin');
   }
-  goToAddSubjectPage = () =>{
-    this.props.navigation.navigate('SubjectAddAdmin');
+  goToReceivedNoticePage = () =>{
+    this.props.navigation.navigate('ReceivedNoticeViewStudent');
   }
   ViewNotice = (i) =>{
 
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
-  }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
-  }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
-  }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
-  }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }

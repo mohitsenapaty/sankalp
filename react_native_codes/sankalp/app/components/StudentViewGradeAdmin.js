@@ -258,6 +258,10 @@ export default class StudentViewGradeAdmin extends React.Component{
               _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
               _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToAssignSubjectToClassPage={()=>this.goToAssignSubjectToClassPage()}
+              _goToExamsPage={()=>this.goToExamsPage()}
+              _goToNoticePage={()=>this.goToNoticePage()}
+              _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -312,16 +316,32 @@ export default class StudentViewGradeAdmin extends React.Component{
     this.props.navigation.navigate('Studentarea');
   }
   goToStudentPage = () =>{
-    alert("student page");
+    //alert("student page");
     this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
-    alert("subject page");
+    //alert("subject page");
     this.props.navigation.navigate('SubjectViewAdmin');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
+    //alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
+  }
+  goToAssignSubjectToClassPage = () =>{
+    //alert("assign subject to Class");
+    this.props.navigation.navigate('AddSubjectToClassAdmin');
+  }
+  goToExamsPage = () =>{
+    //alert("Already on Exams page");
+    this.props.navigation.navigate('ExamViewAdmin');
+  }
+  goToNoticePage = () =>{
+    //alert("notice page");
+    this.props.navigation.navigate('CreateNoticeAdmin');
+  }
+  goToViewNoticePage = () =>{
+    //alert("notice page");
+    this.props.navigation.navigate('NoticeViewAdmin');
   }
   goToAddTeacherPage = () =>{
     this.props.navigation.navigate('TeacherAddAdmin');

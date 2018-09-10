@@ -1,4 +1,4 @@
-package com.sankalp;
+package com.sankalp.sankalpschool;
 
 import android.app.Application;
 

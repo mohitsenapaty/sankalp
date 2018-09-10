@@ -23,7 +23,7 @@ import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import ModalDropdown from 'react-native-modal-dropdown';
 import DrawerLayout from 'react-native-drawer-layout';
-import MenuAdmin from './MenuAdmin';
+import MenuTeacher from './MenuTeacher';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
 import CheckBox from 'react-native-check-box';
@@ -317,11 +317,12 @@ export default class SendNoticeIndividualStudentTeacher extends React.Component{
           drawerPosition={DrawerLayout.positions.left}
           onDrawerOpen={this.setDrawerState}
           onDrawerClose={this.setDrawerState}
-          renderNavigationView={() => <MenuAdmin 
+          renderNavigationView={() => <MenuTeacher 
               _goToProfilePage={()=>this.goToProfilePage()}
-              _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToExamPage={()=>this.goToExamPage()}
+              _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
+              _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -423,10 +424,10 @@ export default class SendNoticeIndividualStudentTeacher extends React.Component{
         //alert(res.success);
         //alert("a");
         if (res.success === 1){
-          alert("Student added successfully.")
+          alert("Notice sent successfully.")
 
         }
-        else{alert("Error adding student, student name or email or phone might exist already.");}
+        else{alert("Error sending notice.");}
       })
       .done();
     }
@@ -438,16 +439,26 @@ export default class SendNoticeIndividualStudentTeacher extends React.Component{
     this.props.navigation.navigate('Teacherarea');
   }
   goToStudentPage = () =>{
-    alert("student page");
-    this.props.navigation.navigate('StudentViewAdmin');
+    //alert("student page");
+
   }
   goToSubjectPage = () =>{
-    alert("subject page");
+    //alert("subject page");
     this.props.navigation.navigate('SubjectViewTeacher');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
-    this.props.navigation.navigate('TeacherViewAdmin');
+    //alert("teacher page");
+    //this.props.navigation.navigate('TeacherViewAdmin');
+  }
+  goToExamPage = () =>{
+    //alert("exam page");
+    this.props.navigation.navigate('ExamViewTeacher');
+  }
+  goToReceivedNoticePage = () =>{
+    this.props.navigation.navigate('ReceivedNoticeViewTeacher');
+  }
+  goToSentNoticePage = () =>{
+    this.props.navigation.navigate('SentNoticeViewTeacher');
   }
   selectedSecMethod = (idx, value) => {
     //alert({idx} + " " + {value});

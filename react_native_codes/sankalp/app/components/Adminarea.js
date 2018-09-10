@@ -129,6 +129,10 @@ export default class Adminarea extends React.Component{
               _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
               _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToAssignSubjectToClassPage={()=>this.goToAssignSubjectToClassPage()}
+              _goToExamsPage={()=>this.goToExamsPage()}
+              _goToNoticePage={()=>this.goToNoticePage()}
+              _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -224,22 +228,6 @@ export default class Adminarea extends React.Component{
     //alert("notice page");
     this.props.navigation.navigate('NoticeViewAdmin');
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
-  }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
-  }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
-  }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
-  }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }
 

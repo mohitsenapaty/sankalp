@@ -22,7 +22,7 @@ import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import ModalDropdown from 'react-native-modal-dropdown';
 import DrawerLayout from 'react-native-drawer-layout';
-import MenuAdmin from './MenuAdmin';
+import MenuTeacher from './MenuTeacher';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
 //import Login from './Login';
@@ -34,7 +34,7 @@ var IP_IN_USE=GLOB_IP_PROD;
 const allClass = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 const allSec = ['A', 'B', 'C'];
 //type Props = {};
-export default class StudentViewAdmin extends React.Component{
+export default class StudentsInSubjectViewTeacher extends React.Component{
   
   constructor(props){
     super(props);
@@ -263,11 +263,12 @@ export default class StudentViewAdmin extends React.Component{
           drawerPosition={DrawerLayout.positions.left}
           onDrawerOpen={this.setDrawerState}
           onDrawerClose={this.setDrawerState}
-          renderNavigationView={() => <MenuAdmin 
+          renderNavigationView={() => <MenuTeacher 
               _goToProfilePage={()=>this.goToProfilePage()}
-              _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToExamPage={()=>this.goToExamPage()}
+              _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
+              _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -323,7 +324,8 @@ export default class StudentViewAdmin extends React.Component{
     this.props.navigation.navigate('Teacherarea');
   }
   goToStudentPage = () =>{
-    alert("already on student page");
+    //alert("student page");
+
   }
   goToSubjectPage = () =>{
     //alert("subject page");
@@ -331,7 +333,17 @@ export default class StudentViewAdmin extends React.Component{
   }
   goToTeacherPage = () =>{
     //alert("teacher page");
-    this.props.navigation.navigate('TeacherViewAdmin');
+    //this.props.navigation.navigate('TeacherViewAdmin');
+  }
+  goToExamPage = () =>{
+    //alert("exam page");
+    this.props.navigation.navigate('ExamViewTeacher');
+  }
+  goToReceivedNoticePage = () =>{
+    this.props.navigation.navigate('ReceivedNoticeViewTeacher');
+  }
+  goToSentNoticePage = () =>{
+    this.props.navigation.navigate('SentNoticeViewTeacher');
   }
 
 }

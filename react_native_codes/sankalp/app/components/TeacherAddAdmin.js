@@ -100,7 +100,7 @@ export default class TeacherAddAdmin extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
-      alert(this.state.user_token);
+      //alert(this.state.user_token);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -142,6 +142,10 @@ export default class TeacherAddAdmin extends React.Component{
               _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
               _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToAssignSubjectToClassPage={()=>this.goToAssignSubjectToClassPage()}
+              _goToExamsPage={()=>this.goToExamsPage()}
+              _goToNoticePage={()=>this.goToNoticePage()}
+              _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -236,33 +240,33 @@ export default class TeacherAddAdmin extends React.Component{
     this.props.navigation.navigate('Adminarea');
   }
   goToStudentPage = () =>{
-    alert("student page");
+    //alert("student page");
     this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
-    alert("subject page");
+    //alert("subject page");
     this.props.navigation.navigate('SubjectViewAdmin');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
+    //alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
+  goToAssignSubjectToClassPage = () =>{
+    //alert("assign subject to Class");
+    this.props.navigation.navigate('AddSubjectToClassAdmin');
   }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
+  goToExamsPage = () =>{
+    //alert("Exams page");
+    this.props.navigation.navigate('ExamViewAdmin');
   }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
+  goToNoticePage = () =>{
+    //alert("notice page");
+    this.props.navigation.navigate('CreateNoticeAdmin');
   }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
+  goToViewNoticePage = () =>{
+    //alert("notice page");
+    this.props.navigation.navigate('NoticeViewAdmin');
   }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }
 

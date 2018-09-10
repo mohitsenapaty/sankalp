@@ -101,7 +101,7 @@ android {
     //buildToolsVersion "25.0.0"
 
     defaultConfig {
-        applicationId "com.sankalp"
+        applicationId "com.sankalp.sankalpschool"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

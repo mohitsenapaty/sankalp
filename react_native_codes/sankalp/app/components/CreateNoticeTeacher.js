@@ -23,7 +23,7 @@ import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import ModalDropdown from 'react-native-modal-dropdown';
 import DrawerLayout from 'react-native-drawer-layout';
-import MenuAdmin from './MenuAdmin';
+import MenuTeacher from './MenuTeacher';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
 import CheckBox from 'react-native-check-box';
@@ -35,7 +35,7 @@ var IP_IN_USE=GLOB_IP_PROD
 
 
 //type Props = {};
-export default class CreateNoticeAdmin extends React.Component{
+export default class CreateNoticeTeacher extends React.Component{
   
   constructor(props){
     super(props);
@@ -106,7 +106,7 @@ export default class CreateNoticeAdmin extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
-      alert(this.state.user_token);
+      //alert(this.state.user_token);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -143,11 +143,12 @@ export default class CreateNoticeAdmin extends React.Component{
           drawerPosition={DrawerLayout.positions.left}
           onDrawerOpen={this.setDrawerState}
           onDrawerClose={this.setDrawerState}
-          renderNavigationView={() => <MenuAdmin 
+          renderNavigationView={() => <MenuTeacher 
               _goToProfilePage={()=>this.goToProfilePage()}
-              _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToExamPage={()=>this.goToExamPage()}
+              _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
+              _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -263,7 +264,7 @@ export default class CreateNoticeAdmin extends React.Component{
   }
   goToStudentPage = () =>{
     //alert("student page");
-    this.props.navigation.navigate('StudentViewAdmin');
+
   }
   goToSubjectPage = () =>{
     //alert("subject page");
@@ -271,7 +272,17 @@ export default class CreateNoticeAdmin extends React.Component{
   }
   goToTeacherPage = () =>{
     //alert("teacher page");
-    this.props.navigation.navigate('TeacherViewAdmin');
+    //this.props.navigation.navigate('TeacherViewAdmin');
+  }
+  goToExamPage = () =>{
+    //alert("exam page");
+    this.props.navigation.navigate('ExamViewTeacher');
+  }
+  goToReceivedNoticePage = () =>{
+    this.props.navigation.navigate('ReceivedNoticeViewTeacher');
+  }
+  goToSentNoticePage = () =>{
+    this.props.navigation.navigate('SentNoticeViewTeacher');
   }
   selectedSecMethod = (idx, value) => {
     //alert({idx} + " " + {value});

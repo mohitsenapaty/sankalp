@@ -265,6 +265,10 @@ export default class NoticeViewAdmin extends React.Component{
               _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
               _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToAssignSubjectToClassPage={()=>this.goToAssignSubjectToClassPage()}
+              _goToExamsPage={()=>this.goToExamsPage()}
+              _goToNoticePage={()=>this.goToNoticePage()}
+              _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -318,6 +322,22 @@ export default class NoticeViewAdmin extends React.Component{
   goToTeacherPage = () =>{
     alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
+  }
+  goToAssignSubjectToClassPage = () =>{
+    //alert("assign subject to Class");
+    this.props.navigation.navigate('AddSubjectToClassAdmin');
+  }
+  goToExamsPage = () =>{
+    //alert("Already on Exams page");
+    this.props.navigation.navigate('ExamViewAdmin');
+  }
+  goToNoticePage = () =>{
+    //alert("notice page");
+    this.props.navigation.navigate('CreateNoticeAdmin');
+  }
+  goToViewNoticePage = () =>{
+    alert("Already on notice page");
+    //this.props.navigation.navigate('NoticeViewAdmin');
   }
   goToAddSubjectPage = () =>{
     this.props.navigation.navigate('SubjectAddAdmin');

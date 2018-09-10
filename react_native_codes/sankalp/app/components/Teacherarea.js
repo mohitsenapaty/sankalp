@@ -20,7 +20,7 @@ import {
 import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import DrawerLayout from 'react-native-drawer-layout';
-import MenuAdmin from './MenuAdmin';
+import MenuTeacher from './MenuTeacher';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
 //import Login from './Login';
@@ -124,11 +124,12 @@ export default class Teacherarea extends React.Component{
           drawerPosition={DrawerLayout.positions.left}
           onDrawerOpen={this.setDrawerState}
           onDrawerClose={this.setDrawerState}
-          renderNavigationView={() => <MenuAdmin 
+          renderNavigationView={() => <MenuTeacher 
               _goToProfilePage={()=>this.goToProfilePage()}
-              _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToExamPage={()=>this.goToExamPage()}
+              _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
+              _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -197,7 +198,7 @@ export default class Teacherarea extends React.Component{
   }
   goToTeacherPage = () =>{
     //alert("teacher page");
-    this.props.navigation.navigate('TeacherViewAdmin');
+    //this.props.navigation.navigate('TeacherViewAdmin');
   }
   goToExamPage = () =>{
     //alert("exam page");

@@ -299,6 +299,10 @@ export default class ExamStudentViewAdmin extends React.Component{
               _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
               _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToAssignSubjectToClassPage={()=>this.goToAssignSubjectToClassPage()}
+              _goToExamsPage={()=>this.goToExamsPage()}
+              _goToNoticePage={()=>this.goToNoticePage()}
+              _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -447,7 +451,7 @@ export default class ExamStudentViewAdmin extends React.Component{
     }
   }
   goToViewAssignSubjectPage = (i) =>{
-    alert(i);
+    //alert(i);
   }
   goToAssignSubjectPage = (i) =>{
     this.props.navigation.navigate('StudentViewGradeAdmin', {i},);
@@ -460,12 +464,28 @@ export default class ExamStudentViewAdmin extends React.Component{
     this.props.navigation.navigate('StudentViewAdmin');
   }
   goToSubjectPage = () =>{
-    alert("subject page");
+    //alert("subject page");
     this.props.navigation.navigate('SubjectViewAdmin');
   }
   goToTeacherPage = () =>{
-    alert("teacher page");
+    //alert("teacher page");
     this.props.navigation.navigate('TeacherViewAdmin');
+  }
+  goToAssignSubjectToClassPage = () =>{
+    //alert("assign subject to Class");
+    this.props.navigation.navigate('AddSubjectToClassAdmin');
+  }
+  goToExamsPage = () =>{
+    //alert("Already on Exams page");
+    this.props.navigation.navigate('ExamViewAdmin');
+  }
+  goToNoticePage = () =>{
+    //alert("notice page");
+    this.props.navigation.navigate('CreateNoticeAdmin');
+  }
+  goToViewNoticePage = () =>{
+    //alert("notice page");
+    this.props.navigation.navigate('NoticeViewAdmin');
   }
   goToAddStudentPage = () =>{
     this.props.navigation.navigate('StudentAddAdmin');
@@ -480,22 +500,6 @@ export default class ExamStudentViewAdmin extends React.Component{
     //alert("1");
     this.setState({'selectedSec':value});
   }
-  /*
-  goToKYCPage = () =>{
-    this.props.navigation.navigate('KYCarea');
-  }
-  goToBankPage = () =>{
-    this.props.navigation.navigate('Bankarea');
-  }
-  goToMarketPage = () =>{
-    this.props.navigation.navigate('Marketarea');
-  }
-  goToWalletPage = () =>{
-    this.props.navigation.navigate('Walletarea');
-  }
-  goToTradePage = () =>{
-    this.props.navigation.navigate('Tradearea');
-  }*/
 
 }
 

@@ -21,7 +21,7 @@ import {
 import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import DrawerLayout from 'react-native-drawer-layout';
-import MenuAdmin from './MenuAdmin';
+import MenuTeacher from './MenuTeacher';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
 //import Login from './Login';
@@ -260,11 +260,12 @@ export default class SubjectViewTeacher extends React.Component{
           drawerPosition={DrawerLayout.positions.left}
           onDrawerOpen={this.setDrawerState}
           onDrawerClose={this.setDrawerState}
-          renderNavigationView={() => <MenuAdmin 
+          renderNavigationView={() => <MenuTeacher 
               _goToProfilePage={()=>this.goToProfilePage()}
-              _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToTeacherPage={()=>this.goToTeacherPage()}
+              _goToExamPage={()=>this.goToExamPage()}
+              _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
+              _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
             />}
         >
@@ -356,17 +357,25 @@ export default class SubjectViewTeacher extends React.Component{
   }
   goToStudentPage = () =>{
     //alert("student page");
-    this.props.navigation.navigate('StudentViewAdmin');
+
   }
   goToSubjectPage = () =>{
-    //alert("already on subject page");
+    //alert("subject page");
+    this.props.navigation.navigate('SubjectViewTeacher');
   }
   goToTeacherPage = () =>{
     //alert("teacher page");
-    this.props.navigation.navigate('TeacherViewAdmin');
+    //this.props.navigation.navigate('TeacherViewAdmin');
   }
-  goToAddSubjectPage = () =>{
-    this.props.navigation.navigate('SubjectAddAdmin');
+  goToExamPage = () =>{
+    //alert("exam page");
+    this.props.navigation.navigate('ExamViewTeacher');
+  }
+  goToReceivedNoticePage = () =>{
+    this.props.navigation.navigate('ReceivedNoticeViewTeacher');
+  }
+  goToSentNoticePage = () =>{
+    this.props.navigation.navigate('SentNoticeViewTeacher');
   }
   createNotice = (i) =>{
     this.props.navigation.navigate('CreateNoticeTeacher', {i},);
