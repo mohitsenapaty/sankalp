@@ -56,6 +56,10 @@ export default class StudentAddAdmin extends React.Component{
       'selectedClass':'1',
       'selectedSec':'A',
       'roll_number':'',
+      'user_pwd':'',
+      'father_name':'',
+      'mother_name':'',
+      'enrollment_number':'',
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -199,6 +203,10 @@ export default class StudentAddAdmin extends React.Component{
             <TextInput style={stylesAdmin.Input} onChangeText={(fullname)=>this.setState({fullname})} value={this.state.fullname}  placeholder='Full Name of the student'></TextInput>
             <TextInput onChangeText={(emailid)=>this.setState({emailid})} value={this.state.emailid} style={stylesAdmin.Input} placeholder='Email ID of the student'></TextInput>
             <TextInput style={stylesAdmin.Input} onChangeText={(phone)=>this.setState({phone})} value={this.state.phone}  placeholder='Mobile Number of the student'></TextInput>
+            <TextInput style={stylesAdmin.Input} onChangeText={(user_pwd)=>this.setState({user_pwd})} value={this.state.user_pwd}  placeholder='Student Password'></TextInput>
+            <TextInput style={stylesAdmin.Input} onChangeText={(enrollment_number)=>this.setState({enrollment_number})} value={this.state.enrollment_number}  placeholder='Enrollment number, also username'></TextInput>
+            <TextInput style={stylesAdmin.Input} onChangeText={(father_name)=>this.setState({father_name})} value={this.state.father_name}  placeholder='Students Father Name'></TextInput>
+            <TextInput style={stylesAdmin.Input} onChangeText={(mother_name)=>this.setState({mother_name})} value={this.state.mother_name}  placeholder='Students Mother name'></TextInput>
             <Text> </Text>           
             <TouchableOpacity onPress={() => this.addStudentsAlert()} style={stylesAdmin.ButtonContainer}>
               <Text>ADD Student</Text>
@@ -258,6 +266,10 @@ export default class StudentAddAdmin extends React.Component{
           class: this.state.selectedClass,
           roll_number: this.state.roll_number,
           section: this.state.selectedSec,
+          user_pwd: this.state.user_pwd,
+          father_name: this.state.father_name,
+          mother_name: this.state.mother_name,
+          enrollment_number: this.state.enrollment_number,
         }),
       })
       .then((response) => response.json())

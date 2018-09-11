@@ -25,6 +25,10 @@ router.post('/:pwd/', function(req, resp, next){
   var section = req.body.section;
   var roll_number = req.body.roll_number;
   var loginType = req.body.loginType;
+  var user_pwd = req.body.user_pwd;
+  var enrollment_number = req.body.enrollment_number;
+  var father_name = req.body.father_name;
+  var mother_name = req.body.mother_name;
   
   var login_data = {'success':0,'data':[],'token':''};
   //console.log(SHA224(password, "utf8").toString('hex'));
@@ -50,7 +54,8 @@ router.post('/:pwd/', function(req, resp, next){
 
   if (loginType == 'Admin'){
     var rString = randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-    var enc_pwd = SHA224(rString, "utf8").toString('hex');
+    //var enc_pwd = SHA224(rString, "utf8").toString('hex');
+    var enc_pwd = SHA224(user_pwd, "utf8").toString('hex');
     var db_client = new pg.Client(conString);
     db_client.connect(function(err_){
 
@@ -58,8 +63,8 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("INSERT INTO student_login(fullname, emailid, phone, password, unencrypted) VALUES ($1,$2,$3,$4,$5) RETURNING student_id;",
-        [fullname, emailid, phone, enc_pwd, rString], function(err, res)
+      db_client.query("INSERT INTO student_login(fullname, emailid, phone, password, unencrypted, enrollment_number, father_name, mother_name) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING student_id;",
+        [fullname, emailid, phone, enc_pwd, user_pwd, enrollment_number, father_name, mother_name], function(err, res)
       {
         if (err){
           console.log(err); 

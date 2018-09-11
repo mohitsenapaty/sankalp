@@ -21,6 +21,7 @@ router.post('/:pwd/', function(req, resp, next){
   var fullname = req.body.fullname;
   var emailid = req.body.emailid;
   var phone = req.body.phone;
+  var user_pwd = req.body.user_pwd;
   var loginType = req.body.loginType;
   
   var login_data = {'success':0,'data':[],'token':''};
@@ -47,7 +48,8 @@ router.post('/:pwd/', function(req, resp, next){
 
   if (loginType == 'Admin'){
     var rString = randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-    var enc_pwd = SHA224(rString, "utf8").toString('hex');
+    //var enc_pwd = SHA224(rString, "utf8").toString('hex');
+    var enc_pwd = SHA224(user_pwd, "utf8").toString('hex');
     var db_client = new pg.Client(conString);
     db_client.connect(function(err_){
 
@@ -56,7 +58,7 @@ router.post('/:pwd/', function(req, resp, next){
       }
 
       db_client.query("INSERT INTO teacher_login(fullname, emailid, phone, password, unencrypted) VALUES ($1,$2,$3,$4,$5);",
-        [fullname, emailid, phone, enc_pwd, rString], function(err, res)
+        [fullname, emailid, phone, enc_pwd, user_pwd], function(err, res)
       {
         if (err){
           console.log(err); 

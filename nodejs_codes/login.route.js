@@ -106,7 +106,7 @@ router.post('/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
       console.log(username + " " + password + " " + enc_pwd);
-      db_client.query("select a.*,b.class,b.section,b.roll_number from student_login a join student_academic_enrollment_detail b on a.student_id = b.student_id WHERE emailid=$1 AND password=$2;", [username, enc_pwd], function(err, res)
+      db_client.query("select a.*,b.class,b.section,b.roll_number from student_login a join student_academic_enrollment_detail b on a.student_id = b.student_id WHERE enrollment_number=$1 AND password=$2;", [username, enc_pwd], function(err, res)
       {
         if (err){
           console.log(err); 

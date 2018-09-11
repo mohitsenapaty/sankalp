@@ -251,6 +251,9 @@ export default class StudentViewAdmin extends React.Component{
           <Text>Class:     {row_set.class}</Text>
           <Text>Section:   {row_set.section}</Text>
           <Text>RollNumber:{row_set.roll_number}</Text>
+          <Text>Father Name:     {row_set.father_name}</Text>
+          <Text>Mother Name:   {row_set.mother_name}</Text>
+          <Text>Enrollment Number:{row_set.enrollment_number}</Text>
           <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Student</Text>
           <Text onPress={()=>{this.goToSendNotice(row_set)}}>Send Notice to Student</Text>
           <Text onPress={()=>{this.deleteStudentAlert(row_set.fullname)}}>Delete Student.</Text>

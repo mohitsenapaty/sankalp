@@ -123,3 +123,16 @@ create table notification_target(
     target_class varchar(5),
     target_section varchar(1)
 );
+
+alter table student_login alter column unencrypted type varchar(20);
+
+alter table teacher_login alter column unencrypted type varchar(20);
+
+ alter table student_login drop constraint student_login_fullname_key;
+
+alter table student_login add column enrollment_number varchar(20) unique;
+
+alter table student_login add column father_name varchar(100);
+
+alter table student_login add column mother_name varchar(100);
+

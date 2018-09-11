@@ -50,6 +50,7 @@ export default class TeacherAddAdmin extends React.Component{
       'phone':'',
       'generatedPWD':'',
       'loginType':'Admin',
+      'user_pwd':'',
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -161,6 +162,7 @@ export default class TeacherAddAdmin extends React.Component{
             <TextInput style={stylesAdmin.Input} onChangeText={(fullname)=>this.setState({fullname})} value={this.state.fullname}  placeholder='Full Name of the teacher'></TextInput>
             <TextInput onChangeText={(emailid)=>this.setState({emailid})} value={this.state.emailid} style={stylesAdmin.Input} placeholder='Email ID of the Teacher'></TextInput>
             <TextInput style={stylesAdmin.Input} onChangeText={(phone)=>this.setState({phone})} value={this.state.phone}  placeholder='Mobile Number of the teacher'></TextInput>
+            <TextInput style={stylesAdmin.Input} onChangeText={(user_pwd)=>this.setState({user_pwd})} value={this.state.user_pwd}  placeholder='Password of the teacher'></TextInput>
             <Text> </Text>           
             <TouchableOpacity onPress={() => this.addTeachersAlert()} style={stylesAdmin.ButtonContainer}>
               <Text>ADD Teacher</Text>
@@ -217,6 +219,7 @@ export default class TeacherAddAdmin extends React.Component{
           fullname: this.state.fullname,
           emailid: this.state.emailid,
           phone: this.state.phone,
+          user_pwd: this.state.user_pwd,
         }),
       })
       .then((response) => response.json())
