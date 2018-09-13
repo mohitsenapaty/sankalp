@@ -187,6 +187,8 @@ export default class AssignGradeTeacher extends React.Component{
           subject_id: this.state.subjectObject.subject_id,
           loginType: this.state.loginType,
           exam_group_id: this.state.examObject.exam_group_id,
+          class: this.state.subjectObject.class,
+          section: this.state.subjectObject.section,
         }),
       })
       .then((response) => response.json())
