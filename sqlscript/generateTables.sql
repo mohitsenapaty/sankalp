@@ -136,3 +136,4 @@ alter table student_login add column father_name varchar(100);
 
 alter table student_login add column mother_name varchar(100);
 
+create table version_db(version_info varchar(20), lastUpdated TIMESTAMP default CURRENT_TIMESTAMP);

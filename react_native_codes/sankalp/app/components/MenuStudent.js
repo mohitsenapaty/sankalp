@@ -22,7 +22,7 @@ export default class MenuStudent extends Component {
     this.props._goToSubjectPage();
   }
   goToExamsPage = () =>{
-    this.props._goToExamsPage();
+    this.props._goToExamPage();
   }
   goToReceivedNoticePage = () =>{
     this.props._goToReceivedNoticePage();

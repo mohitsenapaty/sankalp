@@ -23,6 +23,7 @@ import DrawerLayout from 'react-native-drawer-layout';
 import MenuStudent from './MenuStudent';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
+var version_package = require('./../../package.json');
 //import Login from './Login';
 var GLOB_IP_PROD='http://52.27.104.46'
 var GLOB_IP_DEV='http://127.0.0.1:8000'
@@ -38,6 +39,10 @@ export default class Studentarea extends React.Component{
       'user_session':{},
       'drawerClosed':true,
       'user_token':'',
+      'latest_version':'',
+      'current_version':'',
+      'user_id':'',
+      'loginType':'Student',      
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -69,12 +74,14 @@ export default class Studentarea extends React.Component{
   }
   _loadInitialState = async() => {
     //search for KYC/bank status using async
+    this.setState({'current_version':version_package.version});
     var value = await AsyncStorage.getItem('user_session');
     if (value !== null){
       //json_value = JSON.stringify(value);
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_session':obj_value});
+      this.setState({'user_id':obj_value.student_id});
 
     }
     else{
@@ -111,6 +118,104 @@ export default class Studentarea extends React.Component{
       this.props.navigation.navigate('Login');
     }
     
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/'+this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'latest_version':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    //alert(Platform.OS);
+    this.timer = setInterval(()=> this.refreshVersion(), 30000);
+  }
+  refreshVersion = async() =>{
+    var isFocused = this.props.navigation.isFocused();    
+    //alert(isFocused);
+    if (!isFocused)
+      return;
+    this.setState({'current_version':version_package.version});
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/'+this.state.user_token+'/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'latest_version':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+  }
+  displayVersionMessage(){
+    if (this.state.latest_version != this.state.current_version){
+      return (
+        <View>
+          <Text>Your version is not upto date with the latest version.</Text>
+          <Text>Please download latest version from https://play.google.com/store/apps/details?id=com.sankalp.sankalpschool</Text>
+          <Text>Current version: {this.state.current_version}</Text>
+          <Text>Latest version: {this.state.latest_version}</Text>
+        </View>
+      );
+
+    }
+    else{
+      return (
+        <View>
+          <Text>Your version is upto date with the latest version.</Text>
+          <Text>Current version: {this.state.current_version}</Text>
+          <Text></Text>
+        </View>
+      );
+    }
   }
   render() {
 

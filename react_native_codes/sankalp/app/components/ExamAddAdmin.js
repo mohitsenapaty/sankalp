@@ -111,7 +111,7 @@ export default class ExamAddAdmin extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
-      alert(this.state.user_token);
+      //alert(this.state.user_token);
     }
     else{
       this.props.navigation.navigate('Login');

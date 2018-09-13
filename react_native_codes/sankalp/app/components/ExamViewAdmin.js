@@ -154,7 +154,7 @@ export default class ExamViewAdmin extends React.Component{
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshTeachers(), 30000)
+    this.timer = setInterval(()=> this.refreshTeachers(), 10000)
     
   }
   refreshTeachers = async() =>{
@@ -333,10 +333,10 @@ export default class ExamViewAdmin extends React.Component{
         //alert(res.success);
         //alert("a");
         if (res.success === 1){
-          alert("Exam deleted successfully.")
+          alert("Exam declared successfully.")
 
         }
-        else{alert("Error deleting exam. Try again.");}
+        else{alert("Error declaring exam. Try again.");}
       })
       .done();
     }
@@ -420,7 +420,7 @@ export default class ExamViewAdmin extends React.Component{
         //alert(res.success);
         //alert("a");
         if (res.success === 1){
-          alert("Exam Declared successfully.")
+          alert("Exam deleted successfully.")
 
         }
         else{alert("Error deleting exam. Try again.");}

@@ -249,7 +249,7 @@ export default class ExamViewTeacher extends React.Component{
           renderNavigationView={() => <MenuTeacher 
               _goToProfilePage={()=>this.goToProfilePage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToExamPage={()=>this.goToExamPage()}
+              _goToExamsPage={()=>this.goToExamPage()}
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}

@@ -132,7 +132,7 @@ router.post('/:pwd/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select a.fullname,d.*,c.subject_name,e.grade,f.* from student_login a join student_subject_detail b on b.student_id=a.student_id join subject_details c on b.subject_id=c.subject_id join student_academic_enrollment_detail d on d.student_id=a.student_id join exam_group_scoring e on e.student_id=a.student_id and e.subject_id=b.subject_id join exam_group_detail f on e.exam_group_id=f.exam_group_id where a.student_id=$1 and e.exam_group_id=$2;"
+      db_client.query("select a.fullname, a.enrollment_number, a.father_name, a.mother_name,d.*,c.subject_name,e.grade,f.* from student_login a join student_subject_detail b on b.student_id=a.student_id join subject_details c on b.subject_id=c.subject_id join student_academic_enrollment_detail d on d.student_id=a.student_id join exam_group_scoring e on e.student_id=a.student_id and e.subject_id=b.subject_id join exam_group_detail f on e.exam_group_id=f.exam_group_id where a.student_id=$1 and e.exam_group_id=$2;"
         ,[userID, exam_group_id]
         , function(err, res)
       {
@@ -155,6 +155,9 @@ router.post('/:pwd/', function(req, resp, next){
             var class_ = res.rows[0].class;
             var section = res.rows[0].section;
             var session = res.rows[0].session;
+            var father_name = res.rows[0].father_name;
+            var mother_name = res.rows[0].mother_name;
+            var enrollment_number = res.rows[0].enrollment_number;
             var enc_file_name = SHA224(examname+fullname, "utf8").toString('hex');
 
             var subjects = [];
@@ -283,9 +286,9 @@ router.post('/:pwd/', function(req, resp, next){
             </div>
             <hr align="center" noshade="false" width="96%" style="position:relative;top:6%">
             <div style="position:absolute;top:8%;left:2%;font-size:16px;">
-              Roll Number: ${roll_number} &emsp; Date of Birth: 10-10-2010 &emsp; Admission Number: 1
+              Roll Number: ${roll_number} &emsp; Date of Birth: 10-10-2010 &emsp; Admission Number: ${enrollment_number}
               </br>
-              Father's Name: aAAAA BbBbC &emsp; Mother's Name: xcxca Asamsa
+              Father's Name: ${father_name} &emsp; Mother's Name: ${mother_name}
               </br>
               Class Teacher's Name: bckjsackvbkd bdsakj
               </br>
@@ -321,7 +324,7 @@ router.post('/:pwd/', function(req, resp, next){
             }
 
             writeToHtml = (cb) =>{
-              var writeStream = fs.createWriteStream('/Users/msenapaty/Documents/react_native_ios/sankalp/'+enc_file_name+'.html');
+              var writeStream = fs.createWriteStream('/var/tmp/'+enc_file_name+'.html');
               //console.log(writeString);
               writeStream.write(writeString);
               writeStream.end();
@@ -331,11 +334,11 @@ router.post('/:pwd/', function(req, resp, next){
 
             writeToPDF = (cb) =>{
               var pdf = require('html-pdf');
-              var html = fs.readFileSync('/Users/msenapaty/Documents/react_native_ios/sankalp/'+enc_file_name+'.html', 'utf8');
+              var html = fs.readFileSync('/var/tmp/'+enc_file_name+'.html', 'utf8');
               //console.log(html);
               var options = { format: 'A4' };
 
-              pdf.create(writeString, options).toFile('/Users/msenapaty/Documents/react_native_ios/sankalp/'+enc_file_name+'.pdf', function(err, res) {
+              pdf.create(writeString, options).toFile('/var/tmp/'+enc_file_name+'.pdf', function(err, res) {
                 if (err) {return cb(null,console.log(err));}
                 console.log(res); // { filename: '/app/businesscard.pdf' }
                 return cb(null, "2");

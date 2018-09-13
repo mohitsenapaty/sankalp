@@ -139,7 +139,9 @@ export default class ViewGradeTeacher extends React.Component{
           user_id: this.state.user_id,
           subject_id: this.state.subjectObject.subject_id,
           loginType: this.state.loginType,
-          exam_group_id:this.state.examObject.exam_group_id
+          exam_group_id:this.state.examObject.exam_group_id,
+          class: this.state.subjectObject.class,
+          section: this.state.subjectObject.section,
         }),
       })
       .then((response) => response.json())
@@ -184,6 +186,8 @@ export default class ViewGradeTeacher extends React.Component{
           user_id: this.state.user_id,
           subject_id: this.state.subjectObject.subject_id,
           loginType: this.state.loginType,
+          class: this.state.subjectObject.class,
+          section: this.state.subjectObject.section,
         }),
       })
       .then((response) => response.json())
@@ -301,7 +305,7 @@ export default class ViewGradeTeacher extends React.Component{
           renderNavigationView={() => <MenuTeacher 
               _goToProfilePage={()=>this.goToProfilePage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToExamPage={()=>this.goToExamPage()}
+              _goToExamsPage={()=>this.goToExamPage()}
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
