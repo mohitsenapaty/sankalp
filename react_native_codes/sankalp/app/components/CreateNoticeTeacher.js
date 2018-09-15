@@ -56,6 +56,7 @@ export default class CreateNoticeTeacher extends React.Component{
       isAllSectionsChecked:true,
       sectionsCheckedArray:{},
       'noticeObject':props.navigation.state.params.i,
+      'schoolName':'',
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -107,6 +108,18 @@ export default class CreateNoticeTeacher extends React.Component{
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
       //alert(this.state.user_token);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -222,7 +235,7 @@ export default class CreateNoticeTeacher extends React.Component{
     var sections_selected = [this.state.noticeObject.section];
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/addNotice/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/addNotice/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -252,6 +265,9 @@ export default class CreateNoticeTeacher extends React.Component{
 
         }
         else{alert("Error adding notice.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

@@ -43,6 +43,7 @@ export default class SubjectViewStudent extends React.Component{
       'numberOfSubjects':0,
       'subjectDataList':[],
       'loginType':'Student',
+      'schoolName':'', 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -98,6 +99,18 @@ export default class SubjectViewStudent extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('session_type');
     //alert(value);
     if (value !== null){
@@ -118,7 +131,7 @@ export default class SubjectViewStudent extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsAssignedToStudent/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsAssignedToStudent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -144,13 +157,16 @@ export default class SubjectViewStudent extends React.Component{
         }
         else{alert("Invalid Login details");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshSubjects(), 60000)
+    this.timer = setInterval(()=> this.refreshSubjects(), 10000)
     
   }
   refreshSubjects = async() =>{
@@ -161,7 +177,7 @@ export default class SubjectViewStudent extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsAssignedToStudent/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsAssignedToStudent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -186,6 +202,9 @@ export default class SubjectViewStudent extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

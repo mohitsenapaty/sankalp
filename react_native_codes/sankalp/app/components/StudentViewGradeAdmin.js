@@ -48,6 +48,7 @@ export default class StudentViewGradeAdmin extends React.Component{
       'loginType':'Admin',
       'examObject':props.navigation.state.params.i.exam_set,
       'student_id':props.navigation.state.params.i.student_id,
+      'schoolName':'', 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -92,6 +93,18 @@ export default class StudentViewGradeAdmin extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('user_token');
     if (value !== null){
       //json_value = JSON.stringify(value);
@@ -123,7 +136,7 @@ export default class StudentViewGradeAdmin extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsForStudent/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsForStudent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -168,7 +181,7 @@ export default class StudentViewGradeAdmin extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsForStudent/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsForStudent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

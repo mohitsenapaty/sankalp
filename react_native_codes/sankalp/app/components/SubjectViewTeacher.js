@@ -43,6 +43,7 @@ export default class SubjectViewTeacher extends React.Component{
       'numberOfSubjects':0,
       'subjectDataList':[],
       'loginType':'Teacher',
+      'schoolName':'',
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -87,6 +88,18 @@ export default class SubjectViewTeacher extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('user_token');
     if (value !== null){
       //json_value = JSON.stringify(value);
@@ -118,7 +131,7 @@ export default class SubjectViewTeacher extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsAssignedToTeacher/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsAssignedToTeacher/'+this.state.user_token+'/' + this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -144,13 +157,16 @@ export default class SubjectViewTeacher extends React.Component{
         }
         else{alert("Invalid Login details");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshSubjects(), 60000)
+    this.timer = setInterval(()=> this.refreshSubjects(), 10000)
     
   }
   refreshSubjects = async() =>{
@@ -161,7 +177,7 @@ export default class SubjectViewTeacher extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsAssignedToTeacher/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsAssignedToTeacher/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -186,6 +202,9 @@ export default class SubjectViewTeacher extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -304,50 +323,6 @@ export default class SubjectViewTeacher extends React.Component{
     //navigate('Login');
     //alert("logging out");
     //this.props.navigation.navigate('Login');
-  }
-  deleteSubjectAlert = (i) =>{
-    Alert.alert(
-      'Confirm Delete Subject',
-      'Do you want to add the subject ' + i + '?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Yes', onPress: () => this.deleteSubject(i)},
-      ],
-      { cancelable: false }
-    );
-  }
-  deleteSubject = (i) =>{
-    //alert("Will delete " + i);
-    try{
-      //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteSubjects/'+ this.state.user_token+'/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id,
-          loginType: this.state.loginType,
-          subjectName: i,
-        }),
-      })
-      .then((response) => response.json())
-      .then((res) => {
-        //console.log(res);
-        //alert(res.success);
-        //alert("a");
-        if (res.success === 1){
-          alert("Subject deleted successfully.")
-
-        }
-        else{alert("Error deleting subject, subject name or subject code might exist already.");}
-      })
-      .done();
-    }
-    catch(error){
-      alert(error);
-    }
   }
   goToStudentsInSubject = (i) =>{
     this.props.navigation.navigate('StudentsInSubjectViewTeacher', {i},)

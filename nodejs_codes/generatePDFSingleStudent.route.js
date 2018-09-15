@@ -2,7 +2,7 @@ var express = require('express');
 var SHA224 = require('sha224');
 var router = express.Router();
 var pg = require('pg');
-var conString = "postgres://postgres:postgres@localhost:5432/sankalp";
+var conString1 = "postgres://postgres:postgres@localhost:5432/sankalp_";
 var crypto = require('crypto');
 
 //-----
@@ -10,10 +10,14 @@ var fs = require('fs');
 var async = require('async');
 //-----
 
-router.post('/:pwd/', function(req, resp, next){
+router.post('/:pwd/:schoolName/', function(req, resp, next){
 
 	console.log(req.body);
   //console.log(next);
+  var schoolName = (req.params.schoolName).toLowerCase();
+  //console.log(schoolName);
+  var conString = conString1 + schoolName;
+  //console.log(conString);
 
   var userid = req.body.user_id;
   var userID = parseInt(userid, 10);
@@ -26,7 +30,7 @@ router.post('/:pwd/', function(req, resp, next){
   //console.log(SHA224(password, "utf8").toString('hex'));
   //enc_pwd = SHA224(password, "utf8").toString('hex');
   try{
-    var api_key = crypto.createDecipher('aes-128-cbc', 'shatabdi');
+    var api_key = crypto.createDecipher('aes-128-cbc', schoolName);
     var got_id = api_key.update(req.params.pwd, 'hex', 'utf8');
     got_id += api_key.final('utf8');
     console.log(got_id + " qqq" );
@@ -358,7 +362,7 @@ router.post('/:pwd/', function(req, resp, next){
               else{
                 if (result == '2'){
                   //means success
-                  var reportLoc='/Users/msenapaty/Documents/react_native_ios/sankalp/'+enc_file_name+'.pdf';
+                  var reportLoc='/var/tmp/'+enc_file_name+'.pdf';
                   db_client.query("insert into exam_group_reports_single(exam_group_id,student_id,report_loc,remote_link,status) values($1,$2,$3,$4,$5);"
                     ,[exam_group_id, userID, reportLoc, 'None', 'A'] //A for report added
                     , function(err2, res2)

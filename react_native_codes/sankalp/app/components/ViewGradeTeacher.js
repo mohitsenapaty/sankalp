@@ -53,6 +53,7 @@ export default class ViewGradeTeacher extends React.Component{
       'max_id':0,
       'max_marks':'',
       'scored_marks':'',
+      'schoolName':'',
 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
@@ -98,6 +99,18 @@ export default class ViewGradeTeacher extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('user_token');
     if (value !== null){
       //json_value = JSON.stringify(value);
@@ -129,7 +142,7 @@ export default class ViewGradeTeacher extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchStudentsForSubject/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchStudentsForSubject/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -159,13 +172,16 @@ export default class ViewGradeTeacher extends React.Component{
         }
         else{alert("Invalid Login details");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshTeachers(), 30000)
+    this.timer = setInterval(()=> this.refreshTeachers(), 10000)
     
   }
   refreshTeachers = async() =>{
@@ -176,7 +192,7 @@ export default class ViewGradeTeacher extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchStudentsForSubject/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchStudentsForSubject/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -186,6 +202,7 @@ export default class ViewGradeTeacher extends React.Component{
           user_id: this.state.user_id,
           subject_id: this.state.subjectObject.subject_id,
           loginType: this.state.loginType,
+          exam_group_id:this.state.examObject.exam_group_id,
           class: this.state.subjectObject.class,
           section: this.state.subjectObject.section,
         }),
@@ -204,6 +221,9 @@ export default class ViewGradeTeacher extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -428,7 +448,7 @@ export default class ViewGradeTeacher extends React.Component{
     alert(percent);
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/upgradeMarksForStudent/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/upgradeMarksForStudent/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -455,6 +475,9 @@ export default class ViewGradeTeacher extends React.Component{
 
         }
         else{alert("Error adding exam.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

@@ -50,6 +50,7 @@ export default class ExamStudentViewAdmin extends React.Component{
       'selectedSec':'A',
       'loginType':'Admin',
       'examObject':props.navigation.state.params.i,
+      'schoolName':'',
     };
     for (var i = 0; i < allClass.length; i++){
       //var classDict = {};
@@ -103,6 +104,18 @@ export default class ExamStudentViewAdmin extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('user_token');
     if (value !== null){
       //json_value = JSON.stringify(value);
@@ -135,7 +148,7 @@ export default class ExamStudentViewAdmin extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllStudentsForExam/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllStudentsForExam/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -174,6 +187,9 @@ export default class ExamStudentViewAdmin extends React.Component{
           //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -192,7 +208,7 @@ export default class ExamStudentViewAdmin extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllStudentsForExam/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllStudentsForExam/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -231,6 +247,9 @@ export default class ExamStudentViewAdmin extends React.Component{
           //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -372,83 +391,6 @@ export default class ExamStudentViewAdmin extends React.Component{
     //navigate('Login');
     //alert("logging out");
     //this.props.navigation.navigate('Login');
-  }
-  deleteStudentAlert = (i) =>{
-    Alert.alert(
-      'Confirm Delete Student',
-      'Do you want to add the student ' + i + '?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Yes', onPress: () => this.deleteStudent(i)},
-      ],
-      { cancelable: false }
-    );
-  }
-  deleteStudent = (i) =>{
-    //alert(i);
-    try{
-      //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteStudents/'+ this.state.user_token+'/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id,
-          loginType: this.state.loginType,
-          fullname: i,
-        }),
-      })
-      .then((response) => response.json())
-      .then((res) => {
-        //console.log(res);
-        //alert(res.success);
-        //alert("a");
-        if (res.success === 1){
-          alert("Student deleted successfully.")
-
-        }
-        else{alert("Error deleting student. Try again.");}
-      })
-      .done();
-    }
-    catch(error){
-      alert(error);
-    }
-  }
-  deleteSubject = (i) =>{
-    //alert("Will delete " + i);
-    try{
-      //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteSubjects/'+ this.state.user_token+'/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id,
-          loginType: this.state.loginType,
-          subjectName: i,
-        }),
-      })
-      .then((response) => response.json())
-      .then((res) => {
-        //console.log(res);
-        //alert(res.success);
-        //alert("a");
-        if (res.success === 1){
-          alert("Subject deleted successfully.")
-
-        }
-        else{alert("Error deleting subject, subject name or subject code might exist already.");}
-      })
-      .done();
-    }
-    catch(error){
-      alert(error);
-    }
   }
   goToViewAssignSubjectPage = (i) =>{
     //alert(i);

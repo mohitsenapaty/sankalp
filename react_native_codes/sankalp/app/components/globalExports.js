@@ -58,6 +58,24 @@ const stylesLogin = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255, 0.6)',
     alignItems: 'center'
   },
+  ModalDropDownStyleThin:{
+    borderWidth: 0,
+    borderRadius: 3,
+    width:20,
+    backgroundColor: 'cornflowerblue',
+  },
+  ModalDropDownStyleMedium:{
+    borderWidth: 0,
+    borderRadius: 3,
+    width:60,
+    backgroundColor: 'cornflowerblue',
+  },
+  ModalDropDownStyleThick:{
+    borderWidth: 0,
+    borderRadius: 3,
+    width:100,
+    backgroundColor: 'cornflowerblue',
+  }
 });
 
 export const stylesAdmin = StyleSheet.create({
@@ -82,6 +100,24 @@ export const stylesAdmin = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255, 0.6)',
     alignItems: 'center'
   },
+  ModalDropDownStyleThin:{
+    borderWidth: 0,
+    borderRadius: 3,
+    width:20,
+    backgroundColor: 'cornflowerblue',
+  },
+  ModalDropDownStyleMedium:{
+    borderWidth: 0,
+    borderRadius: 3,
+    width:60,
+    backgroundColor: 'cornflowerblue',
+  },
+  ModalDropDownStyleThick:{
+    borderWidth: 0,
+    borderRadius: 3,
+    width:100,
+    backgroundColor: 'cornflowerblue',
+  }
 });
 
 export default stylesLogin;

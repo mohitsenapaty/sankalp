@@ -49,6 +49,7 @@ export default class ViewGradeStudent extends React.Component{
       'loginType':'Student',
       'examObject':props.navigation.state.params.i,
       'isPDFPresent':false,
+      'schoolName':'', 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -93,6 +94,18 @@ export default class ViewGradeStudent extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('user_token');
     if (value !== null){
       //json_value = JSON.stringify(value);
@@ -124,7 +137,7 @@ export default class ViewGradeStudent extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsForStudent/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsForStudent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -151,6 +164,9 @@ export default class ViewGradeStudent extends React.Component{
         }
         else{alert("Invalid Login details");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
@@ -159,7 +175,7 @@ export default class ViewGradeStudent extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchPDFPresent/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchPDFPresent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -190,13 +206,16 @@ export default class ViewGradeStudent extends React.Component{
         }
         else{}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshTeachers(), 30000)
+    this.timer = setInterval(()=> this.refreshTeachers(), 10000)
     
   }
   refreshTeachers = async() =>{
@@ -207,7 +226,7 @@ export default class ViewGradeStudent extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsForStudent/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchSubjectsForStudent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -234,6 +253,9 @@ export default class ViewGradeStudent extends React.Component{
         }
         else{alert("Invalid Login details");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
@@ -242,7 +264,7 @@ export default class ViewGradeStudent extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchPDFPresent/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchPDFPresent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -272,6 +294,9 @@ export default class ViewGradeStudent extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -331,7 +356,7 @@ export default class ViewGradeStudent extends React.Component{
       return(
         <View >
           <Text onPress={()=>{this.downloadPDF()}}>
-            PDF Download Link
+            Click here to download pdf.
           </Text>
         </View>
       );
@@ -386,7 +411,7 @@ export default class ViewGradeStudent extends React.Component{
     //this.state.user_id
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/generatePDFSingleStudent/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/generatePDFSingleStudent/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -408,6 +433,9 @@ export default class ViewGradeStudent extends React.Component{
 
         }
         else{alert("Error declaring exam. Try again.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -444,7 +472,7 @@ export default class ViewGradeStudent extends React.Component{
         fileCache : true,
         path : dirs.DocumentDir + '/report.pdf'
       })
-      .fetch('POST', globalAssets.IP_IN_USE+'/fetchReportPDF/'+ this.state.user_token+'/',
+      .fetch('POST', globalAssets.IP_IN_USE+'/fetchReportPDF/'+ this.state.user_token+'/'+ this.state.schoolName + '/',
         {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -458,6 +486,9 @@ export default class ViewGradeStudent extends React.Component{
       .then((response) => {
         var fpath = response.path()
         alert("file was saved to " + fpath);
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -489,9 +520,5 @@ export default class ViewGradeStudent extends React.Component{
   goToReceivedNoticePage = () =>{
     this.props.navigation.navigate('ReceivedNoticeViewStudent');
   }
-  goToSingleExamPage = (i) =>{
-    //alert(i);
-    this.props.navigation.navigate('SingleExamViewTeacher', {i});
-  }  
 }
 

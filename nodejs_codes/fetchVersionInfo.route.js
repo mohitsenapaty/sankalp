@@ -5,10 +5,14 @@ var pg = require('pg');
 var conString = "postgres://postgres:postgres@localhost:5432/sankalp";
 var crypto = require('crypto');
 
-router.post('/:pwd/', function(req, resp, next){
+router.post('/', function(req, resp, next){
 
 	console.log(req.body);
   //console.log(next);
+  //var schoolName = (req.params.schoolName).toLowerCase();
+  //console.log(schoolName);
+  //var conString = conString1 + schoolName;
+  //console.log(conString);
 
   var userid = req.body.user_id;
   var userID = parseInt(userid, 10);
@@ -18,24 +22,6 @@ router.post('/:pwd/', function(req, resp, next){
   var login_data = {'success':0,'data':'','token':''};
   //console.log(SHA224(password, "utf8").toString('hex'));
   //enc_pwd = SHA224(password, "utf8").toString('hex');
-  try{
-    var api_key = crypto.createDecipher('aes-128-cbc', 'shatabdi');
-    var got_id = api_key.update(req.params.pwd, 'hex', 'utf8');
-    got_id += api_key.final('utf8');
-    console.log(got_id + " qqq" );
-  }
-  catch(error){
-    console.log(error);
-    resp.send(login_data);
-    return;
-  }
-  if (got_id != userid){
-    console.log(got_id);
-    console.log(userid);
-    resp.send(login_data);
-    console.log("01");
-    return;
-  }
 
   if (loginType == 'Admin'){
     var db_client = new pg.Client(conString);

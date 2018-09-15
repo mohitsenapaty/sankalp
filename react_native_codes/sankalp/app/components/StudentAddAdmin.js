@@ -60,6 +60,7 @@ export default class StudentAddAdmin extends React.Component{
       'father_name':'',
       'mother_name':'',
       'enrollment_number':'',
+      'schoolName':'',
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -111,6 +112,18 @@ export default class StudentAddAdmin extends React.Component{
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
       //alert(this.state.user_token);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -251,7 +264,7 @@ export default class StudentAddAdmin extends React.Component{
   addStudents = () =>{
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/addStudents/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/addStudents/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

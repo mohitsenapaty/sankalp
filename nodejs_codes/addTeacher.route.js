@@ -2,7 +2,7 @@ var express = require('express');
 var SHA224 = require('sha224');
 var router = express.Router();
 var pg = require('pg');
-var conString = "postgres://postgres:postgres@localhost:5432/sankalp";
+var conString1 = "postgres://postgres:postgres@localhost:5432/sankalp_";
 var crypto = require('crypto');
 
 function randomString(length, chars) {
@@ -11,10 +11,14 @@ function randomString(length, chars) {
     return result;
 }
 
-router.post('/:pwd/', function(req, resp, next){
+router.post('/:pwd/:schoolName/', function(req, resp, next){
 
 	console.log(req.body);
   //console.log(next);
+  var schoolName = (req.params.schoolName).toLowerCase();
+  //console.log(schoolName);
+  var conString = conString1 + schoolName;
+  //console.log(conString);
 
   var userid = req.body.user_id;
   var userID = parseInt(userid, 10);
@@ -28,7 +32,7 @@ router.post('/:pwd/', function(req, resp, next){
   //console.log(SHA224(password, "utf8").toString('hex'));
   //enc_pwd = SHA224(password, "utf8").toString('hex');
   try{
-    var api_key = crypto.createDecipher('aes-128-cbc', 'shatabdi');
+    var api_key = crypto.createDecipher('aes-128-cbc', schoolName);
     var got_id = api_key.update(req.params.pwd, 'hex', 'utf8');
     got_id += api_key.final('utf8');
     console.log(got_id + " qqq" );

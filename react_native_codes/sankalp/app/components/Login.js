@@ -18,10 +18,7 @@ import {StackNavigator} from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import stylesLogin, {globalAssets} from './globalExports';
 
-var GLOB_IP_PROD='http://52.27.104.46'
-var GLOB_IP_DEV='http://127.0.0.1:8000'
-
-var IP_IN_USE=GLOB_IP_PROD
+const schoolArray = ['Kaanger_Valley_Academy_Raipur',];
 
 type Props = {};
 export default class Login extends React.Component{
@@ -38,17 +35,20 @@ export default class Login extends React.Component{
               <TextInput style={stylesLogin.Input} onChangeText={(username)=>this.setState({username})} value={this.state.username}  placeholder='Username'></TextInput>
               <TextInput secureTextEntry={true} onChangeText={(password)=>this.setState({password})} value={this.state.password} style={stylesLogin.Input} placeholder='Password'></TextInput>
               <Text>Login as: </Text>
-              <ModalDropdown options={['Teacher', 'Student', 'Admin']} defaultValue='Teacher' onSelect={this.selectedPayMethod}>
+              <ModalDropdown options={['Teacher', 'Student', 'Admin']} defaultValue='Teacher' onSelect={this.selectedPayMethod}
+                style={stylesLogin.ModalDropDownStyleMedium}
+              >
+          
+              </ModalDropdown>
+              <Text>Select School: </Text>
+              <ModalDropdown options={schoolArray} defaultValue={schoolArray[0]} onSelect={this.selectedSchoolMethod}
+                style={stylesLogin.ModalDropDownStyleMedium}
+              >
           
               </ModalDropdown>
               <TouchableOpacity onPress={this.login} style={stylesLogin.ButtonContainer}>
                 <Text>LOG IN</Text>
               </TouchableOpacity>
-            </View>
-            <View style={stylesLogin.RegisterContainer}>
-              <Text>
-                Don't have an account? <Text style={stylesLogin.RegisterText} onPress={this.register}>Register Here</Text>
-              </Text>
             </View>
           </View>
         </ImageBackground>
@@ -58,7 +58,7 @@ export default class Login extends React.Component{
 
   constructor(props){
     super(props);
-    this.state = {username:'', password:'', loginType:'Teacher'};
+    this.state = {username:'', password:'', loginType:'Teacher', schoolName:schoolArray[0]};
   }
 
   componentDidMount(){
@@ -81,12 +81,17 @@ export default class Login extends React.Component{
     //alert("1");
     this.setState({'loginType':value});
   }
+  selectedSchoolMethod = (idx, value) => {
+    //alert({idx} + " " + {value});
+    //alert("1");
+    this.setState({'schoolName':value});
+  }
   login = () => {
     //alert('login' + this.state.username + this.state.password);
 
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/login/', {
+      fetch(globalAssets.IP_IN_USE+'/login/' + this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -121,8 +126,11 @@ export default class Login extends React.Component{
               AsyncStorage.setItem('user_token', user_token)
               .then((res2)=>{
                 AsyncStorage.setItem('session_type', 'Admin')
-                .then((res)=>{ 
-                  this.props.navigation.navigate('Adminarea')
+                .then((res3)=>{
+                  AsyncStorage.setItem('schoolName', this.state.schoolName)
+                  .then((res)=>{ 
+                    this.props.navigation.navigate('Adminarea')
+                  })
                 })
               })
             });
@@ -139,8 +147,11 @@ export default class Login extends React.Component{
               AsyncStorage.setItem('user_token', user_token)
               .then((res2)=>{
                 AsyncStorage.setItem('session_type', 'Teacher')
-                .then((res)=>{ 
-                  this.props.navigation.navigate('Teacherarea')
+                .then((res3)=>{
+                  AsyncStorage.setItem('schoolName', this.state.schoolName)
+                  .then((res)=>{ 
+                    this.props.navigation.navigate('Teacherarea')
+                  })
                 })
               })
             });
@@ -158,8 +169,11 @@ export default class Login extends React.Component{
               AsyncStorage.setItem('user_token', user_token)
               .then((res2)=>{
                 AsyncStorage.setItem('session_type', 'Student')
-                .then((res)=>{ 
-                  this.props.navigation.navigate('Studentarea')
+                .then((res3)=>{
+                  AsyncStorage.setItem('schoolName', this.state.schoolName)
+                  .then((res)=>{ 
+                    this.props.navigation.navigate('Studentarea')
+                  })
                 })
               })
             });
@@ -171,6 +185,9 @@ export default class Login extends React.Component{
 
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

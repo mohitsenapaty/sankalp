@@ -54,6 +54,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
       'assignedSubjectDataList':[],
       'assignedSubjectToClassDataList':[],
       'subjectDict':{},
+      'schoolName':'', 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -110,6 +111,18 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('session_type');
     //alert(value);
     if (value !== null){
@@ -132,7 +145,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
     //will fetch all subjects
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllSubjects/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllSubjects/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -158,6 +171,9 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
         }
         else{alert("Invalid Login details");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
@@ -167,7 +183,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
     
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchClassSubjects/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchClassSubjects/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -194,6 +210,9 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -213,7 +232,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchClassSubjects/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchClassSubjects/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -240,6 +259,9 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -454,50 +476,6 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
       <Text>{rowData.subject_name}</Text>
     );
   }
-  deleteTeacherAlert = (i) =>{
-    Alert.alert(
-      'Confirm Delete Teacher',
-      'Do you want to delete the teacher ' + i + '?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Yes', onPress: () => this.deleteTeacher(i)},
-      ],
-      { cancelable: false }
-    );
-  }
-  deleteTeacher = (i) =>{
-    //alert(i);
-    try{
-      //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteTeachers/'+ this.state.user_token+'/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id,
-          loginType: this.state.loginType,
-          fullname: i,
-        }),
-      })
-      .then((response) => response.json())
-      .then((res) => {
-        //console.log(res);
-        //alert(res.success);
-        //alert("a");
-        if (res.success === 1){
-          alert("Teacher deleted successfully.")
-
-        }
-        else{alert("Error deleting teacher. Try again.");}
-      })
-      .done();
-    }
-    catch(error){
-      alert(error);
-    }
-  }
   deleteSubjectAssignmentAlert = (subject_name, subject_id) =>{
     Alert.alert(
       'Confirm Delete Subject',
@@ -513,7 +491,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
     //alert("Will delete " + i);
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteSubjectAssignedToClass/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/deleteSubjectAssignedToClass/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -537,6 +515,9 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
 
         }
         else{alert("Error deleting subject, subject name or subject code might exist already.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -611,7 +592,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
     //alert(i + j);
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/assignSubjectToClass/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/assignSubjectToClass/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -635,6 +616,9 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
 
         }
         else{alert("Error assigning Subject to Class. Subject may be assigned already.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

@@ -58,6 +58,7 @@ export default class CreateNoticeAdmin extends React.Component{
       classesCheckedArray:{},
       isAllSectionsChecked:true,
       sectionsCheckedArray:{},
+      'schoolName':'', 
     };
     for (var i = 0; i < allClass.length; i++){
       this.state.classesCheckedArray[allClass[i]] = true;
@@ -103,6 +104,18 @@ export default class CreateNoticeAdmin extends React.Component{
       this.setState({'user_session':obj_value});
       this.setState({'user_id':obj_value.admin_id});
 
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -440,7 +453,7 @@ export default class CreateNoticeAdmin extends React.Component{
 
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/addNotice/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/addNotice/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -470,6 +483,9 @@ export default class CreateNoticeAdmin extends React.Component{
 
         }
         else{alert("Error adding notice.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

@@ -46,6 +46,7 @@ export default class ExamViewAdmin extends React.Component{
       'teacherDataList':[],
       'examDataList':[],
       'loginType':'Admin',
+      'schoolName':'',
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -102,6 +103,18 @@ export default class ExamViewAdmin extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('session_type');
     //alert(value);
     if (value !== null){
@@ -122,7 +135,7 @@ export default class ExamViewAdmin extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllExams/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllExams/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -147,6 +160,9 @@ export default class ExamViewAdmin extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -165,7 +181,7 @@ export default class ExamViewAdmin extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllExams/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllExams/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -190,6 +206,9 @@ export default class ExamViewAdmin extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -315,7 +334,7 @@ export default class ExamViewAdmin extends React.Component{
   declareExam = (row_set) =>{
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/declareExams/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/declareExams/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -337,6 +356,9 @@ export default class ExamViewAdmin extends React.Component{
 
         }
         else{alert("Error declaring exam. Try again.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -389,7 +411,7 @@ export default class ExamViewAdmin extends React.Component{
   deleteExamAlert = (i) =>{
     Alert.alert(
       'Confirm Delete Exam',
-      'Do you want to add the Exam ' + i + '?',
+      'Do you want to delete the Exam ' + i + '?',
       [
         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
         {text: 'Yes', onPress: () => this.deleteExam(i)},
@@ -402,7 +424,7 @@ export default class ExamViewAdmin extends React.Component{
     
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteExams/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/deleteExams/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -424,6 +446,9 @@ export default class ExamViewAdmin extends React.Component{
 
         }
         else{alert("Error deleting exam. Try again.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

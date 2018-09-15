@@ -49,6 +49,7 @@ export default class StudentViewAdmin extends React.Component{
       'selectedClass':'1',
       'selectedSec':'A',
       'loginType':'Admin',
+      'schoolName':'',
     };
     for (var i = 0; i < allClass.length; i++){
       //var classDict = {};
@@ -114,6 +115,18 @@ export default class StudentViewAdmin extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('session_type');
     //alert(value);
     if (value !== null){
@@ -134,7 +147,7 @@ export default class StudentViewAdmin extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllStudents/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllStudents/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -173,13 +186,16 @@ export default class StudentViewAdmin extends React.Component{
         }
         else{alert("Invalid Login details");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshStudents(), 30000);
+    this.timer = setInterval(()=> this.refreshStudents(), 10000);
 
   }
   refreshStudents = async() =>{
@@ -190,7 +206,7 @@ export default class StudentViewAdmin extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllStudents/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllStudents/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -228,6 +244,9 @@ export default class StudentViewAdmin extends React.Component{
           //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -393,7 +412,7 @@ export default class StudentViewAdmin extends React.Component{
     //alert(i);
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/deleteStudents/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/deleteStudents/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -415,6 +434,9 @@ export default class StudentViewAdmin extends React.Component{
 
         }
         else{alert("Error deleting student. Try again.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

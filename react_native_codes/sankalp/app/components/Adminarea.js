@@ -23,6 +23,7 @@ import DrawerLayout from 'react-native-drawer-layout';
 import MenuAdmin from './MenuAdmin';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
+var version_package = require('./../../package.json');
 //import Login from './Login';
 var GLOB_IP_PROD='http://52.27.104.46'
 var GLOB_IP_DEV='http://127.0.0.1:8000'
@@ -42,6 +43,7 @@ export default class Adminarea extends React.Component{
       'current_version':'',
       'user_id':'',
       'loginType':'Admin',
+      'schoolName':'',
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -73,6 +75,7 @@ export default class Adminarea extends React.Component{
   }
   _loadInitialState = async() => {
     //search for KYC/bank status using async
+    this.setState({'current_version':version_package.version});
     var value = await AsyncStorage.getItem('user_session');
     if (value !== null){
       //json_value = JSON.stringify(value);
@@ -98,6 +101,18 @@ export default class Adminarea extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('session_type');
     //alert(value);
     if (value !== null){
@@ -116,17 +131,10 @@ export default class Adminarea extends React.Component{
       this.props.navigation.navigate('Login');
     }
     this.timer = setInterval(()=> this.refreshVersion(), 30000);
-    
-  }
-  refreshVersion = async() =>{
-    var isFocused = this.props.navigation.isFocused();    
-    //alert(isFocused);
-    if (!isFocused)
-      return;
-    this.setState({'current_version':version_package.version});
+
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -151,6 +159,53 @@ export default class Adminarea extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+    
+  }
+  refreshVersion = async() =>{
+    var isFocused = this.props.navigation.isFocused();    
+    //alert(isFocused);
+    if (!isFocused)
+      return;
+    this.setState({'current_version':version_package.version});
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'latest_version':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -210,7 +265,7 @@ export default class Adminarea extends React.Component{
             leftIconName={'menu'}
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
-        
+          {this.displayVersionMessage()}
           <Text>Welcome {this.state.user_session.user_name}</Text>
           <Text>Welcome {this.state.user_session.name}</Text>
           <Text>Welcome {this.state.user_session.email}</Text>

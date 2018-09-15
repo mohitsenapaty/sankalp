@@ -2,13 +2,16 @@ var express = require('express');
 var SHA224 = require('sha224');
 var router = express.Router();
 var pg = require('pg');
-var conString = "postgres://postgres:postgres@localhost:5432/sankalp";
+var conString1 = "postgres://postgres:postgres@localhost:5432/sankalp_";
 var crypto = require('crypto');
 
-router.post('/', function(req, resp, next){
+router.post('/:schoolName/', function(req, resp, next){
 
 	console.log(req.body);
-  //console.log(next);
+  var schoolName = (req.params.schoolName).toLowerCase();
+  //console.log(schoolName);
+  var conString = conString1 + schoolName;
+  //console.log(conString);
 
   var username = req.body.username;
   var password = req.body.password;
@@ -40,7 +43,7 @@ router.post('/', function(req, resp, next){
         { //console.log(res);
           console.log(res.rows.length);
           if (res.rows.length==1){
-            var api_key = crypto.createCipher('aes-128-cbc', 'shatabdi');
+            var api_key = crypto.createCipher('aes-128-cbc', schoolName);
             var got_id = api_key.update((res.rows[0].admin_id).toString(), 'utf8', 'hex');
             got_id += api_key.final('hex');
             console.log("successful login " + got_id);
@@ -80,7 +83,7 @@ router.post('/', function(req, resp, next){
         { //console.log(res);
           console.log(res.rows.length);
           if (res.rows.length==1){
-            var api_key = crypto.createCipher('aes-128-cbc', 'shatabdi');
+            var api_key = crypto.createCipher('aes-128-cbc', schoolName);
             var got_id = api_key.update((res.rows[0].teacher_id).toString(), 'utf8', 'hex');
             got_id += api_key.final('hex');
             console.log("successful login " + got_id);
@@ -120,7 +123,7 @@ router.post('/', function(req, resp, next){
         { //console.log(res);
           console.log(res.rows.length);
           if (res.rows.length==1){
-            var api_key = crypto.createCipher('aes-128-cbc', 'shatabdi');
+            var api_key = crypto.createCipher('aes-128-cbc', schoolName);
             var got_id = api_key.update((res.rows[0].student_id).toString(), 'utf8', 'hex');
             got_id += api_key.final('hex');
             console.log("successful login " + got_id);

@@ -44,6 +44,7 @@ export default class NoticeViewAdmin extends React.Component{
       'subjectDataList':[],
       'loginType':'Admin',
       current_id:0,
+      'schoolName':'', 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -88,6 +89,18 @@ export default class NoticeViewAdmin extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('user_token');
     if (value !== null){
       //json_value = JSON.stringify(value);
@@ -119,7 +132,7 @@ export default class NoticeViewAdmin extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllNotifications/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllNotifications/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -145,6 +158,9 @@ export default class NoticeViewAdmin extends React.Component{
         }
         else{alert("Invalid Login details");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){
@@ -162,7 +178,7 @@ export default class NoticeViewAdmin extends React.Component{
       return;
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchAllNotifications/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllNotifications/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -187,6 +203,9 @@ export default class NoticeViewAdmin extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

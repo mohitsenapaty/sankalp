@@ -46,6 +46,7 @@ export default class SubjectAddAdmin extends React.Component{
       'subjectCode':'',
       'isMajor':'Major',
       'loginType':'Admin',
+      'schoolName':'', 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -85,6 +86,18 @@ export default class SubjectAddAdmin extends React.Component{
       this.setState({'user_session':obj_value});
       this.setState({'user_id':obj_value.admin_id});
 
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -203,7 +216,7 @@ export default class SubjectAddAdmin extends React.Component{
   addSubjects = () =>{
     try{
       //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/addSubjects/'+ this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/addSubjects/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -227,6 +240,9 @@ export default class SubjectAddAdmin extends React.Component{
 
         }
         else{alert("Error adding subject, subject name or subject code might exist already.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }

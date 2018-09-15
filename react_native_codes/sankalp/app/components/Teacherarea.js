@@ -44,6 +44,7 @@ export default class Teacherarea extends React.Component{
       'current_version':'',
       'user_id':'',
       'loginType':'Teacher',
+      'schoolName':'',
     };
     
     this.toggleDrawer = this.toggleDrawer.bind(this);
@@ -102,6 +103,18 @@ export default class Teacherarea extends React.Component{
       this.props.navigation.navigate('Login');
     }
 
+    value = await AsyncStorage.getItem('schoolName');
+    if (value !== null){
+      //json_value = JSON.stringify(value);
+      //alert(json_value);
+      //obj_value = JSON.parse(value);
+      this.setState({'schoolName':value});
+      //alert(this.state.schoolName);
+    }
+    else{
+      this.props.navigation.navigate('Login');
+    }
+
     value = await AsyncStorage.getItem('session_type');
     //alert(value);
     if (value !== null){
@@ -122,7 +135,7 @@ export default class Teacherarea extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -147,6 +160,9 @@ export default class Teacherarea extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
@@ -166,7 +182,7 @@ export default class Teacherarea extends React.Component{
     this.setState({'current_version':version_package.version});
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/'+this.state.user_token+'/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -191,6 +207,9 @@ export default class Teacherarea extends React.Component{
           //alert(this.state.subjectDataList);
         }
         else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
       })
       .done();
     }
