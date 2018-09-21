@@ -48,7 +48,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("SELECT * FROM teacher_login;", function(err, res)
+      db_client.query("select a.*,b.class,b.section from teacher_login a left outer join class_teacher_detail b on a.teacher_id=b.teacher_id;", function(err, res)
       {
         if (err){
           console.log(err); 

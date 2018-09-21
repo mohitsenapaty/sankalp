@@ -181,7 +181,7 @@ export default class ViewGradeTeacher extends React.Component{
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshTeachers(), 10000)
+    this.timer = setInterval(()=> this.refreshTeachers(), 30000)
     
   }
   refreshTeachers = async() =>{

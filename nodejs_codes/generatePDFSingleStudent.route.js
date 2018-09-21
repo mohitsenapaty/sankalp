@@ -136,7 +136,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select a.fullname, a.enrollment_number, a.father_name, a.mother_name,d.*,c.subject_name,e.grade,f.* from student_login a join student_subject_detail b on b.student_id=a.student_id join subject_details c on b.subject_id=c.subject_id join student_academic_enrollment_detail d on d.student_id=a.student_id join exam_group_scoring e on e.student_id=a.student_id and e.subject_id=b.subject_id join exam_group_detail f on e.exam_group_id=f.exam_group_id where a.student_id=$1 and e.exam_group_id=$2;"
+      db_client.query("select a.fullname, a.enrollment_number, a.father_name, a.mother_name,d.*,c.subject_name,e.grade,f.*,h.fullname as class_teacher from student_login a join student_subject_detail b on b.student_id=a.student_id join subject_details c on b.subject_id=c.subject_id join student_academic_enrollment_detail d on d.student_id=a.student_id join exam_group_scoring e on e.student_id=a.student_id and e.subject_id=b.subject_id join exam_group_detail f on e.exam_group_id=f.exam_group_id left outer join class_teacher_detail g on g.class=d.class and g.section=d.section left outer join teacher_login h on h.teacher_id=g.teacher_id where a.student_id=$1 and e.exam_group_id=$2;"
         ,[userID, exam_group_id]
         , function(err, res)
       {
@@ -162,7 +162,8 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
             var father_name = res.rows[0].father_name;
             var mother_name = res.rows[0].mother_name;
             var enrollment_number = res.rows[0].enrollment_number;
-            var enc_file_name = SHA224(examname+fullname, "utf8").toString('hex');
+            var enc_file_name = SHA224(res.rows[0].exam_group_id+res.rows[0].student_id+fullname, "utf8").toString('hex');
+            var class_teacher = res.rows[0].class_teacher;
 
             var subjects = [];
             var grades = [];
@@ -294,7 +295,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
               </br>
               Father's Name: ${father_name} &emsp; Mother's Name: ${mother_name}
               </br>
-              Class Teacher's Name: bckjsackvbkd bdsakj
+              Class Teacher's Name: ${class_teacher}
               </br>
             </div>
             <div id="rcorners3">
@@ -307,7 +308,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                 <table style="width:100%">
                     <tr style="width:100%">
                       <th style="width:100%"></th>
-                      <th>Unit Test</th>
+                      <th>${examname}</th>
                     </tr>
                     <tr style="width:100%">
                       <th style="width:100%">Subject</th>

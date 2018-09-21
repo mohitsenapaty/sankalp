@@ -26,6 +26,8 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
   var all_class_selected =req.body.all_class_selected;
   var classes_selected = req.body.classes_selected;
   var session = req.body.session;
+  var term_number = req.body.term_number;
+  var term_final = req.body.term_final;
   
   var login_data = {'success':0,'data':[],'token':''};
 
@@ -64,8 +66,9 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("INSERT INTO exam_group_detail(exam_group_name, exam_group_type, exam_group_date, session) VALUES ($1,$2,$3,$4) RETURNING exam_group_id;",
-        [exam_group_name, exam_group_type, exam_group_date, session], function(err, res)
+      db_client.query("INSERT INTO exam_group_detail(exam_group_name, exam_group_type, exam_group_date, session, term_number, term_final) VALUES ($1,$2,$3,$4,$5,$6) RETURNING exam_group_id;",
+        [exam_group_name, exam_group_type, exam_group_date, session, term_number, term_final], 
+        function(err, res)
       {
         if (err){
           console.log(err); 
@@ -82,7 +85,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
           //console.log(data_arr);
           //close connection
           //4 cases, if all n full, all n not full, not all n full, not all n not full
-          if (all_class_selected == true && exam_group_type == 'Full'){
+          if (all_class_selected == true && exam_group_type == 'All Subjects'){
             db_client.query("INSERT INTO exam_group_scoring(exam_group_id, subject_id, student_id) select $1, a.subject_id, a.student_id from student_subject_detail a;",
               [res.rows[0].exam_group_id], function(err1, res1)
             {
@@ -108,7 +111,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
               }
             });
           }
-          if (all_class_selected == true && exam_group_type == 'Unit'){
+          if (all_class_selected == true && exam_group_type == 'Only Major'){
             db_client.query("INSERT INTO exam_group_scoring(exam_group_id, subject_id, student_id) select $1, a.subject_id, a.student_id from student_subject_detail a join subject_details b on a.subject_id=b.subject_id where b.is_major=$2;",
               [res.rows[0].exam_group_id, 'Major'], function(err1, res1)
             {
@@ -134,7 +137,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
               }
             });
           }
-          if (all_class_selected == false && exam_group_type == 'Full'){
+          if (all_class_selected == false && exam_group_type == 'All Subjects'){
             db_client.query("INSERT INTO exam_group_scoring(exam_group_id, subject_id, student_id) select $1, a.subject_id, a.student_id from student_subject_detail a join student_academic_enrollment_detail b on a.student_id=b.student_id where b.class=ANY($2);",
               [res.rows[0].exam_group_id, classes_selected], function(err1, res1)
             {
@@ -160,7 +163,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
               }
             });
           }
-          if (all_class_selected == false && exam_group_type == 'Unit'){
+          if (all_class_selected == false && exam_group_type == 'Only Major'){
             db_client.query("INSERT INTO exam_group_scoring(exam_group_id, subject_id, student_id) select $1, a.subject_id, a.student_id from student_subject_detail a join student_academic_enrollment_detail b on a.student_id=b.student_id join subject_details c on a.subject_id=c.subject_id where b.class=ANY($2) and c.is_major=$3;",
               [res.rows[0].exam_group_id, classes_selected, 'Major'], function(err1, res1)
             {

@@ -36,6 +36,7 @@ var IP_IN_USE=GLOB_IP_PROD
 
 const allClass = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 const sessions = ['2018-2019', '2019-2020', '2020-2021', '2021-2022'];
+const termArray = ['1', '2', '3', '4'];
 
 //type Props = {};
 export default class ExamAddAdmin extends React.Component{
@@ -50,7 +51,7 @@ export default class ExamAddAdmin extends React.Component{
       'loginType':'Admin',
       'exam_group_name':'',
       'exam_group_date':'15-08-2018',
-      'exam_group_type':'Full',
+      'exam_group_type':'All Subjects',
       'exam_maximum_major_subject_marks': '',
       'exam_maximum_minor_subject_marks': '',
       'exam_group_classes':[],
@@ -58,6 +59,8 @@ export default class ExamAddAdmin extends React.Component{
       classesCheckedArray:{},
       'session':'2018-2019',
       'schoolName':'',
+      'term_number':'1',
+      'term_final':'N',
     };
 
     for (var i = 0; i < allClass.length; i++){
@@ -277,12 +280,28 @@ export default class ExamAddAdmin extends React.Component{
               }}
               onDateChange={(date) => {this.setState({exam_group_date: date})}}
             />
-            <Text>Select Exam Type (Full/Unit):</Text>
-            <ModalDropdown options={['Full', 'Unit']} defaultValue='Full' onSelect={this.selectedExamTypeMethod}>
+            <Text>Select Exam Type (All Subjects/Only Major):</Text>
+            <ModalDropdown options={['All Subjects', 'Only Major']} defaultValue='All Subjects' onSelect={this.selectedExamTypeMethod}
+              style = {stylesAdmin.ModalDropDownStyleMedium}
+            >
+        
+            </ModalDropdown>
+            <Text>Select Exam Term Number:</Text>
+            <ModalDropdown options={termArray} defaultValue={termArray[0]} onSelect={this.selectedExamTermMethod}
+              style = {stylesAdmin.ModalDropDownStyleMedium}
+            >
         
             </ModalDropdown>
             <Text>Select Exam Session:</Text>
-            <ModalDropdown options={sessions} defaultValue={sessions[0]} onSelect={this.selectedSessionMethod}>
+            <ModalDropdown options={sessions} defaultValue={sessions[0]} onSelect={this.selectedSessionMethod}
+              style = {stylesAdmin.ModalDropDownStyleMedium}
+            >
+        
+            </ModalDropdown>
+            <Text>Is Final Term?:</Text>
+            <ModalDropdown options={['N', 'Y']} defaultValue='N' onSelect={this.selectedFinalMethod}
+              style = {stylesAdmin.ModalDropDownStyleMedium}
+            >
         
             </ModalDropdown>
             <Text>Enter Maximum marks for major subjects:</Text>
@@ -372,7 +391,9 @@ export default class ExamAddAdmin extends React.Component{
           max_minor_marks: this.state.exam_maximum_minor_subject_marks,
           all_class_selected: all_class_selected,
           classes_selected: classes_selected,
-          session: this.state.session
+          session: this.state.session,
+          term_number: this.state.term_number,
+          term_final: this.state.term_final,
         }),
       })
       .then((response) => response.json())
@@ -456,10 +477,20 @@ export default class ExamAddAdmin extends React.Component{
     //alert("1");
     this.setState({'exam_group_type':value});
   }
+  selectedExamTypeMethod = (idx, value) => {
+    //alert({idx} + " " + {value});
+    //alert("1");
+    this.setState({'term_number':value});
+  }
   selectedSessionMethod = (idx, value) => {
     //alert({idx} + " " + {value});
     //alert("1");
     this.setState({'session':value});
+  }
+  selectedFinalMethod = (idx, value) => {
+    //alert({idx} + " " + {value});
+    //alert("1");
+    this.setState({'term_final':value});
   }
 
 }

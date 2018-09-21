@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'sankalp.wsgi.application'
 DATABASES = {
     'sankalp_kva': { # this is our sample db, already created
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sankalp',
+        'NAME': 'sankalp_kaanger_valley_academy_raipur',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',

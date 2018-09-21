@@ -3,8 +3,11 @@ from __future__ import unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import *
-import hashlib
+import hashlib, os
+from collections import OrderedDict
 from django.core.files.storage import FileSystemStorage
+from django.utils.encoding import smart_str
+from django.core.files import File
 # Create your views here.
 
 def home(request):
@@ -152,4 +155,94 @@ def student_excel_upload(request):
     else:
         return render(request, 'kva_student_excel_upload.html', {'msg':'Upload Failed'})
 
+def admin_view_exam(request):
+    returnDict = {}
+    template = 'kva_admin_view_exam.html'
+    is_logged_in = 0
+    if not request.session.get("type") == 'Admin':
+        return HttpResponseRedirect('/index/kva/home/')
+    _username = request.session.get("username")
+    if not _username == None:
+        #return HttpResponseRedirect('/combined_app/')
+        is_logged_in = 1
 
+        admin_object = AdminLogin.objects.get(user_name=_username)
+
+        if admin_object == None:
+            #return error page
+            template = 'kva_admin_profile_info.html'
+            returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"),'logintype':request.session.get('type'), 'error':'Some network or Internal Error. Try after some time.'}
+            return render(request, template, returnDict)
+
+        exam_objs = ExamGroupDetail.objects.all().order_by('-session');
+        exam_arr = []
+        for exam_obj in exam_objs:
+            exam_arr.append(exam_obj.__dict__);
+        template = 'kva_admin_view_exam.html'
+        returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"),'logintype':request.session.get('type'), 'error':'None', 'admin_login':admin_object.__dict__, 'exam_arr':exam_arr}
+        return render(request, template, returnDict)
+    else:
+        return HttpResponseRedirect('/index/kva/home')
+
+
+def admin_perform_view(request, exam_id1):
+    i_exam_id = int(exam_id1)
+    returnDict = {}
+    template = 'kva_admin_view_exam.html'
+    is_logged_in = 0
+    if not request.session.get("type") == 'Admin':
+        return HttpResponseRedirect('/index/kva/home/')
+    _username = request.session.get("username")
+    if not _username == None:
+        #return HttpResponseRedirect('/combined_app/')
+        is_logged_in = 1
+
+        admin_object = AdminLogin.objects.get(user_name=_username)
+
+        if admin_object == None:
+            #return error page
+            template = 'kva_admin_profile_info.html'
+            returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"),'logintype':request.session.get('type'), 'error':'Some network or Internal Error. Try after some time.'}
+            return render(request, template, returnDict)
+
+        class_arr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+        sec_arr = ['A', 'B', 'C']
+        student_pdf_dict = OrderedDict()
+        for _cls in class_arr:
+            student_pdf_dict[_cls] = OrderedDict()
+            for _sec in sec_arr:
+                student_pdf_dict[_cls][_sec] = OrderedDict()
+                student_acad_enroll_objs = StudentAcademicEnrollmentDetail.objects.filter(class_field=_cls, section=_sec).order_by('roll_number')
+                for student_obj in student_acad_enroll_objs:
+                    student_id_1 = int(student_obj.__dict__.get('student_id'))
+                    roll_number = student_obj.__dict__.get('roll_number')
+                    #print student_id_1, i_exam_id
+                    exam_report_objs = ExamGroupReportsSingle.objects.filter(exam_group_id=i_exam_id,student_id=student_id_1)
+                    #print exam_report_objs.__dict__
+                    if len(exam_report_objs)>0:
+                        print student_id_1, i_exam_id
+                        print len(exam_report_objs)
+                        st_obj = exam_report_objs[0].__dict__
+                        st_obj["report_file_name"] = os.path.basename(st_obj.get('report_loc'))[0:-4:]
+                        student_pdf_dict[_cls][_sec][roll_number] = st_obj
+                        
+                    else:
+                        student_pdf_dict[_cls][_sec][roll_number] = {'report_loc':''}
+        #exam_report_objs = ExamGroupReportsSingle.objects.filter(exam_group_id=i_exam_id).order_by('-session')
+        #exam_arr = []
+        #for exam_obj in exam_objs:
+        #    exam_arr.append(exam_obj.__dict__);
+        #print student_pdf_dict        
+        template = 'kva_admin_perform_view.html'
+        returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"),'logintype':request.session.get('type'), 'error':'None', 'admin_login':admin_object.__dict__, 'report_dict':student_pdf_dict}
+        return render(request, template, returnDict)
+    else:
+        return HttpResponseRedirect('/index/kva/home')
+
+def admin_download_file(request, file_name):
+    path_to_file = '/var/tmp/'+file_name+'.pdf'
+    f = open(path_to_file, 'r')
+    myfile = File(f)
+    response = HttpResponse(myfile, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + file_name
+    return response

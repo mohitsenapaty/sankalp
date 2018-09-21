@@ -10,30 +10,6 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-class SankalpKVARouter(object):
-    def db_for_read(self, model, **hints):
-        if model._meta.app_label == 'kvaschool':
-            return 'sankalp_kva'
-        return None
-
-    def db_for_write(self, model, **hints):
-        if model._meta.app_label == 'kvaschool':
-            return 'sankalp_kva'
-        return None
-
-    def allow_relation(self, obj1, obj2, **hints):
-        if obj1._meta.app_label == 'kvaschool' or obj2._meta.app_label == 'kvaschool':
-            return True
-        return None
-
-    def allow_syncdb(self, db, model):
-
-        if db == 'sankalp_kva':
-            return model._meta.app_label == 'kvaschool'
-        elif model._meta.app_label == 'kvaschool':
-            return False
-        return None
-
 class AdminLogin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     user_name = models.CharField(unique=True, max_length=20)
@@ -45,6 +21,127 @@ class AdminLogin(models.Model):
         db_table = 'admin_login'
 
 
+class AuthGroup(models.Model):
+    name = models.CharField(unique=True, max_length=80)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group'
+
+
+class AuthGroupPermissions(models.Model):
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group_permissions'
+        unique_together = (('group', 'permission'),)
+
+
+class AuthPermission(models.Model):
+    name = models.CharField(max_length=255)
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    codename = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_permission'
+        unique_together = (('content_type', 'codename'),)
+
+
+class AuthUser(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.BooleanField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.CharField(max_length=254)
+    is_staff = models.BooleanField()
+    is_active = models.BooleanField()
+    date_joined = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
+
+
+class AuthUserGroups(models.Model):
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_groups'
+        unique_together = (('user', 'group'),)
+
+
+class AuthUserUserPermissions(models.Model):
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_user_permissions'
+        unique_together = (('user', 'permission'),)
+
+
+class ClassTeacherDetail(models.Model):
+    teacher_id = models.IntegerField(unique=True)
+    class_field = models.CharField(db_column='class', primary_key=True, max_length=2)  # Field renamed because it was a Python reserved word.
+    section = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'class_teacher_detail'
+        unique_together = (('class_field', 'section'),)
+
+
+class DjangoAdminLog(models.Model):
+    action_time = models.DateTimeField()
+    object_id = models.TextField(blank=True, null=True)
+    object_repr = models.CharField(max_length=200)
+    action_flag = models.SmallIntegerField()
+    change_message = models.TextField()
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'django_admin_log'
+
+
+class DjangoContentType(models.Model):
+    app_label = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'django_content_type'
+        unique_together = (('app_label', 'model'),)
+
+
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
+
+
+class DjangoSession(models.Model):
+    session_key = models.CharField(primary_key=True, max_length=40)
+    session_data = models.TextField()
+    expire_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_session'
+
+
 class ExamGroupDetail(models.Model):
     exam_group_id = models.AutoField(primary_key=True)
     exam_group_name = models.CharField(max_length=100)
@@ -52,6 +149,8 @@ class ExamGroupDetail(models.Model):
     exam_group_type = models.CharField(max_length=20)
     session = models.CharField(max_length=20, blank=True, null=True)
     results_declared = models.CharField(max_length=1, blank=True, null=True)
+    term_number = models.CharField(max_length=1, blank=True, null=True)
+    term_final = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -112,7 +211,7 @@ class NotificationTarget(models.Model):
 
 
 class StudentAcademicEnrollmentDetail(models.Model):
-    student_id = models.IntegerField(unique=True)
+    student_id = models.IntegerField(primary_key=True)
     class_field = models.CharField(db_column='class', max_length=2)  # Field renamed because it was a Python reserved word.
     section = models.CharField(max_length=1)
     roll_number = models.CharField(max_length=2)
@@ -122,17 +221,82 @@ class StudentAcademicEnrollmentDetail(models.Model):
         db_table = 'student_academic_enrollment_detail'
 
 
+class StudentAhs(models.Model):
+    exam_group_id = models.IntegerField(primary_key=True)
+    student_id = models.IntegerField()
+    total_working_days = models.IntegerField(blank=True, null=True)
+    attendance = models.IntegerField(blank=True, null=True)
+    height = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    weight = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    bmi = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_ahs'
+        unique_together = (('exam_group_id', 'student_id'),)
+
+
+class StudentCsa(models.Model):
+    exam_group_id = models.IntegerField(primary_key=True)
+    student_id = models.IntegerField()
+    literary_interest = models.CharField(max_length=5, blank=True, null=True)
+    communication_skill = models.CharField(max_length=5, blank=True, null=True)
+    music = models.CharField(max_length=5, blank=True, null=True)
+    art_craft = models.CharField(max_length=5, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_csa'
+        unique_together = (('exam_group_id', 'student_id'),)
+
+
 class StudentLogin(models.Model):
     student_id = models.AutoField(primary_key=True)
-    fullname = models.CharField(unique=True, max_length=50)
-    emailid = models.CharField(unique=True, max_length=100)
-    phone = models.CharField(unique=True, max_length=15)
+    fullname = models.CharField(max_length=50)
+    emailid = models.CharField(max_length=100)
+    phone = models.CharField(max_length=15)
     password = models.CharField(max_length=100)
-    unencrypted = models.CharField(max_length=10)
+    unencrypted = models.CharField(max_length=20)
+    enrollment_number = models.CharField(unique=True, max_length=20, blank=True, null=True)
+    father_name = models.CharField(max_length=100, blank=True, null=True)
+    mother_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'student_login'
+
+
+class StudentPersonalTrait(models.Model):
+    exam_group_id = models.IntegerField(primary_key=True)
+    student_id = models.IntegerField()
+    discipline = models.CharField(max_length=5, blank=True, null=True)
+    punctuality = models.CharField(max_length=5, blank=True, null=True)
+    hygiene = models.CharField(max_length=5, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_personal_trait'
+        unique_together = (('exam_group_id', 'student_id'),)
+
+
+class StudentPwdRequest(models.Model):
+    student_id = models.IntegerField()
+    request_time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'student_pwd_request'
+
+
+class StudentRemarks(models.Model):
+    exam_group_id = models.IntegerField(primary_key=True)
+    student_id = models.IntegerField()
+    remarks = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_remarks'
+        unique_together = (('exam_group_id', 'student_id'),)
 
 
 class StudentSubjectDetail(models.Model):
@@ -162,11 +326,20 @@ class TeacherLogin(models.Model):
     emailid = models.CharField(unique=True, max_length=100)
     phone = models.CharField(unique=True, max_length=15)
     password = models.CharField(max_length=100)
-    unencrypted = models.CharField(max_length=10)
+    unencrypted = models.CharField(max_length=20)
 
     class Meta:
         managed = False
         db_table = 'teacher_login'
+
+
+class TeacherPwdRequest(models.Model):
+    teacher_id = models.IntegerField()
+    request_time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'teacher_pwd_request'
 
 
 class TeacherSubjectDetail(models.Model):
@@ -189,3 +362,12 @@ class UpdateTracker(models.Model):
     class Meta:
         managed = False
         db_table = 'update_tracker'
+
+
+class VersionDb(models.Model):
+    version_info = models.CharField(max_length=20, blank=True, null=True)
+    lastupdated = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'version_db'

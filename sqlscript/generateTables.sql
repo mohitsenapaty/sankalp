@@ -137,3 +137,70 @@ alter table student_login add column father_name varchar(100);
 alter table student_login add column mother_name varchar(100);
 
 create table version_db(version_info varchar(20), lastUpdated TIMESTAMP default CURRENT_TIMESTAMP);
+
+create table class_teacher_detail (teacher_id int unique not null, class varchar(2) not null, section varchar(1) not null, primary key (class, section));
+
+alter table exam_group_detail add column term_number varchar(1);
+
+alter table exam_group_detail add column term_final varchar(1);
+
+create table student_csa(
+    exam_group_id int not null,
+    student_id int not null,
+    literary_interest varchar(5),
+    communication_skill varchar(5),
+    music varchar(5),
+    art_craft varchar(5),
+    primary key (exam_group_id, student_id)
+);
+
+create index index_student_csa on student_csa(student_id);
+
+create table student_personal_trait(
+    exam_group_id int not null,
+    student_id int not null,
+    discipline varchar(5),
+    punctuality varchar(5),
+    hygiene varchar(5),
+    primary key (exam_group_id, student_id)
+);
+
+create index index_student_personal_trait on student_personal_trait(student_id);
+
+create table student_ahs(
+    exam_group_id int not null,
+    student_id int not null,
+    total_working_days int,
+    attendance int,
+    height numeric(6,2),
+    weight numeric(6,2),
+    bmi numeric(6,2),
+    primary key (exam_group_id, student_id)
+);
+
+create index index_student_ahs on student_ahs(student_id);
+
+create table student_remarks(
+    exam_group_id int not null,
+    student_id int not null,
+    remarks varchar(500),
+    primary key (exam_group_id, student_id)
+);
+
+create index index_student_remarks on student_remarks(student_id);
+
+create table teacher_pwd_request(
+    teacher_id int not null,
+    request_time timestamp not null
+);
+
+create index index_teacher_pwd_request on teacher_pwd_request(teacher_id);
+
+create table student_pwd_request(
+    student_id int not null,
+    request_time timestamp not null
+);
+
+create index index_student_pwd_request on student_pwd_request(student_id);
+
+alter table student_academic_enrollment_detail add primary key(student_id);

@@ -48,6 +48,8 @@ export default class SingleExamViewTeacher extends React.Component{
       'loginType':'Teacher',
       'examObject':props.navigation.state.params.i,
       'schoolName':'',
+      'isClassTeacher':'N',
+      'classTeacherObject':[]
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -170,7 +172,45 @@ export default class SingleExamViewTeacher extends React.Component{
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshTeachers(), 30000)
+    //get class teacher details
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchClassTeacher/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'classTeacherObject':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    this.timer = setInterval(()=> this.refreshTeachers(), 10000)
     
   }
   refreshTeachers = async() =>{
@@ -256,6 +296,37 @@ export default class SingleExamViewTeacher extends React.Component{
       );
     }
   }
+  displayClassTeacherSection(){
+    if (this.state.classTeacherObject.length == 0){
+      return(
+        <View style={stylesAdmin.InputContainer}>
+          <Text>You are not a class teacher.</Text>
+
+        </View>
+      );
+    }
+    else{
+      //alert(this.state.subjectDataList);
+      if (this.state.examObject.term_final == 'Y'){
+        return(
+          <View style={stylesAdmin.InputContainer}>
+            <Text>You are class teacher of Class: {this.state.classTeacherObject[0].class} Section: {this.state.classTeacherObject[0].section}.</Text>
+            <Text onPress={()=>{this.goToViewClassTeacherPage(this.state.examObject)}}>Click Here to View Student Term Details.</Text>
+            <Text onPress={()=>{this.goToAddClassTeacherPage(this.state.examObject)}}>Click Here to Add Student Term Details.</Text>
+          </View>
+        );
+      }
+      else{
+        return(
+          <View style={stylesAdmin.InputContainer}>
+            <Text>You are class teacher of Class: {this.state.classTeacherObject[0].class} Section: {this.state.classTeacherObject[0].section}.</Text>
+            <Text></Text>
+            <Text>No class responsibilities for this exam.</Text>
+          </View>
+        );
+      }
+    }
+  }
   render() {
 
     return (
@@ -287,6 +358,11 @@ export default class SingleExamViewTeacher extends React.Component{
             <Text>Exam Group Name:     {this.state.examObject.exam_group_name} </Text>
             <Text>Exam Group Date:     {this.state.examObject.exam_group_date} </Text>
             <Text>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
+            <Text>Exam Group Term:     {this.state.examObject.term_number} </Text>
+            <Text>Exam Group Session:  {this.state.examObject.session} </Text>
+            <Text>Final Term:          {this.state.examObject.term_final} </Text>
+            <Text> </Text>
+            {this.displayClassTeacherSection()}
             {this.displayTeacherSubjects()}     
           </ScrollView>
         </View>
@@ -346,6 +422,12 @@ export default class SingleExamViewTeacher extends React.Component{
   goToViewGradePage = (j)=>{
     //alert(j);
     this.props.navigation.navigate('ViewGradeTeacher', {j},);
+  }
+  goToAddClassTeacherPage = (i) =>{
+    this.props.navigation.navigate('AddTermValueTeacher', {i},);
+  }
+  goToViewClassTeacherPage = (i) =>{
+    this.props.navigation.navigate('ViewTermValueTeacher', {i},);
   }
 
 }

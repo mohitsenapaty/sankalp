@@ -50,6 +50,7 @@ export default class ViewGradeStudent extends React.Component{
       'examObject':props.navigation.state.params.i,
       'isPDFPresent':false,
       'schoolName':'', 
+      'studentValue':{},
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -175,6 +176,45 @@ export default class ViewGradeStudent extends React.Component{
 
     try{
       //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchValuesForStudent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+          exam_group_id: this.state.examObject.exam_group_id
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'studentValue':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.user_id); 
       fetch(globalAssets.IP_IN_USE+'/fetchPDFPresent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
@@ -248,6 +288,45 @@ export default class ViewGradeStudent extends React.Component{
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
           this.setState({'examDataList':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchValuesForStudent/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+          exam_group_id: this.state.examObject.exam_group_id
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'studentValue':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
         }
@@ -339,6 +418,7 @@ export default class ViewGradeStudent extends React.Component{
         <View style={stylesAdmin.InputContainer}>
           
           { this.displayExamsByRow() }
+          <Text></Text>
         </View>
       );
     }
@@ -347,7 +427,7 @@ export default class ViewGradeStudent extends React.Component{
     if (this.state.isPDFPresent == false){
       return(
         <View>
-
+          <Text>No PDF Generated.</Text>
         </View>
       );
     }
@@ -361,6 +441,34 @@ export default class ViewGradeStudent extends React.Component{
         </View>
       );
     }
+  }
+  displayGrading(){
+    if (this.state.examObject.term_final == 'Y')
+    return(
+      <View>
+        <Text></Text>
+        <Text>Co-Scholastic Activities</Text>
+        <Text>Literary Interests. {this.state.studentValue.literary_interest}</Text>
+        <Text>Communication Skill. {this.state.studentValue.communication_skill}</Text>
+        <Text>Music. {this.state.studentValue.music}</Text>
+        <Text>Arts and Crafts. {this.state.studentValue.art_craft}</Text>
+        
+        <Text>Personal Traits</Text>
+        <Text>Discipline. {this.state.studentValue.discipline}</Text>
+        <Text>Punctuality. {this.state.studentValue.punctuality}</Text>
+        <Text>Hygiene. {this.state.studentValue.hygiene}</Text>
+        
+        <Text>Health and Attendance</Text>
+        <Text>Total number of working days. {this.state.studentValue.total_working_days}</Text>
+        <Text>Number of days Present. {this.state.studentValue.attendance}</Text>
+        <Text>Height in cm. {this.state.studentValue.height} </Text>
+        <Text>Weight in Kg. {this.state.studentValue.weight}</Text>
+        <Text>BMI (Body Mass Index). {this.state.studentValue.bmi}</Text>
+        
+        <Text>Remarks: {this.state.studentValue.remarks}</Text>
+        
+      </View>
+      );
   }
   render() {
 
@@ -393,6 +501,7 @@ export default class ViewGradeStudent extends React.Component{
             <Text>Exam Group Date:     {this.state.examObject.exam_group_date} </Text>
             <Text>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
             {this.displayExams()}
+            {this.displayGrading()}
           </ScrollView>
           <View>
             {this.displayPDFDownloadLink()}
@@ -406,42 +515,83 @@ export default class ViewGradeStudent extends React.Component{
     );  
   }
   goToPDFPage = () =>{
-    alert("PDF page");
+    //alert("PDF page");
     //this.state.examObject.exam_group_id
     //this.state.user_id
-    try{
-      //alert("a"); 
-      fetch(globalAssets.IP_IN_USE+'/generatePDFSingleStudent/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id,
-          loginType: this.state.loginType,
-          exam_group_id: this.state.examObject.exam_group_id,
-        }),
-      })
-      .then((response) => response.json())
-      .then((res) => {
-        //console.log(res);
-        //alert(res.success);
-        //alert("a");
-        if (res.success === 1){
-          alert("Exam Declared successfully.")
+    if (this.state.examObject.term_final == 'N'){
+      try{
+        //alert("a"); 
+        fetch(globalAssets.IP_IN_USE+'/generatePDFSingleStudent/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: this.state.user_id,
+            loginType: this.state.loginType,
+            exam_group_id: this.state.examObject.exam_group_id,
+          }),
+        })
+        .then((response) => response.json())
+        .then((res) => {
+          //console.log(res);
+          //alert(res.success);
+          //alert("a");
+          if (res.success === 1){
+            alert("Exam Report Generated successfully.")
 
-        }
-        else{alert("Error declaring exam. Try again.");}
-      })
-      .catch((err)=>{
-        alert("Network error. Please try again.");
-      })
-      .done();
+          }
+          else{alert("Error declaring exam. Try again.");}
+        })
+        .catch((err)=>{
+          alert("Network error. Please try again.");
+        })
+        .done();
+      }
+      catch(error){
+        alert(error);
+      }
     }
-    catch(error){
-      alert(error);
+    else{
+      //alert("a"); 
+      try{
+        //alert("a"); 
+        fetch(globalAssets.IP_IN_USE+'/generatePDFSingleStudentFull/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: this.state.user_id,
+            loginType: this.state.loginType,
+            exam_group_id: this.state.examObject.exam_group_id,
+          }),
+        })
+        .then((response) => response.json())
+        .then((res) => {
+          //console.log(res);
+          //alert(res.success);
+          //alert("a");
+          if (res.success === 1){
+            alert("Exam Report Generated successfully.")
+
+          }
+          else{alert("Error declaring exam. Try again.");}
+        })
+        .catch((err)=>{
+          alert("Network error. Please try again.");
+        })
+        .done();
+      }
+      catch(error){
+        alert(error);
+      }
     }
+
+    this.refreshTeachers();
+    
   }
   logout = () => {
     try{

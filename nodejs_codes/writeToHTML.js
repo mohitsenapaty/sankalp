@@ -11,11 +11,154 @@ var subjects = ['HINDI', 'ENGLISH', 'MATHEMATICS', 'SCIENCE', 'SOCIAL STUDIES'];
 var grades = ['A', 'A+', 'B+', 'B', 'C'];
 
 var tableRowString = ``;
+var schoolName = 'kaanger valley academy raipur'.toUpperCase();
 
 for (var i = 0; i < subjects.length; i++){
   var rowString = `<tr><td>${subjects[i]}</td><td>${grades[i]}</td></tr>`;
   tableRowString+=rowString;
 }
+
+writeString1 = `
+
+<html>
+    <head>
+        <style>
+        .header {
+            position: relative;
+            height:10%;
+        }
+
+        .topright {
+            position: absolute;
+            top: 8px;
+            right: 16px;
+            font-size: 14px;
+        }
+
+        .topleft {
+            position: absolute;
+            top: 1%;
+            left: 2%;
+            font-size: 12px;
+        }
+        
+        .leftImg {
+            position: absolute;
+            top: 40%;
+            left: 2%;
+            font-size: 12px;
+        }
+        
+        .schoolName {
+            position: absolute;
+            top: 40%;
+            left: 15%;
+            font-size: 16px;
+        }
+        
+        .studentName {
+            position: absolute;
+            top: 40%;
+            right: 1%;
+            font-size: 12px;
+        }
+
+        .topcenter {
+            position: absolute;
+            top: 1%;
+            left: 35%;
+            font-size: 16px;
+        }
+        
+        .container {
+            position: relative;
+            height:70%;
+        }
+        #rcorners2 {
+            position:absolute;
+            border-radius: 25px;
+            border: 2px solid #555555;
+            width: 96%;
+            height: 60%; 
+            top: 30%;
+            left: 2%;
+            font-size:16px;
+        }
+        #rcorners3 {
+            position:absolute;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            border: 2px solid #555555;
+            width: 96%;
+            height: 7%; 
+            top: 30%;
+            left: 2%;
+            font-size:16px;
+        }
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        th {
+          height:20px;
+        }
+        th, td {
+            padding: 5px;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="header" >
+            <div class="topleft">
+                Year: ${session}
+            </div>
+            <div class="topcenter">Test Report Card - ${examname}</div>
+            <div class="leftImg">Logo</div>
+            <div class="schoolName">Kaanger Valley Academy</div>
+            <div class="studentName">
+            ${fullname} </br>
+            Class: ${class_}${section}
+            </div>
+        </div>
+        <hr align="center" noshade="false" width="100%">
+        <div class="container">
+            <div style="position:absolute;top:1%;left:2%;font-size:16px;">
+                Student Information
+            </div>
+            <hr align="center" noshade="false" width="96%" style="position:relative;top:6%">
+            <div style="position:absolute;top:8%;left:2%;font-size:16px;">
+              Roll Number: ${roll_number} &emsp; Date of Birth: 10-10-2010 &emsp; Admission Number: ${enrollment_number}
+              </br>
+              Father's Name: ${father_name} &emsp; Mother's Name: ${mother_name}
+              </br>
+              Class Teacher's Name: bckjsackvbkd bdsakj
+              </br>
+            </div>
+            <div id="rcorners3">
+                <div style="position:absolute; left:5%; top:20%;">
+                Student Information
+                </div>
+            </div>
+            <div id="rcorners2">
+                <div style="position:absolute; left:1%; top:15%;">
+                <table style="width:100%">
+                    <tr style="width:100%">
+                      <th style="width:100%"></th>
+                      <th>Unit Test</th>
+                    </tr>
+                    <tr style="width:100%">
+                      <th style="width:100%">Subject</th>
+                      <th>Grade</th>
+                    </tr>
+                    ${tableRowString}
+                </table>
+                </div>
+            </div>
+        </div>
+    </body>
+<html>
+
+`;
 
 var writeString = `
 
@@ -113,7 +256,7 @@ var writeString = `
             </div>
             <div class="topcenter">Test Report Card - ${examname}</div>
             <div class="leftImg">Logo</div>
-            <div class="schoolName">Kaanger Valley Academy</div>
+            <div class="schoolName">${schoolName}</div>
             <div class="studentName">
             ${fullname} </br>
             Class: ${class_}${section}

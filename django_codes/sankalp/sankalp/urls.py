@@ -27,4 +27,7 @@ urlpatterns = [
     url(r'^kva/admin_profile_info/', kvaschool_views.admin_profile_info, name='kva_admin_profile_info'),
     url(r'^kva/teacher_excel_upload/', kvaschool_views.teacher_excel_upload, name='kva_teacher_excel_upload'),
     url(r'^kva/student_excel_upload/', kvaschool_views.student_excel_upload, name='kva_student_excel_upload'),
+    url(r'^kva/admin_view_exam/', kvaschool_views.admin_view_exam, name='kva_admin_view_exam'),
+    url(r'^kva/admin_perform_view/(?P<exam_id1>\d+)/', kvaschool_views.admin_perform_view, name='kva_admin_perform_view'),
+    url(r'^kva/admin_download_file/(?P<file_name>\w+)/', kvaschool_views.admin_download_file, name='kva_admin_download_file'),
 ]

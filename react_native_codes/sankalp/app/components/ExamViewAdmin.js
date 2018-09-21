@@ -227,10 +227,10 @@ export default class ExamViewAdmin extends React.Component{
           <Text>Exam Group Name:     {row_set.exam_group_name} </Text>
           <Text>Exam Group Date:     {row_set.exam_group_date} </Text>
           <Text>Exam Group Type:     {row_set.exam_group_type} </Text>
+          <Text>Exam Group Term:     {row_set.term_number} </Text>
           <Text>Exam Group Session:  {row_set.session} </Text>
-          
-          <Text onPress={()=>{this.deleteExamAlert(row_set.exam_group_name)}}>Delete Exam.</Text>
-          
+          <Text>Final Term:          {row_set.term_final} </Text>
+          <Text onPress={()=>{this.deleteExamAlert(row_set.exam_group_name)}}>Delete Exam.</Text>          
           <Text onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam</Text>
           <Text onPress={()=>{this.declareExamAlert(row_set)}}>Declare Exam Results</Text>
         </View>

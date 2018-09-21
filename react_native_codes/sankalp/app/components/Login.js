@@ -32,7 +32,7 @@ export default class Login extends React.Component{
             <Text style={stylesLogin.Logo}> -SANKALP-
             </Text>
             <View style={stylesLogin.InputContainer}>
-              <TextInput style={stylesLogin.Input} onChangeText={(username)=>this.setState({username})} value={this.state.username}  placeholder='Username'></TextInput>
+              <TextInput style={stylesLogin.Input} onChangeText={(username)=>this.setState({username})} value={this.state.username}  placeholder='Enter username (email for teacher/ enrollment_number for student)'></TextInput>
               <TextInput secureTextEntry={true} onChangeText={(password)=>this.setState({password})} value={this.state.password} style={stylesLogin.Input} placeholder='Password'></TextInput>
               <Text>Login as: </Text>
               <ModalDropdown options={['Teacher', 'Student', 'Admin']} defaultValue='Teacher' onSelect={this.selectedPayMethod}
@@ -50,7 +50,13 @@ export default class Login extends React.Component{
                 <Text>LOG IN</Text>
               </TouchableOpacity>
             </View>
+            <View style={stylesLogin.RegisterContainer}>
+              <Text>
+                Don't have password/Forgot password? <Text style={stylesLogin.RegisterText} onPress={this.register}>Click Here</Text>
+              </Text>
+            </View>
           </View>
+
         </ImageBackground>
       </View>
     );
@@ -74,6 +80,10 @@ export default class Login extends React.Component{
       else if (session_type == 'Teacher') this.props.navigation.navigate('Teacherarea');
       else if (session_type == 'Student') this.props.navigation.navigate('Studentarea');
     }
+  }
+
+  register = () =>{
+    this.props.navigation.navigate('PasswordArea');
   }
 
   selectedPayMethod = (idx, value) => {

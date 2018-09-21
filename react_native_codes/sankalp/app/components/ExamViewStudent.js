@@ -221,7 +221,7 @@ export default class ExamViewStudent extends React.Component{
         <View>          
           <Text onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam Results</Text>
         </View>
-      );
+      );   
     }
     else{
       return(
@@ -243,6 +243,9 @@ export default class ExamViewStudent extends React.Component{
           <Text>Exam Group Name:     {row_set.exam_group_name} </Text>
           <Text>Exam Group Date:     {row_set.exam_group_date} </Text>
           <Text>Exam Group Type:     {row_set.exam_group_type} </Text>
+          <Text>Exam Group Term:     {row_set.term_number} </Text>
+          <Text>Exam Group Session:  {row_set.session} </Text>
+          <Text>Final Term:          {row_set.term_final} </Text>
           {this.examResultsDisplay(row_set)}
           
         </View>

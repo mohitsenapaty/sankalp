@@ -29,6 +29,7 @@ import TeacherViewAdmin from './app/components/TeacherViewAdmin';
 import TeacherAddAdmin from './app/components/TeacherAddAdmin';
 import StudentViewAdmin from './app/components/StudentViewAdmin';
 import StudentAddAdmin from './app/components/StudentAddAdmin';
+import AddClassTeacherAdmin from './app/components/AddClassTeacherAdmin';
 
 import AddSubjectToClassAdmin from './app/components/AddSubjectToClassAdmin';
 import AssignSubjectsToTeacherAdmin from './app/components/AssignSubjectsToTeacherAdmin';
@@ -44,6 +45,8 @@ import ExamViewTeacher from './app/components/ExamViewTeacher';
 import SingleExamViewTeacher from './app/components/SingleExamViewTeacher';
 import AssignGradeTeacher from './app/components/AssignGradeTeacher';
 import ViewGradeTeacher from './app/components/ViewGradeTeacher';
+import AddTermValueTeacher from './app/components/AddTermValueTeacher';
+import ViewTermValueTeacher from './app/components/ViewTermValueTeacher';
 
 import SubjectViewStudent from './app/components/SubjectViewStudent';
 
@@ -52,6 +55,7 @@ import ViewGradeStudent from './app/components/ViewGradeStudent';
 
 import ExamStudentViewAdmin from './app/components/ExamStudentViewAdmin';
 import StudentViewGradeAdmin from './app/components/StudentViewGradeAdmin';
+import StudentViewValueAdmin from './app/components/StudentViewValueAdmin';
 
 import CreateNoticeAdmin from './app/components/CreateNoticeAdmin';
 
@@ -70,6 +74,8 @@ import CreateNoticeTeacher from './app/components/CreateNoticeTeacher';
 import SentNoticeViewTeacher from './app/components/SentNoticeViewTeacher';
 import SingleSentNoticeViewTeacher from './app/components/SingleSentNoticeViewTeacher';
 import SendNoticeIndividualStudentTeacher from './app/components/SendNoticeIndividualStudentTeacher';
+
+import PasswordArea from './app/components/PasswordArea';
 
 import {StackNavigator} from 'react-navigation';
 
@@ -100,6 +106,7 @@ const NavigationApp = StackNavigator(
     ViewGradeStudent:{screen: ViewGradeStudent},
     ExamStudentViewAdmin:{screen: ExamStudentViewAdmin},
     StudentViewGradeAdmin:{screen: StudentViewGradeAdmin},
+    StudentViewValueAdmin:{screen: StudentViewValueAdmin},
     CreateNoticeAdmin:{screen: CreateNoticeAdmin},
     ReceivedNoticeViewTeacher:{screen: ReceivedNoticeViewTeacher},
     SingleReceivedNoticeViewTeacher:{screen: SingleReceivedNoticeViewTeacher},
@@ -113,6 +120,10 @@ const NavigationApp = StackNavigator(
     SendNoticeIndividualStudentAdmin:{screen: SendNoticeIndividualStudentAdmin},
     StudentsInSubjectViewTeacher:{screen: StudentsInSubjectViewTeacher},
     SendNoticeIndividualStudentTeacher:{screen: SendNoticeIndividualStudentTeacher},
+    AddClassTeacherAdmin:{screen: AddClassTeacherAdmin},
+    AddTermValueTeacher:{screen: AddTermValueTeacher},
+    ViewTermValueTeacher:{screen: ViewTermValueTeacher},
+    PasswordArea:{screen: PasswordArea},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

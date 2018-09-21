@@ -259,25 +259,49 @@ export default class ExamStudentViewAdmin extends React.Component{
 
   }
   displayStudentByRow(){
-    return this.state.studentDict[this.state.selectedClass][this.state.selectedSec].map((row_set, i)=>{
-      return (
-        <View key={i} style={{
-          flex:1,
-          borderBottomColor: 'black',
-          borderBottomWidth: 1,
-        }}>
-          <Text>Full Name: {row_set.fullname} </Text>
-          <Text>Email:     {row_set.emailid} </Text>
-          <Text>Mobile:    {row_set.phone} </Text>
-          
-          <Text>Class:     {row_set.class}</Text>
-          <Text>Section:   {row_set.section}</Text>
-          <Text>RollNumber:{row_set.roll_number}</Text>
-          <Text onPress={()=>{this.goToAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance</Text>
-          
-        </View>
-      );
-    });
+    if (this.state.examObject.term_final == 'N'){
+      return this.state.studentDict[this.state.selectedClass][this.state.selectedSec].map((row_set, i)=>{
+        return (
+          <View key={i} style={{
+            flex:1,
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}>
+            <Text>Full Name: {row_set.fullname} </Text>
+            <Text>Email:     {row_set.emailid} </Text>
+            <Text>Mobile:    {row_set.phone} </Text>
+            
+            <Text>Class:     {row_set.class}</Text>
+            <Text>Section:   {row_set.section}</Text>
+            <Text>RollNumber:{row_set.roll_number}</Text>
+            <Text onPress={()=>{this.goToAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance</Text>
+            
+          </View>
+        );
+      });
+    }
+    else{
+      return this.state.studentDict[this.state.selectedClass][this.state.selectedSec].map((row_set, i)=>{
+        return (
+          <View key={i} style={{
+            flex:1,
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}>
+            <Text>Full Name: {row_set.fullname} </Text>
+            <Text>Email:     {row_set.emailid} </Text>
+            <Text>Mobile:    {row_set.phone} </Text>            
+            <Text>Class:     {row_set.class}</Text>
+            <Text>Section:   {row_set.section}</Text>
+            <Text>RollNumber:{row_set.roll_number}</Text>
+            <Text></Text>
+            <Text onPress={()=>{this.goToAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance (Scholastic)</Text>
+            <Text onPress={()=>{this.goToViewAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance (Non-Scholastic)</Text>
+            
+          </View>
+        );
+      });
+    }
   }
   displayStudents(){
     //fetch list of subjects
@@ -394,6 +418,7 @@ export default class ExamStudentViewAdmin extends React.Component{
   }
   goToViewAssignSubjectPage = (i) =>{
     //alert(i);
+    this.props.navigation.navigate('StudentViewValueAdmin', {i},);
   }
   goToAssignSubjectPage = (i) =>{
     this.props.navigation.navigate('StudentViewGradeAdmin', {i},);

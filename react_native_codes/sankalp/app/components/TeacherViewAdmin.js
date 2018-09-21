@@ -217,21 +217,42 @@ export default class TeacherViewAdmin extends React.Component{
   }
   displayTeacherByRow(){
     return this.state.teacherDataList.map((row_set, i)=>{
-      return (
-        <View key={i} style={{
-          flex:1,
-          borderBottomColor: 'black',
-          borderBottomWidth: 1,
-        }}>
-          <Text>Full Name: {row_set.fullname} </Text>
-          <Text>Email:     {row_set.emailid} </Text>
-          <Text>Mobile:    {row_set.phone} </Text>
-          <Text>Password:  {row_set.unencrypted}</Text>
-          <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
-          <Text> </Text>
-          <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Teacher</Text>
-        </View>
-      );
+      if (row_set.class)
+        return (
+          <View key={i} style={{
+            flex:1,
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}>
+            <Text>Full Name: {row_set.fullname} </Text>
+            <Text>Email:     {row_set.emailid} </Text>
+            <Text>Mobile:    {row_set.phone} </Text>
+            <Text>Password:  {row_set.unencrypted}</Text>
+            <Text>Class Teacher of: {row_set.class} {row_set.section}</Text>
+            <Text></Text>
+            <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
+            <Text onPress={()=>{this.removeClassTeacherAlert(row_set)}}>Remove as Class Teacher </Text>
+            <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Teacher</Text>
+          </View>
+        );
+      else
+        return (
+          <View key={i} style={{
+            flex:1,
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}>
+            <Text>Full Name: {row_set.fullname} </Text>
+            <Text>Email:     {row_set.emailid} </Text>
+            <Text>Mobile:    {row_set.phone} </Text>
+            <Text>Password:  {row_set.unencrypted}</Text>
+            <Text>Class Teacher of: {row_set.class} {row_set.section}</Text>
+            <Text></Text>
+            <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
+            <Text onPress={()=>{this.goToClassTeacherPage(row_set)}}>Set as Class Teacher </Text>
+            <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Teacher</Text>
+          </View>
+        );
     });
   }
   displayTeachers(){
@@ -328,6 +349,52 @@ export default class TeacherViewAdmin extends React.Component{
   goToAssignSubjectPage = (i) =>{
     this.props.navigation.navigate('AssignSubjectsToTeacherAdmin', {i},);
   }
+  removeClassTeacherAlert = (i) =>{
+    Alert.alert(
+      'Confirm Remove Class Teacher',
+      'Do you want to remove the class teacher ' + i.fullname + ' from being a class teacher?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => this.removeClassTeacher(i)},
+      ],
+      { cancelable: false }
+    );
+  }
+  removeClassTeacher = (i) =>{
+    try{
+      //alert("a"); 
+      fetch(globalAssets.IP_IN_USE+'/deleteClassTeacher/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          teacher_id: i.teacher_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          alert("Class Teacher deleted successfully.")
+          this.refreshTeachers();
+        }
+        else{alert("Error removing class teacher. Try again.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+  }
   deleteTeacherAlert = (i) =>{
     Alert.alert(
       'Confirm Delete Teacher',
@@ -361,7 +428,8 @@ export default class TeacherViewAdmin extends React.Component{
         //alert(res.success);
         //alert("a");
         if (res.success === 1){
-          alert("Teacher deleted successfully.")
+          alert("Teacher deleted successfully.");
+          this.refreshTeachers();
 
         }
         else{alert("Error deleting teacher. Try again.");}
@@ -408,6 +476,10 @@ export default class TeacherViewAdmin extends React.Component{
   }
   goToAddTeacherPage = () =>{
     this.props.navigation.navigate('TeacherAddAdmin');
+  }
+  goToClassTeacherPage = (i) =>{
+    //set class teacher
+    this.props.navigation.navigate('AddClassTeacherAdmin', {i},);
   }
 
 }

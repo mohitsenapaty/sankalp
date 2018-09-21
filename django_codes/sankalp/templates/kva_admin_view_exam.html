@@ -1,0 +1,114 @@
+{% load static %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>SANKALP</TITLE>
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/common/home_style.css'%}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </HEAD>
+    <BODY>
+	<div class="top"> 
+		<p>
+		<center> KVA SCHOOL ADMIN LOGIN</center>	
+		</p>
+	</div>
+	<div class="left">
+		
+  	    {% if is_logged_in == 0 %} 
+		<p>You are not logged in</p>
+	  		<p><a href="#" id ="a_log_in">Live Learning Login</a></p>
+	    {% else %}
+		<p>Welcome, {{ username }} Logined as {{ logintype }}</p>
+	        {% if logintype == 'Admin' %}
+                    <p><a href="/index/kva/admin_profile_info/" >Profile</a></p>
+                {% elif logintype == 'Teacher' %}
+                    <p><a href="/teacher_profile_info/" >Profile</a></p>
+                {% else %}
+                    <p><a href="/student_profile_info/" >Profile</a></p>
+            {% endif %}
+		<p><a href="/index/kva/log_out/" id ="a_log_out">Log out</a></p>
+		{% endif %}
+		<p><a href="/index/kva/home/">Main Page</a></p>
+  		
+	</div>
+	<div class="main">
+	{% if error_message != 'None' %}
+		<div><p>{{ error_message }}</p></div>
+	{% endif %}
+        {% if is_logged_in == 0 %}
+	    <div>You need to login to access this page</div>
+        {% else %}
+        <div>
+            <p>
+                <center>Welcome, {{username}}</center>
+            </p>
+            <p>
+                Admin id: {{ admin_login.admin_id }} </br>
+                Admin username: {{ admin_login.user_name }} </br>
+            </p>
+            <p>
+                <a href="/index/kva/view_student/">View Students.</a>
+                <a href="/index/kva/view_teacher/">View Teachers.</a>
+                <a href="/index/kva/view_subject/">View Subjects.</a>
+                <a href="/index/kva/admin_view_exam/">View Exams.</a>
+                <a href="/index/kva/view_notice/">View Notices.</a>
+                <b></b>                
+            </p>
+        </div>
+        <div> 
+            <p>
+                <h3>View All exams</h3> </br>
+            </p>
+            <p>
+                <table>
+                <tr>
+                <th>Exam id</th>
+                <th>Exam name</th>
+                <th>Exam date</th>
+                <th>Exam type</th>
+                <th>Session</th>
+                <th>Results declared</th>
+                <th>Term Final</th>
+                <th>Term Number</th>
+                <th>Declare Result Link</th>
+                <th>View Performance</th>
+                </tr>
+                {% for elem in exam_arr %}
+                    <tr>
+                    <td>{{ elem.exam_group_id }}</td> 
+                    <td>{{ elem.exam_group_name }}</td> 
+                    <td>{{ elem.exam_group_date }}</td> 
+                    <td>{{ elem.exam_group_type }}</td> 
+                    <td>{{ elem.session }}</td> 
+                    <td>{{ elem.results_declared }}</td> 
+                    <td>{{ elem.term_final }}</td>
+                    <td>{{ elem.term_number }}</td> 
+                    <td>Some Link</td>
+                    <td><a href='/index/kva/admin_perform_view/{{elem.exam_group_id}}/'>Click here</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </p>
+            <p>
+            </p>
+        </div>
+        {% endif %}
+	</div>
+	<div class="topleft">
+		<p>
+	    <center>Learn With Dharna</center>
+		</p>
+	</div>
+    </BODY>
+<script type="text/javascript"> 
+/*function funcMissionStatement(){
+	var el = document.getElementById('foo');
+	var el = document.getElementById('foo');
+	var el = document.getElementById('foo');
+	var el = document.getElementById('foo');
+	var el = document.getElementById('foo'); 
+}
+*/
+</HTML>

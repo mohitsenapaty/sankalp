@@ -32,6 +32,7 @@ var fetchExamSubjectsForTeacherRouter = require('./fetchExamSubjectsForTeacher.r
 var fetchStudentsForSubjectRouter = require('./fetchStudentsForSubject.route');
 var fetchSubjectsForStudentRouter = require('./fetchSubjectsForStudent.route');
 var upgradeMarksForStudentRouter = require('./upgradeMarksForStudent.route');
+var upgradeValuesForStudentRouter = require('./upgradeValuesForStudent.route');
 var fetchAllStudentsForExamRouter = require('./fetchAllStudentsForExam.route');
 var declareExamsRouter = require('./declareExams.route');
 var generatePDFSingleStudentRouter = require('./generatePDFSingleStudent.route');
@@ -43,6 +44,13 @@ var fetchSentNoticeForTeachersRouter = require('./fetchSentNoticeForTeachers.rou
 var fetchNoticeForStudentsRouter = require('./fetchNoticeForStudents.route');
 var fetchAllNotificationsRouter = require('./fetchAllNotifications.route');
 var fetchAllStudentsForSubjectTeacherRouter = require('./fetchAllStudentsForSubjectTeacher.route');
+var deleteClassTeacherRouter = require('./deleteClassTeacher.route');
+var addClassTeacherRouter = require('./addClassTeacher.route');
+var fetchClassTeacherRouter = require('./fetchClassTeacher.route');
+var fetchClassStudentsRouter = require('./fetchClassStudents.route');
+var fetchValuesForStudentRouter = require('./fetchValuesForStudent.route');
+var generatePDFSingleStudentFullRouter = require('./generatePDFSingleStudentFull.route');
+var getPasswordSMSRouter = require('./getPasswordSMS.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -75,6 +83,7 @@ app.use('/declareExams', declareExamsRouter);
 app.use('/fetchExamSubjectsForTeacher', fetchExamSubjectsForTeacherRouter);
 app.use('/fetchStudentsForSubject', fetchStudentsForSubjectRouter);
 app.use('/upgradeMarksForStudent', upgradeMarksForStudentRouter);
+app.use('/upgradeValuesForStudent', upgradeValuesForStudentRouter);
 app.use('/fetchSubjectsForStudent', fetchSubjectsForStudentRouter);
 app.use('/fetchAllStudentsForExam', fetchAllStudentsForExamRouter);
 app.use('/generatePDFSingleStudent', generatePDFSingleStudentRouter);
@@ -86,6 +95,13 @@ app.use('/fetchSentTeacherNotifications', fetchSentNoticeForTeachersRouter);
 app.use('/fetchReceivedStudentNotifications', fetchNoticeForStudentsRouter);
 app.use('/fetchAllNotifications', fetchAllNotificationsRouter);
 app.use('/fetchAllStudentsForSubjectTeacher', fetchAllStudentsForSubjectTeacherRouter);
+app.use('/deleteClassTeacher', deleteClassTeacherRouter);
+app.use('/addClassTeacher', addClassTeacherRouter);
+app.use('/fetchClassTeacher', fetchClassTeacherRouter);
+app.use('/fetchClassStudents', fetchClassStudentsRouter);
+app.use('/fetchValuesForStudent', fetchValuesForStudentRouter);
+app.use('/generatePDFSingleStudentFull', generatePDFSingleStudentFullRouter);
+app.use('/getPasswordSMS', getPasswordSMSRouter);
 
 const server = http.createServer(app);
 server.listen(8002, ()=>{

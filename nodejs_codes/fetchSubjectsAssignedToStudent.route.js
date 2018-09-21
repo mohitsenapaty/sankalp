@@ -53,7 +53,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select distinct c.*,d.fullname from student_subject_detail a left outer join teacher_subject_detail b on a.subject_id=b.subject_id join subject_details c on c.subject_id=a.subject_id left outer join teacher_login d on b.teacher_id=d.teacher_id join student_academic_enrollment_detail e on e.student_id=a.student_id where a.student_id=$1 and e.class=b.class and e.section=b.section;"
+      db_client.query("select c.*,d.*,f.fullname from student_login a join student_subject_detail b on a.student_id=b.student_id join subject_details c on b.subject_id=c.subject_id join student_academic_enrollment_detail d on a.student_id=d.student_id left outer join teacher_subject_detail e on e.subject_id=c.subject_id and e.class=d.class and e.section=d.section left outer join teacher_login f on e.teacher_id=f.teacher_id where a.student_id=$1;"
         ,[student_id]
         , function(err, res)
       {
@@ -100,7 +100,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select distinct c.*,d.fullname from student_subject_detail a left outer join teacher_subject_detail b on a.subject_id=b.subject_id join subject_details c on c.subject_id=a.subject_id left outer join teacher_login d on b.teacher_id=d.teacher_id join student_academic_enrollment_detail e on e.student_id=a.student_id where a.student_id=$1 and e.class=b.class and e.section=b.section;"
+      db_client.query("select c.*,d.*,f.fullname from student_login a join student_subject_detail b on a.student_id=b.student_id join subject_details c on b.subject_id=c.subject_id join student_academic_enrollment_detail d on a.student_id=d.student_id left outer join teacher_subject_detail e on e.subject_id=c.subject_id and e.class=d.class and e.section=d.section left outer join teacher_login f on e.teacher_id=f.teacher_id where a.student_id=$1;"
         ,[userID]
         , function(err, res)
       {

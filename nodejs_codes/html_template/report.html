@@ -3,75 +3,99 @@
         <style>
         .header {
             position: relative;
-            height:10%;
+            height:8%;
         }
 
         .topright {
             position: absolute;
             top: 8px;
             right: 16px;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .topleft {
             position: absolute;
             top: 1%;
             left: 2%;
-            font-size: 12px;
+            font-size: 10px;
         }
         
         .leftImg {
             position: absolute;
             top: 40%;
             left: 2%;
-            font-size: 12px;
+            font-size: 10px;
         }
         
         .schoolName {
             position: absolute;
             top: 40%;
             left: 15%;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .studentName {
             position: absolute;
             top: 40%;
             right: 1%;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .topcenter {
             position: absolute;
             top: 1%;
             left: 35%;
-            font-size: 16px;
+            font-size: 10px;
         }
         
         .container {
             position: relative;
             height:70%;
         }
+        .minor_subjects{
+            position:absolute;
+            width: 95%;
+            height: 40%; 
+            top: 47%;
+            left: 3%;
+            font-size:10px;
+        }
+        .csa{
+            position:absolute;
+            width: 95%;
+            height: 40%; 
+            top: 67%;
+            left: 3%;
+            font-size:10px;
+        }
+        .personal_traits{
+            position:absolute;
+            width: 95%;
+            height: 40%; 
+            top: 93%;
+            left: 3%;
+            font-size:10px;
+        }
         #rcorners2 {
             position:absolute;
-            border-radius: 25px;
-            border: 2px solid #555555;
+            //border-radius: 25px;
+            //border: 2px solid #555555;
             width: 96%;
-            height: 60%; 
-            top: 30%;
+            height: 40%; 
+            top: 15%;
             left: 2%;
-            font-size:16px;
+            font-size:10px;
         }
         #rcorners3 {
             position:absolute;
-            border-top-left-radius: 25px;
-            border-top-right-radius: 25px;
-            border: 2px solid #555555;
+            //border-top-left-radius: 25px;
+            //border-top-right-radius: 25px;
+            //border: 2px solid #555555;
             width: 96%;
             height: 7%; 
-            top: 30%;
-            left: 2%;
-            font-size:16px;
+            top: 11%;
+            //left: 2%;
+            font-size:10px;
         }
         table, th, td {
           border: 1px solid black;
@@ -98,13 +122,13 @@
             Class: 3c
             </div>
         </div>
-        <hr align="center" noshade="false" width="100%">
+        <hr align="center" noshade="false" width="100%" style="position:relative;top:0%">
         <div class="container">
-            <div style="position:absolute;top:1%;left:2%;font-size:16px;">
+            <div style="position:absolute;top:0%;left:2%;font-size:10px;">
                 Student Information
             </div>
-            <hr align="center" noshade="false" width="96%" style="position:relative;top:6%">
-            <div style="position:absolute;top:8%;left:2%;font-size:16px;">
+            <hr align="center" noshade="false" width="96%" style="position:relative;top:3%">
+            <div style="position:absolute;top:4%;left:2%;font-size:10px;">
               Roll Number: 10 &emsp; Date of Birth: 10-10-2010 &emsp; Admission Number: 1
               </br>
               Father's Name: aAAAA BbBbC &emsp; Mother's Name: xcxca Asamsa
@@ -113,48 +137,173 @@
               </br>
             </div>
             <div id="rcorners3">
-                <div style="position:absolute; left:5%; top:20%;">
-                Student Information
+                <div style="position:absolute; left:5%; top:15%;">
+                Scholastic Area
                 </div>
             </div>
+            <hr align="center" noshade="false" width="96%" style="position:relative;top:12%">
             <div id="rcorners2">
-                <div style="position:absolute; left:1%; top:15%;">
-                <table style="width:100%">
-                    <tr style="width:100%">
-                      <th style="width:100%"></th>
-                      <th>Unit Test</th>
-                    </tr>
-                    <tr style="width:100%">
-                      <th style="width:100%">Subject</th>
-                      <th>Grade</th>
+                <div style="position:absolute; left:1%; top:0%;">
+                <table style="width: 100%; table-layout: fixed; font-size: 10px">
+                    <tr>
+                      <th rowspan="2">Subject</th>
+                      <th colspan="7" >Term 1</th>
                     </tr>
                     <tr>
-                        <td>aaa</td>
+                      <th>Test 1</th>
+                      <th>Test 2</th>
+                      <th>Test 3</th>
+                      <th>Test 4</th>
+                      <th>Average</th>
+                      <th>Test 5</th>
+                      <th>Test 6</th>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
                         <td>A+</td>
                     </tr>
                     <tr>
-                        <td>aaa</td>
+                        <td>Social Studies</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
                         <td>A+</td>
                     </tr>
                     <tr>
-                        <td>aaa</td>
+                        <td>Science</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
                         <td>A+</td>
                     </tr>
                     <tr>
-                        <td>aaa</td>
+                        <td>Hindi</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
                         <td>A+</td>
                     </tr>
                     <tr>
-                        <td>aaa</td>
+                        <td>English</td>
                         <td>A+</td>
-                    </tr>
-                    <tr>
-                        <td>aaa</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
                         <td>A+</td>
                     </tr>
                 </table>
                 </div>
             </div>
+            <div style="position:absolute; left:5%; top:44%; font-size: 10px;">
+                Additional subjects
+            </div>
+            <hr align="center" noshade="false" width="96%" style="position:relative;top:42%" />
+            <div class="minor_subjects">
+                <table style="width: 100%; table-layout: fixed; font-size: 10px;">
+                    <tr>
+                      <th rowspan="1">Subject</th>
+                      <th>Test 1</th>
+                      <th>Test 2</th>
+                      <th>Test 3</th>
+                      <th>Test 4</th>
+                      <th>Average</th>
+                    </tr>
+                    <tr>
+                        <td>General Knowledge</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr>
+                        <td>Computer Science</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                        <td>A+</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="position:absolute; left:5%; top:63%;font-size: 10px;">
+                Co-Scholastic Activities.
+            </div>
+            <hr align="center" noshade="false" width="96%" style="position:relative;top:60%" />
+            <div class="csa">
+                <table style="width: 100%; table-layout: fixed;font-size: 10px;">
+                    <tr>
+                      <th rowspan="1">Activities</th>
+                      <th>Grade</th>
+                    </tr>
+                    <tr>
+                        <td>Literary Interest</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr>
+                        <td>Communication skill</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr>
+                        <td>Music</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr>
+                        <td>Art and Craft</td>
+                        <td>A+</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="position:absolute; left:5%; top:89%;font-size: 10px;">
+                Personal Traits
+            </div>
+            <hr align="center" noshade="false" width="96%" style="position:relative;top:84%" />
+            
+            <div class="personal_traits">
+                <table style="width: 100%; table-layout: fixed;font-size: 10px;">
+                    <tr>
+                      <th rowspan="1">Qualities</th>
+                      <th>Grade</th>
+                    </tr>
+                    <tr>
+                        <td>Discipline</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr>
+                        <td>Punctuality</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr>
+                        <td>Hygiene</td>
+                        <td>A+</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="position:absolute; left:5%; top:110%;font-size: 10px;">
+                Attendance and Health status
+            </div>
+            <hr align="center" noshade="false" width="96%" style="position:relative;top:104%" />
+            <div style="position:absolute; left:5%; top:114%;font-size: 10px;">
+                Attnd: 87/90 Height: 126cm Weight: 30 kg BMI:15 
+            </div>  
         </div>
     </body>
 <html>

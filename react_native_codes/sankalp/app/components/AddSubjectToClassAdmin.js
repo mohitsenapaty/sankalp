@@ -323,7 +323,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
     if (this.state.assignedSubjectDataList.length == 0){
       return(
         <View style={stylesAdmin.InputContainer}>
-          <Text>Currently no subjects have been added yet.</Text>
+          <Text>Currently no subjects have been added yet for {this.state.selectedClass} {this.state.selectedSec}.</Text>
 
         </View>
       );

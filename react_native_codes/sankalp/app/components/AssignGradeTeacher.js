@@ -181,7 +181,7 @@ export default class AssignGradeTeacher extends React.Component{
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshTeachers(), 10000)
+    this.timer = setInterval(()=> this.refreshTeachers(), 30000)
     
   }
   refreshTeachers = async() =>{
@@ -349,10 +349,17 @@ export default class AssignGradeTeacher extends React.Component{
             <Text>Class & Section:     {this.state.subjectObject.class} {this.state.subjectObject.section} </Text>
             {this.displayStudentByRollNumber()}
           </ScrollView>
+          <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
+            <Text>Go Back</Text>
+          </TouchableOpacity>  
         </View>
     </DrawerLayout>
       
     );  
+  }
+  goBack = () =>{
+    i = this.state.examObject;
+    this.props.navigation.navigate('SingleExamViewTeacher', {i});
   }
   isNumeric = (n) => {
     //alert(!isNaN(parseFloat(n)) && isFinite(n));
