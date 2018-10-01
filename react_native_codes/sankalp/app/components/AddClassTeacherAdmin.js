@@ -205,7 +205,7 @@ export default class AddClassTeacherAdmin extends React.Component{
               </ModalDropdown>
             </View> 
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.addClassTeacherAlert} style={stylesAdmin.ButtonContainer}>
               <Text>Click here to make class teacher.</Text>
             </TouchableOpacity> 

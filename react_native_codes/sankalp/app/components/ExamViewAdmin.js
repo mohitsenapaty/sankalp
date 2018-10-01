@@ -230,9 +230,9 @@ export default class ExamViewAdmin extends React.Component{
           <Text>Exam Group Term:     {row_set.term_number} </Text>
           <Text>Exam Group Session:  {row_set.session} </Text>
           <Text>Final Term:          {row_set.term_final} </Text>
-          <Text onPress={()=>{this.deleteExamAlert(row_set.exam_group_name)}}>Delete Exam.</Text>          
-          <Text onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam</Text>
-          <Text onPress={()=>{this.declareExamAlert(row_set)}}>Declare Exam Results</Text>
+          <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteExamAlert(row_set.exam_group_name)}}>Delete Exam.</Text>          
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam</Text>
+          <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.declareExamAlert(row_set)}}>Declare Exam Results</Text>
         </View>
       );
     });
@@ -290,7 +290,7 @@ export default class ExamViewAdmin extends React.Component{
           {this.displayExams()}
                  
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goToAddExamsPage} style={stylesAdmin.ButtonContainer}>
               <Text>Click here to add Exams.</Text>
             </TouchableOpacity> 

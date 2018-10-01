@@ -51,6 +51,23 @@ export default class StudentViewValueAdmin extends React.Component{
       'schoolName':'', 
       'studentValue':{}
     };
+    studentValueDict = {
+      literary_interest:'',
+      'communication_skill':'',
+      'music':'',
+      'art_craft':'',
+      'discipline':'',
+      'punctuality':'',
+      'hygiene':'',
+      'total_working_days':0,
+      'attendance':0,
+      'height':0,
+      'weight':0,
+      'bmi':0,
+      'remarks':'',
+    };
+    //this.setState({'studentValue':studentValueDict});
+    this.state.studentValue = studentValueDict;
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
 
@@ -223,31 +240,40 @@ export default class StudentViewValueAdmin extends React.Component{
     }
   }
   displayGrading(){
-    return(
-      <View>
-        <Text></Text>
-        <Text>Co-Scholastic Activities</Text>
-        <Text>Literary Interests. {this.state.studentValue.literary_interest}</Text>
-        <Text>Communication Skill. {this.state.studentValue.communication_skill}</Text>
-        <Text>Music. {this.state.studentValue.music}</Text>
-        <Text>Arts and Crafts. {this.state.studentValue.art_craft}</Text>
-        
-        <Text>Personal Traits</Text>
-        <Text>Discipline. {this.state.studentValue.discipline}</Text>
-        <Text>Punctuality. {this.state.studentValue.punctuality}</Text>
-        <Text>Hygiene. {this.state.studentValue.hygiene}</Text>
-        
-        <Text>Health and Attendance</Text>
-        <Text>Total number of working days. {this.state.studentValue.total_working_days}</Text>
-        <Text>Number of days Present. {this.state.studentValue.attendance}</Text>
-        <Text>Height in cm. {this.state.studentValue.height} </Text>
-        <Text>Weight in Kg. {this.state.studentValue.weight}</Text>
-        <Text>BMI (Body Mass Index). {this.state.studentValue.bmi}</Text>
-        
-        <Text>Remarks: {this.state.studentValue.remarks}</Text>
-        
-      </View>
+    if (this.state.studentValue)
+      return(
+        <View>
+          <Text></Text>
+          <Text>Co-Scholastic Activities</Text>
+          <Text>Literary Interests. {this.state.studentValue.literary_interest}</Text>
+          <Text>Communication Skill. {this.state.studentValue.communication_skill}</Text>
+          <Text>Music. {this.state.studentValue.music}</Text>
+          <Text>Arts and Crafts. {this.state.studentValue.art_craft}</Text>
+          
+          <Text>Personal Traits</Text>
+          <Text>Discipline. {this.state.studentValue.discipline}</Text>
+          <Text>Punctuality. {this.state.studentValue.punctuality}</Text>
+          <Text>Hygiene. {this.state.studentValue.hygiene}</Text>
+          
+          <Text>Health and Attendance</Text>
+          <Text>Total number of working days. {this.state.studentValue.total_working_days}</Text>
+          <Text>Number of days Present. {this.state.studentValue.attendance}</Text>
+          <Text>Height in cm. {this.state.studentValue.height} </Text>
+          <Text>Weight in Kg. {this.state.studentValue.weight}</Text>
+          <Text>BMI (Body Mass Index). {this.state.studentValue.bmi}</Text>
+          
+          <Text>Remarks: {this.state.studentValue.remarks}</Text>
+          
+        </View>
       );
+    else{
+      return(
+        <View>
+          <Text>Not graded yet.</Text>
+        </View>
+      );
+      
+    }
   }
   render() {
 
@@ -285,7 +311,7 @@ export default class StudentViewValueAdmin extends React.Component{
             <Text>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
             {this.displayGrading()}
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goBackOnePage} style={stylesAdmin.ButtonContainer}>
               <Text>Go back</Text>
             </TouchableOpacity> 

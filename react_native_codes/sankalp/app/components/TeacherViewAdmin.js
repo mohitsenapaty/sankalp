@@ -46,6 +46,9 @@ export default class TeacherViewAdmin extends React.Component{
       'teacherDataList':[],
       'loginType':'Admin',
       'schoolName':'',
+      'noticePageNumMax':0,
+      'noticePageLength':5,
+      'noticeCurrentPageNum':0,
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -157,6 +160,10 @@ export default class TeacherViewAdmin extends React.Component{
           this.setState({'numberOfTeachers':res.data.length,'teacherDataList':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
+          var noticePageNumMax = Math.floor(res.data.length/this.state.noticePageLength);
+          if (noticePageNumMax != this.state.noticePageNumMax){
+            this.setState({'noticePageNumMax':noticePageNumMax});
+          }
         }
         else{alert("Invalid Login details");}
       })
@@ -201,6 +208,11 @@ export default class TeacherViewAdmin extends React.Component{
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
           this.setState({'numberOfTeachers':res.data.length,'teacherDataList':res.data});
+
+          var noticePageNumMax = Math.floor(res.data.length/this.state.noticePageLength);
+          if (noticePageNumMax != this.state.noticePageNumMax){
+            this.setState({'noticePageNumMax':noticePageNumMax});
+          }
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
         }
@@ -217,42 +229,56 @@ export default class TeacherViewAdmin extends React.Component{
   }
   displayTeacherByRow(){
     return this.state.teacherDataList.map((row_set, i)=>{
-      if (row_set.class)
-        return (
-          <View key={i} style={{
-            flex:1,
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}>
-            <Text>Full Name: {row_set.fullname} </Text>
-            <Text>Email:     {row_set.emailid} </Text>
-            <Text>Mobile:    {row_set.phone} </Text>
-            <Text>Password:  {row_set.unencrypted}</Text>
-            <Text>Class Teacher of: {row_set.class} {row_set.section}</Text>
-            <Text></Text>
-            <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
-            <Text onPress={()=>{this.removeClassTeacherAlert(row_set)}}>Remove as Class Teacher </Text>
-            <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Teacher</Text>
-          </View>
-        );
-      else
-        return (
-          <View key={i} style={{
-            flex:1,
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}>
-            <Text>Full Name: {row_set.fullname} </Text>
-            <Text>Email:     {row_set.emailid} </Text>
-            <Text>Mobile:    {row_set.phone} </Text>
-            <Text>Password:  {row_set.unencrypted}</Text>
-            <Text>Class Teacher of: {row_set.class} {row_set.section}</Text>
-            <Text></Text>
-            <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
-            <Text onPress={()=>{this.goToClassTeacherPage(row_set)}}>Set as Class Teacher </Text>
-            <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Teacher</Text>
-          </View>
-        );
+      if (i >= this.state.noticeCurrentPageNum * this.state.noticePageLength && i < (this.state.noticeCurrentPageNum+1)*this.state.noticePageLength){
+        if (row_set.class)
+          return (
+            <View key={i} style={{
+              flex:1,
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}>
+              <Text>Full Name: {row_set.fullname} </Text>
+              <Text>Email:     {row_set.emailid} </Text>
+              <Text>Mobile:    {row_set.phone} </Text>
+              <Text>Password:  {row_set.unencrypted}</Text>
+              <Text>Class Teacher of: {row_set.class} {row_set.section}</Text>
+              <Text></Text>
+              <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}
+              style={stylesAdmin.DeleteLinkText}
+              >Delete Teacher</Text>
+              <Text onPress={()=>{this.removeClassTeacherAlert(row_set)}}
+              style={stylesAdmin.DeleteLinkText}
+              >Remove as Class Teacher </Text>
+              <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}
+              style={stylesAdmin.AssignLinkText}
+              >Assign Subjects to Teacher</Text>
+            </View>
+          );
+        else
+          return (
+            <View key={i} style={{
+              flex:1,
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}>
+              <Text>Full Name: {row_set.fullname} </Text>
+              <Text>Email:     {row_set.emailid} </Text>
+              <Text>Mobile:    {row_set.phone} </Text>
+              <Text>Password:  {row_set.unencrypted}</Text>
+              <Text>Class Teacher of: {row_set.class} {row_set.section}</Text>
+              <Text></Text>
+              <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}
+              style={stylesAdmin.DeleteLinkText}
+              >Delete Teacher</Text>
+              <Text onPress={()=>{this.goToClassTeacherPage(row_set)}}
+              style={stylesAdmin.AssignLinkText}
+              >Set as Class Teacher </Text>
+              <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}
+              style={stylesAdmin.AssignLinkText}
+              >Assign Subjects to Teacher</Text>
+            </View>
+          );
+      }
     });
   }
   displayTeachers(){
@@ -271,6 +297,7 @@ export default class TeacherViewAdmin extends React.Component{
         <View style={stylesAdmin.InputContainer}>
           <Text>Currently these teachers have been added yet.</Text>
           { this.displayTeacherByRow() }
+          { this.displayPrevNextOptions() }
         </View>
       );
     }
@@ -307,14 +334,13 @@ export default class TeacherViewAdmin extends React.Component{
         <View style={{flex:1,}}>
           <ScrollView style={stylesAdmin.Container}>
           
-            <Text>Students Added as follows</Text>
+            <Text>Teachers Added as follows</Text>
             {this.displayTeachers()}
             <Text> </Text>
             <Text> </Text>
-            <Text> </Text>
-            <Text> </Text>     
+            <Text> </Text>    
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goToAddTeacherPage} style={stylesAdmin.ButtonContainer}>
               <Text>Click here to add teachers.</Text>
             </TouchableOpacity> 
@@ -480,6 +506,98 @@ export default class TeacherViewAdmin extends React.Component{
   goToClassTeacherPage = (i) =>{
     //set class teacher
     this.props.navigation.navigate('AddClassTeacherAdmin', {i},);
+  }
+  displayPageText1(){
+    var int_arr=[];
+    for (var i = 1; i<=(this.state.noticePageNumMax+1); ++i) {
+      int_arr.push(i);
+    }
+    return int_arr.map((row_set, i)=>{
+      if (i == (this.state.noticeCurrentPageNum)){
+        return(
+          <Text key={i}>{i+1}</Text>
+        );
+      }
+      else{
+        return(
+          <Text style={stylesAdmin.NavigateLinkText} key={i} onPress={()=>{ this.setCurrentPage(i+1)}}>{i+1}</Text>
+        );
+      }
+    });
+  }
+  displayPrevNextOptions(){
+    if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum == this.state.noticePageNumMax){
+      //no multiple pages
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+
+    }
+    else if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum != this.state.noticePageNumMax){
+      //multiple pages and current element is 0
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+    else if (this.state.noticeCurrentPageNum == this.state.noticePageNumMax){
+      //multiple pages and current element is last page
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+    }
+    else{
+      //multiple pages and it's something inbetween
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+  }
+  increaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum+1});
+    //alert(this.state.current_id);
+  }
+  decreaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum-1});
+  }
+  setCurrentPage = (i) =>{
+    //alert(i-1);
+    this.setState({'noticeCurrentPageNum':i-1});
   }
 
 }

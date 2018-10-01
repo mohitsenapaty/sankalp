@@ -219,7 +219,7 @@ export default class ExamViewStudent extends React.Component{
     if (row_set.results_declared == 'Y'){
       return(
         <View>          
-          <Text onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam Results</Text>
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam Results</Text>
         </View>
       );   
     }
@@ -301,7 +301,7 @@ export default class ExamViewStudent extends React.Component{
           {this.displayExams()}
                  
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
           </View>
         </View>
     </DrawerLayout>

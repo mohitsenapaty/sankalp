@@ -435,7 +435,7 @@ export default class ViewGradeStudent extends React.Component{
       //alert(this.state.subjectDataList);
       return(
         <View >
-          <Text onPress={()=>{this.downloadPDF()}}>
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.downloadPDF()}}>
             Click here to download pdf.
           </Text>
         </View>
@@ -502,8 +502,10 @@ export default class ViewGradeStudent extends React.Component{
             <Text>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
             {this.displayExams()}
             {this.displayGrading()}
+            <Text></Text>
+            <Text></Text>
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             {this.displayPDFDownloadLink()}
             <TouchableOpacity onPress={this.goToPDFPage} style={stylesLogin.ButtonContainer}>
               <Text>Generate PDF</Text>

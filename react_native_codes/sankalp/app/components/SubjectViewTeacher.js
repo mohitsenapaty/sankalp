@@ -240,8 +240,8 @@ export default class SubjectViewTeacher extends React.Component{
           <Text>Subject Type:   {row_set.is_major}</Text>
           <Text>Class:          {row_set.class}</Text>
           <Text>Section:        {row_set.section}</Text>
-          <Text onPress={()=>{this.goToStudentsInSubject(row_set)}}>View Students enrolled in class.</Text>
-          <Text onPress={()=>{this.createNotice(row_set)}}>Send Class notice</Text>
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToStudentsInSubject(row_set)}}>View Students enrolled in class.</Text>
+          <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.createNotice(row_set)}}>Send Class notice</Text>
         </View>
       );
     });

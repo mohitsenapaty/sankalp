@@ -45,6 +45,10 @@ export default class NoticeViewAdmin extends React.Component{
       'loginType':'Admin',
       current_id:0,
       'schoolName':'', 
+      'noticePageNumMax':0,
+      'noticePageLength':5,
+      'noticeCurrentPageNum':0,
+
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -153,13 +157,21 @@ export default class NoticeViewAdmin extends React.Component{
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
           this.setState({'subjectDataList':res.data});
+
+          //alert(this.state.noticePageLength);
+          //alert(res.data.length);
+          var noticePageNumMax = Math.floor(res.data.length/this.state.noticePageLength);
+          if (noticePageNumMax != this.state.noticePageNumMax){
+            this.setState({'noticePageNumMax':noticePageNumMax});
+          }
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
+          //alert(this.state.noticePageNumMax);
         }
         else{alert("Invalid Login details");}
       })
       .catch((err)=>{
-        alert("Network error. Please try again.");
+        alert("Network error. Please try again." + err);
       })
       .done();
     }
@@ -201,11 +213,15 @@ export default class NoticeViewAdmin extends React.Component{
           this.setState({'numberOfSubjects':res.data.length,'subjectDataList':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
+          var noticePageNumMax = Math.floor(res.data.length/this.state.noticePageLength);
+          if (noticePageNumMax != this.state.noticePageNumMax){
+            this.setState({'noticePageNumMax':noticePageNumMax});
+          }
         }
         else{alert("Invalid Login details");}
       })
       .catch((err)=>{
-        alert("Network error. Please try again.");
+        alert("Network error. Please try again." + err);
       })
       .done();
     }
@@ -229,23 +245,126 @@ export default class NoticeViewAdmin extends React.Component{
     );*/
     
     return this.state.subjectDataList.map((row_set, i)=>{
-      return (
-        <View key={i} style={{
-          flex:1,
-          borderBottomColor: 'black',
-          borderBottomWidth: 1,
-        }}>
-          <Text>Notice ID:        {row_set.notification_id} </Text>
-          <Text>Notice subject:   {row_set.subject} </Text>
-          <Text>Created At:       {row_set.created_at} </Text>
-          <Text>Notice For:       {row_set.target_type}</Text>
-          <Text>Creator:          {row_set.notification_creator}</Text>
-          <Text></Text>
-          <Text onPress={()=>{this.ViewNotice(row_set)}}>Click here to View message.</Text>
-        </View>
-      );
+      if (i >= this.state.noticeCurrentPageNum * this.state.noticePageLength && i < (this.state.noticeCurrentPageNum+1)*this.state.noticePageLength)
+        return (
+          <View key={i} style={{
+            flex:1,
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}>
+            <Text>Notice ID:        {row_set.notification_id} </Text>
+            <Text>Notice subject:   {row_set.subject} </Text>
+            <Text>Created At:       {row_set.created_at} </Text>
+            <Text>Notice For:       {row_set.target_type}</Text>
+            <Text>Creator:          {row_set.notification_creator}</Text>
+            <Text></Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.ViewNotice(row_set)}}>Click here to View message.</Text>
+          </View>
+        );
     });
     
+  }
+  displayPageText(){
+    var listtext = [];
+    var int_arr = [];
+    var int_val = 0;
+    for (var i = 1; i<=(this.state.noticePageNumMax+1); ++i) {
+      int_arr.push(i);
+      int_val++;
+      if (i == (this.state.noticeCurrentPageNum+1)){
+        listtext.push(
+          <Text key={i}>{i}</Text>
+        );
+      }
+      else{
+        listtext.push(
+          <Text key={i} style={stylesAdmin.NavigateLinkText} onPress={()=>{alert(int_arr[int_val-1]); this.setCurrentPage(i)}}>{i}</Text>
+        );
+      }
+    }
+
+    return (<Text> {listtext} </Text>); 
+  }
+  displayPageText1(){
+    var int_arr=[];
+    for (var i = 1; i<=(this.state.noticePageNumMax+1); ++i) {
+      int_arr.push(i);
+    }
+    return int_arr.map((row_set, i)=>{
+      if (i == (this.state.noticeCurrentPageNum)){
+        return(
+          <Text key={i}>{i+1}</Text>
+        );
+      }
+      else{
+        return(
+          <Text key={i} style={stylesAdmin.NavigateLinkText} onPress={()=>{ this.setCurrentPage(i+1)}}>{i+1}</Text>
+        );
+      }
+    });
+  }
+  displayPrevNextOptions(){
+    if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum == this.state.noticePageNumMax){
+      //no multiple pages
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+
+    }
+    else if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum != this.state.noticePageNumMax){
+      //multiple pages and current element is 0
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+    else if (this.state.noticeCurrentPageNum == this.state.noticePageNumMax){
+      //multiple pages and current element is last page
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+    }
+    else{
+      //multiple pages and it's something inbetween
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
   }
   displayNotices(){
     //fetch list of subjects
@@ -263,6 +382,7 @@ export default class NoticeViewAdmin extends React.Component{
         <View style={stylesAdmin.InputContainer}>
           <Text>Currently these subjects have been added yet.</Text>
           { this.displayNoticesByRow() }
+          { this.displayPrevNextOptions() }
         </View>
       );
     }
@@ -307,6 +427,13 @@ export default class NoticeViewAdmin extends React.Component{
     </DrawerLayout>
       
     );  
+  }
+  increaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum+1});
+    //alert(this.state.current_id);
+  }
+  decreaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum-1});
   }
   logout = () => {
     try{
@@ -363,6 +490,10 @@ export default class NoticeViewAdmin extends React.Component{
   }
   ViewNotice = (i) =>{
     this.props.navigation.navigate('SingleNoticeViewAdmin', {i},);
+  }
+  setCurrentPage = (i) =>{
+    //alert(i-1);
+    this.setState({'noticeCurrentPageNum':i-1});
   }
 
 }

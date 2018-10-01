@@ -240,7 +240,7 @@ export default class SubjectViewAdmin extends React.Component{
           <Text>{row_set.subject_name} </Text>
           <Text>{row_set.subject_code} </Text>
           <Text>{row_set.is_major}</Text>
-          <Text onPress={()=>{this.deleteSubjectAlert(row_set.subject_name)}}>Delete Subject</Text>
+          <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteSubjectAlert(row_set.subject_name)}}>Delete Subject</Text>
         </View>
       );
     });

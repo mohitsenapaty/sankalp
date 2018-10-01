@@ -163,6 +163,7 @@ export default class ViewTermValueTeacher extends React.Component{
         body: JSON.stringify({
           user_id: this.state.user_id,
           loginType: this.state.loginType,
+          exam_group_id: this.state.examObject.exam_group_id,
         }),
       })
       .then((response) => response.json())
@@ -209,6 +210,7 @@ export default class ViewTermValueTeacher extends React.Component{
         body: JSON.stringify({
           user_id: this.state.user_id,
           loginType: this.state.loginType,
+          exam_group_id: this.state.examObject.exam_group_id,
         }),
       })
       .then((response) => response.json())
@@ -240,8 +242,6 @@ export default class ViewTermValueTeacher extends React.Component{
   displayGrading(){
     return(
       <View>
-        <Text>Full Name: {row_set.fullname} </Text>
-        <Text>Full Name: {row_set.roll_number} </Text>
         <Text></Text>
         <Text>Co-Scholastic Activities</Text>
         <Text>Literary Interests. {this.state.studentDataList[this.state.current_id].literary_interest}</Text>
@@ -285,7 +285,7 @@ export default class ViewTermValueTeacher extends React.Component{
           >
             <Text>No Prev</Text>
             <Text></Text>
-            <Text onPress={()=>{this.increaseRoll()}}>Next</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
           
           </View>
         </View>
@@ -306,7 +306,7 @@ export default class ViewTermValueTeacher extends React.Component{
               flex:1, flexDirection:'row', justifyContent:'space-between'
             }}
           >
-            <Text onPress={()=>{this.decreaseRoll()}}>Previous</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Previous</Text>
             <Text onPress={()=>{this.confirmAlert(this.state.studentDataList[this.state.current_id].student_id)}}>Confirm</Text>
             <Text>No Next</Text>
           </View>
@@ -328,9 +328,9 @@ export default class ViewTermValueTeacher extends React.Component{
               flex:1, flexDirection:'row', justifyContent:'space-between'
             }}
           >
-            <Text onPress={()=>{this.decreaseRoll()}}>Previous</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Previous</Text>
             <Text onPress={()=>{this.confirmAlert(this.state.studentDataList[this.state.current_id].student_id)}}>Confirm</Text>
-            <Text onPress={()=>{this.increaseRoll()}}>Next</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
           </View>
         </View>
       );
@@ -375,10 +375,11 @@ export default class ViewTermValueTeacher extends React.Component{
             {this.displayStudentByRollNumber()}
             <Text> </Text>
             <Text> </Text>
+            <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
+              <Text>Go Back</Text>
+            </TouchableOpacity>  
           </ScrollView>
-          <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
-            <Text>Go Back</Text>
-          </TouchableOpacity>  
+          
         </View>
     </DrawerLayout>
       

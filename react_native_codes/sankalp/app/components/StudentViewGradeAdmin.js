@@ -296,7 +296,7 @@ export default class StudentViewGradeAdmin extends React.Component{
             <Text>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
             {this.displayExams()}
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goBackOnePage} style={stylesAdmin.ButtonContainer}>
               <Text>Go back</Text>
             </TouchableOpacity> 

@@ -45,6 +45,9 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
       'loginType':'Teacher',
       current_id:0,
       'schoolName':'', 
+      'noticePageNumMax':0,
+      'noticePageLength':5,
+      'noticeCurrentPageNum':0,
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -155,6 +158,10 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
           this.setState({'subjectDataList':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
+          var noticePageNumMax = Math.floor(res.data.length/this.state.noticePageLength);
+          if (noticePageNumMax != this.state.noticePageNumMax){
+            this.setState({'noticePageNumMax':noticePageNumMax});
+          }
         }
         else{alert("Invalid Login details");}
       })
@@ -201,6 +208,10 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
           this.setState({'numberOfSubjects':res.data.length,'subjectDataList':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
+          var noticePageNumMax = Math.floor(res.data.length/this.state.noticePageLength);
+          if (noticePageNumMax != this.state.noticePageNumMax){
+            this.setState({'noticePageNumMax':noticePageNumMax});
+          }
         }
         else{alert("Invalid Login details");}
       })
@@ -229,21 +240,22 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
     );*/
     
     return this.state.subjectDataList.map((row_set, i)=>{
-      return (
-        <View key={i} style={{
-          flex:1,
-          borderBottomColor: 'black',
-          borderBottomWidth: 1,
-        }}>
-          <Text>Notice ID:        {row_set.notification_id} </Text>
-          <Text>Notice subject:   {row_set.subject} </Text>
-          <Text>Created At:       {row_set.created_at} </Text>
-          <Text>Notice For:       {row_set.target_type}</Text>
-          <Text>Creator:          {row_set.notification_creator}</Text>
-          <Text></Text>
-          <Text onPress={()=>{this.ViewNotice(row_set)}}>Click here to View message.</Text>
-        </View>
-      );
+      if (i >= this.state.noticeCurrentPageNum * this.state.noticePageLength && i < (this.state.noticeCurrentPageNum+1)*this.state.noticePageLength)
+        return (
+          <View key={i} style={{
+            flex:1,
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}>
+            <Text>Notice ID:        {row_set.notification_id} </Text>
+            <Text>Notice subject:   {row_set.subject} </Text>
+            <Text>Created At:       {row_set.created_at} </Text>
+            <Text>Notice For:       {row_set.target_type}</Text>
+            <Text>Creator:          {row_set.notification_creator}</Text>
+            <Text></Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.ViewNotice(row_set)}}>Click here to View message.</Text>
+          </View>
+        );
     });
     
   }
@@ -263,6 +275,7 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
         <View style={stylesAdmin.InputContainer}>
           <Text>Currently these subjects have been added yet.</Text>
           { this.displayNoticesByRow() }
+          { this.displayPrevNextOptions() }
         </View>
       );
     }
@@ -351,6 +364,98 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
   }
   ViewNotice = (i) =>{
     this.props.navigation.navigate('SingleReceivedNoticeViewTeacher', {i},);
+  }
+  displayPageText1(){
+    var int_arr=[];
+    for (var i = 1; i<=(this.state.noticePageNumMax+1); ++i) {
+      int_arr.push(i);
+    }
+    return int_arr.map((row_set, i)=>{
+      if (i == (this.state.noticeCurrentPageNum)){
+        return(
+          <Text key={i}>{i+1}</Text>
+        );
+      }
+      else{
+        return(
+          <Text style={stylesAdmin.NavigateLinkText} key={i} onPress={()=>{ this.setCurrentPage(i+1)}}>{i+1}</Text>
+        );
+      }
+    });
+  }
+  displayPrevNextOptions(){
+    if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum == this.state.noticePageNumMax){
+      //no multiple pages
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+
+    }
+    else if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum != this.state.noticePageNumMax){
+      //multiple pages and current element is 0
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+    else if (this.state.noticeCurrentPageNum == this.state.noticePageNumMax){
+      //multiple pages and current element is last page
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+    }
+    else{
+      //multiple pages and it's something inbetween
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+  }
+  increaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum+1});
+    //alert(this.state.current_id);
+  }
+  decreaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum-1});
+  }
+  setCurrentPage = (i) =>{
+    //alert(i-1);
+    this.setState({'noticeCurrentPageNum':i-1});
   }
 
 }

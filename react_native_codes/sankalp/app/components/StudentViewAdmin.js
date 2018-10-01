@@ -46,17 +46,23 @@ export default class StudentViewAdmin extends React.Component{
       'numberOfTeachers':0,
       'teacherDataList':[],
       'studentDict':{},
+      'studentDictLength':{},
       'selectedClass':'1',
       'selectedSec':'A',
       'loginType':'Admin',
       'schoolName':'',
+      'noticePageNumMax':{},
+      'noticePageLength':5,
+      'noticeCurrentPageNum':0,
     };
     for (var i = 0; i < allClass.length; i++){
       //var classDict = {};
-      this.state.studentDict[allClass[i]] = {}
+      this.state.studentDict[allClass[i]] = {};
+      this.state.noticePageNumMax[allClass[i]] = {};
       for (var j=0; j<allSec.length;j++){
         //classDict[allSec[j]]=[];
         this.state.studentDict[allClass[i]][allSec[j]] = [];
+        this.state.noticePageNumMax[allClass[i]][allSec[j]] = 0;
       }
       //studentDict[allClass[i]] = classDict
     }
@@ -181,13 +187,28 @@ export default class StudentViewAdmin extends React.Component{
           for (var i = 0; i < res.data.length; i++){
             studentDict[res.data[i].class][res.data[i].section].push(res.data[i]);
           }
+          studentDictLength = {};
+          noticePageNumMax = {}
+          for (var k in studentDict){
+            studentDictLength[k] = {};
+            noticePageNumMax[k] = {};
+            for (var l in studentDict[k]){
+              studentDictLength[k][l] = studentDict[k][l].length;
+              noticePageNumMax[k][l] = 0;
+              var _noticePageNumMax = Math.floor(studentDict[k][l].length/this.state.noticePageLength);
+              if (_noticePageNumMax != noticePageNumMax[k][l]){
+                noticePageNumMax[k][l] = _noticePageNumMax;
+              }
+            }
+          }
           this.setState({'studentDict':studentDict});
+          this.setState({'noticePageNumMax':noticePageNumMax});
           //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
       })
       .catch((err)=>{
-        alert("Network error. Please try again.");
+        alert("Network error. Please try again." + err);
       })
       .done();
     }
@@ -240,7 +261,22 @@ export default class StudentViewAdmin extends React.Component{
           for (var i = 0; i < res.data.length; i++){
             studentDict[res.data[i].class][res.data[i].section].push(res.data[i]);
           }
+          studentDictLength = {};
+          noticePageNumMax = {}
+          for (var k in studentDict){
+            studentDictLength[k] = {};
+            noticePageNumMax[k] = {};
+            for (var l in studentDict[k]){
+              studentDictLength[k][l] = studentDict[k][l].length;
+              noticePageNumMax[k][l] = 0;
+              var _noticePageNumMax = Math.floor(studentDict[k][l].length/this.state.noticePageLength);
+              if (_noticePageNumMax != noticePageNumMax[k][l]){
+                noticePageNumMax[k][l] = _noticePageNumMax;
+              }
+            }
+          }
           this.setState({'studentDict':studentDict});
+          this.setState({'noticePageNumMax':noticePageNumMax});
           //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
@@ -257,28 +293,29 @@ export default class StudentViewAdmin extends React.Component{
   }
   displayStudentByRow(){
     return this.state.studentDict[this.state.selectedClass][this.state.selectedSec].map((row_set, i)=>{
-      return (
-        <View key={i} style={{
-          flex:1,
-          borderBottomColor: 'black',
-          borderBottomWidth: 1,
-        }}>
-          <Text>Full Name: {row_set.fullname} </Text>
-          <Text>Email:     {row_set.emailid} </Text>
-          <Text>Mobile:    {row_set.phone} </Text>
-          <Text>Password:  {row_set.unencrypted}</Text>
-          <Text>Class:     {row_set.class}</Text>
-          <Text>Section:   {row_set.section}</Text>
-          <Text>RollNumber:{row_set.roll_number}</Text>
-          <Text>Father Name:     {row_set.father_name}</Text>
-          <Text>Mother Name:   {row_set.mother_name}</Text>
-          <Text>Enrollment Number:{row_set.enrollment_number}</Text>
-          <Text onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Student</Text>
-          <Text onPress={()=>{this.goToSendNotice(row_set)}}>Send Notice to Student</Text>
-          <Text onPress={()=>{this.deleteStudentAlert(row_set.fullname)}}>Delete Student.</Text>
-          <Text></Text>
-        </View>
-      );
+      if (i >= this.state.noticeCurrentPageNum * this.state.noticePageLength && i < (this.state.noticeCurrentPageNum+1)*this.state.noticePageLength)
+        return (
+          <View key={i} style={{
+            flex:1,
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}>
+            <Text>Full Name: {row_set.fullname} </Text>
+            <Text>Email:     {row_set.emailid} </Text>
+            <Text>Mobile:    {row_set.phone} </Text>
+            <Text>Password:  {row_set.unencrypted}</Text>
+            <Text>Class:     {row_set.class}</Text>
+            <Text>Section:   {row_set.section}</Text>
+            <Text>RollNumber:{row_set.roll_number}</Text>
+            <Text>Father Name:     {row_set.father_name}</Text>
+            <Text>Mother Name:   {row_set.mother_name}</Text>
+            <Text>Enrollment Number:{row_set.enrollment_number}</Text>
+            <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Student</Text>
+            <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.goToSendNotice(row_set)}}>Send Notice to Student</Text>
+            <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteStudentAlert(row_set.fullname)}}>Delete Student.</Text>
+            <Text></Text>
+          </View>
+        );
     });
   }
   displayStudents(){
@@ -299,6 +336,7 @@ export default class StudentViewAdmin extends React.Component{
         <View style={stylesAdmin.InputContainer}>
           <Text>Currently these students have been added yet.</Text>
           { this.displayStudentByRow() }
+          { this.displayPrevNextOptions() }
         </View>
       );
     }
@@ -366,9 +404,13 @@ export default class StudentViewAdmin extends React.Component{
               </ModalDropdown>
             </View>
             {this.displayStudents()}
+            <Text>
+            </Text>
+            <Text>
+            </Text>
                  
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goToAddStudentPage} style={stylesAdmin.ButtonContainer}>
               <Text>Click here to add students</Text>
             </TouchableOpacity> 
@@ -491,12 +533,106 @@ export default class StudentViewAdmin extends React.Component{
     //alert("1");
     this.setState({'selectedClass':value});
     this.refreshStudents();
+    this.setState({'noticeCurrentPageNum':0});
   }
   selectedSecMethod = (idx, value) => {
     //alert({idx} + " " + {value});
     //alert("1");
     this.setState({'selectedSec':value});
     this.refreshStudents();
+    this.setState({'noticeCurrentPageNum':0});
+  }
+  displayPageText1(){
+    var int_arr=[];
+    for (var i = 1; i<=(this.state.noticePageNumMax[this.state.selectedClass][this.state.selectedSec]+1); ++i) {
+      int_arr.push(i);
+    }
+    return int_arr.map((row_set, i)=>{
+      if (i == (this.state.noticeCurrentPageNum)){
+        return(
+          <Text key={i}>{i+1}</Text>
+        );
+      }
+      else{
+        return(
+          <Text style={stylesAdmin.NavigateLinkText} key={i} onPress={()=>{ this.setCurrentPage(i+1)}}>{i+1}</Text>
+        );
+      }
+    });
+  }
+  displayPrevNextOptions(){
+    if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum == this.state.noticePageNumMax[this.state.selectedClass][this.state.selectedSec]){
+      //no multiple pages
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+
+    }
+    else if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum != this.state.noticePageNumMax[this.state.selectedClass][this.state.selectedSec]){
+      //multiple pages and current element is 0
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+    else if (this.state.noticeCurrentPageNum == this.state.noticePageNumMax[this.state.selectedClass][this.state.selectedSec]){
+      //multiple pages and current element is last page
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+    }
+    else{
+      //multiple pages and it's something inbetween
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+  }
+  increaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum+1});
+    //alert(this.state.current_id);
+  }
+  decreaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum-1});
+  }
+  setCurrentPage = (i) =>{
+    //alert(i-1);
+    this.setState({'noticeCurrentPageNum':i-1});
   }
 
 }

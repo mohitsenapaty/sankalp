@@ -232,7 +232,7 @@ export default class ExamViewTeacher extends React.Component{
           <Text> </Text>
           <Text> </Text>
           
-          <Text onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam</Text>
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam</Text>
         </View>
       );
     });

@@ -253,8 +253,8 @@ export default class ViewGradeTeacher extends React.Component{
             }}
           >
             <Text>No Prev</Text>
-            <Text onPress={()=>{this.confirmAlert(this.state.studentDataList[this.state.current_id].student_id)}}>Confirm</Text>
-            <Text onPress={()=>{this.increaseRoll()}}>Next</Text>
+            <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.confirmAlert(this.state.studentDataList[this.state.current_id].student_id)}}>Confirm</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
           
           </View>
         </View>
@@ -277,8 +277,8 @@ export default class ViewGradeTeacher extends React.Component{
               flex:1, flexDirection:'row', justifyContent:'space-between'
             }}
           >
-            <Text onPress={()=>{this.decreaseRoll()}}>Previous</Text>
-            <Text onPress={()=>{this.confirmAlert(this.state.studentDataList[this.state.current_id].student_id)}}>Confirm</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Previous</Text>
+            <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.confirmAlert(this.state.studentDataList[this.state.current_id].student_id)}}>Confirm</Text>
             <Text>No Next</Text>
           </View>
         </View>
@@ -301,9 +301,9 @@ export default class ViewGradeTeacher extends React.Component{
               flex:1, flexDirection:'row', justifyContent:'space-between'
             }}
           >
-            <Text onPress={()=>{this.decreaseRoll()}}>Previous</Text>
-            <Text onPress={()=>{this.confirmAlert(this.state.studentDataList[this.state.current_id].student_id)}}>Confirm</Text>
-            <Text onPress={()=>{this.increaseRoll()}}>Next</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Previous</Text>
+            <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.confirmAlert(this.state.studentDataList[this.state.current_id].student_id)}}>Confirm</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
           </View>
         </View>
       );
@@ -346,11 +346,18 @@ export default class ViewGradeTeacher extends React.Component{
             <Text>Subject Type   :     {this.state.subjectObject.is_major} </Text>
             <Text>Class & Section:     {this.state.subjectObject.class} {this.state.subjectObject.section} </Text>
             {this.displayStudentByRollNumber()}
+            <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
+              <Text>Go Back</Text>
+            </TouchableOpacity> 
           </ScrollView>
         </View>
     </DrawerLayout>
       
     );  
+  }
+  goBack = () =>{
+    i = this.state.examObject;
+    this.props.navigation.navigate('SingleExamViewTeacher', {i});
   }
   isNumeric = (n) => {
     //alert(!isNaN(parseFloat(n)) && isFinite(n));

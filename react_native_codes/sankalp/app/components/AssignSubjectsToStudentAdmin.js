@@ -445,7 +445,7 @@ export default class assignSubjectsToStudent extends React.Component{
             <Text> Selected Subject: {this.state.selectedSubject}</Text>
             {this.displaySubjects()}
           </ScrollView>       
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.confirmAssignmentAlert} style={stylesAdmin.ButtonContainer}>
               <Text>Click here to Confirm assignment.</Text>
             </TouchableOpacity> 

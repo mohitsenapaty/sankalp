@@ -52,6 +52,9 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
       'loginType':'Teacher',
       'subjectObject':props.navigation.state.params.i,
       'schoolName':'',
+      'noticePageNumMax':0,
+      'noticePageLength':5,
+      'noticeCurrentPageNum':0,
     };
 
     this.toggleDrawer = this.toggleDrawer.bind(this);
@@ -167,6 +170,10 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
           //this.setState({'numberOfTeachers':res.data.length,'teacherDataList':res.data});
           this.setState({'studentDataList':res.data});
           //alert(this.state.studentDict);
+          var noticePageNumMax = Math.floor(res.data.length/this.state.noticePageLength);
+          if (noticePageNumMax != this.state.noticePageNumMax){
+            this.setState({'noticePageNumMax':noticePageNumMax});
+          }
         }
         else{alert("Invalid Login details");}
       })
@@ -217,6 +224,10 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
 
           this.setState({'studentDataList':res.data});
           //alert(this.state.studentDict);
+          var noticePageNumMax = Math.floor(res.data.length/this.state.noticePageLength);
+          if (noticePageNumMax != this.state.noticePageNumMax){
+            this.setState({'noticePageNumMax':noticePageNumMax});
+          }
         }
         else{alert("Invalid Login details");}
       })
@@ -242,7 +253,7 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
           <Text>Class:     {row_set.class}</Text>
           <Text>Section:   {row_set.section}</Text>
           <Text>RollNumber:{row_set.roll_number}</Text>
-          <Text onPress={()=>{this.goToSendNotice(row_set)}}>Send Notice to Student</Text>
+          <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.goToSendNotice(row_set)}}>Send Notice to Student</Text>
 
         </View>
       );
@@ -266,6 +277,7 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
         <View style={stylesAdmin.InputContainer}>
           <Text>Currently these students have been added yet.</Text>
           { this.displayStudentByRow() }
+          { this.displayPrevNextOptions() }
         </View>
       );
     }
@@ -304,7 +316,7 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
             {this.displayStudents()}
                  
           </ScrollView>
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
               <Text>Click here to go back</Text>
             </TouchableOpacity> 
@@ -363,6 +375,99 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
   }
   goToSentNoticePage = () =>{
     this.props.navigation.navigate('SentNoticeViewTeacher');
+  }
+
+  displayPageText1(){
+    var int_arr=[];
+    for (var i = 1; i<=(this.state.noticePageNumMax+1); ++i) {
+      int_arr.push(i);
+    }
+    return int_arr.map((row_set, i)=>{
+      if (i == (this.state.noticeCurrentPageNum)){
+        return(
+          <Text key={i}>{i+1}</Text>
+        );
+      }
+      else{
+        return(
+          <Text key={i} style={stylesAdmin.NavigateLinkText} onPress={()=>{ this.setCurrentPage(i+1)}}>{i+1}</Text>
+        );
+      }
+    });
+  }
+  displayPrevNextOptions(){
+    if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum == this.state.noticePageNumMax){
+      //no multiple pages
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+
+    }
+    else if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum != this.state.noticePageNumMax){
+      //multiple pages and current element is 0
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+    else if (this.state.noticeCurrentPageNum == this.state.noticePageNumMax){
+      //multiple pages and current element is last page
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+    }
+    else{
+      //multiple pages and it's something inbetween
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+  }
+  increaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum+1});
+    //alert(this.state.current_id);
+  }
+  decreaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum-1});
+  }
+  setCurrentPage = (i) =>{
+    //alert(i-1);
+    this.setState({'noticeCurrentPageNum':i-1});
   }
 
 }

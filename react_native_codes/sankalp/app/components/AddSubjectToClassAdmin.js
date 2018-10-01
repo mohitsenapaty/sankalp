@@ -295,7 +295,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
           <Text>Subject Code:                 {row_set.subject_code} </Text>
           <Text>Subject Type:                 {row_set.is_major}</Text>
           <Text>Teacher Name:                 {row_set.fullname}</Text>
-          <Text onPress={()=>{this.deleteSubjectAssignmentAlert(row_set.subject_name, row_set.subject_id)}}>Delete Assignment</Text>
+          <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteSubjectAssignmentAlert(row_set.subject_name, row_set.subject_id)}}>Delete Assignment</Text>
         </View>
       );
     });
@@ -313,7 +313,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
           <Text>Email:     {row_set.emailid} </Text>
           <Text>Mobile:    {row_set.phone} </Text>
           <Text>Password:  {row_set.unencrypted}</Text>
-          <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
+          <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
         </View>
       );
     });
@@ -437,7 +437,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
             <Text> Selected Subject: {this.state.selectedSubject}</Text>
             {this.displaySubjects()}
           </ScrollView>       
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.confirmAssignmentAlert} style={stylesAdmin.ButtonContainer}>
               <Text>Click here to Confirm assignment.</Text>
             </TouchableOpacity> 

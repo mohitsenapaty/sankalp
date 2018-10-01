@@ -470,7 +470,7 @@ export default class AssignSubjectsToTeacher extends React.Component{
             {this.displaySubjects()}
             
           </ScrollView>       
-          <View>
+          <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.confirmAssignmentAlert} style={stylesAdmin.ButtonContainer}>
               <Text>Click here to Confirm assignment.</Text>
             </TouchableOpacity> 

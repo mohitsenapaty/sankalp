@@ -6,7 +6,7 @@ var GLOB_IP_DEV='http://127.0.0.1:8000/api'
 
 export const globalAssets = {
   background: require('../img/background_cc.jpg'),
-  IP_IN_USE: GLOB_IP_DEV,
+  IP_IN_USE: GLOB_IP_PROD,
 }
 
 const stylesLogin = StyleSheet.create({
@@ -82,7 +82,17 @@ export const stylesAdmin = StyleSheet.create({
   Container:{
     flex:1,
     padding:20,
-
+    backgroundColor: '#FFE4B5',
+  },
+  InputContainer:{
+    margin:5,
+    marginBottom: 10,
+    padding: 5,
+    paddingBottom: 0,
+    alignSelf: 'stretch',
+    borderWidth: 1,
+    borderColor: '#33cc33',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
   },
   screen: {
     backgroundColor: '#33cc33',
@@ -117,6 +127,21 @@ export const stylesAdmin = StyleSheet.create({
     borderRadius: 3,
     width:100,
     backgroundColor: 'cornflowerblue',
+  },
+  AssignLinkText:{
+    fontWeight:'bold',
+    color:'#228b22',
+  },
+  NavigateLinkText:{
+    fontWeight:'bold',
+    color:'#a020f0',
+  },
+  DeleteLinkText:{
+    fontWeight:'bold',
+    color:'#b22222',
+  },
+  ButtonContainerBackground:{
+    backgroundColor: '#FFE4B5',
   }
 });
 

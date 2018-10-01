@@ -51,13 +51,18 @@ export default class ExamStudentViewAdmin extends React.Component{
       'loginType':'Admin',
       'examObject':props.navigation.state.params.i,
       'schoolName':'',
+      'noticePageNumMax':{},
+      'noticePageLength':5,
+      'noticeCurrentPageNum':0,
     };
     for (var i = 0; i < allClass.length; i++){
       //var classDict = {};
-      this.state.studentDict[allClass[i]] = {}
+      this.state.studentDict[allClass[i]] = {};
+      this.state.noticePageNumMax[allClass[i]] = {};
       for (var j=0; j<allSec.length;j++){
         //classDict[allSec[j]]=[];
         this.state.studentDict[allClass[i]][allSec[j]] = [];
+        this.state.noticePageNumMax[allClass[i]][allSec[j]] = 0;
       }
       //studentDict[allClass[i]] = classDict
     }
@@ -183,7 +188,22 @@ export default class ExamStudentViewAdmin extends React.Component{
           for (var i = 0; i < res.data.length; i++){
             studentDict[res.data[i].class][res.data[i].section].push(res.data[i]);
           }
+          studentDictLength = {};
+          noticePageNumMax = {}
+          for (var k in studentDict){
+            studentDictLength[k] = {};
+            noticePageNumMax[k] = {};
+            for (var l in studentDict[k]){
+              studentDictLength[k][l] = studentDict[k][l].length;
+              noticePageNumMax[k][l] = 0;
+              var _noticePageNumMax = Math.floor(studentDict[k][l].length/this.state.noticePageLength);
+              if (_noticePageNumMax != noticePageNumMax[k][l]){
+                noticePageNumMax[k][l] = _noticePageNumMax;
+              }
+            }
+          }
           this.setState({'studentDict':studentDict});
+          this.setState({'noticePageNumMax':noticePageNumMax});
           //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
@@ -243,7 +263,22 @@ export default class ExamStudentViewAdmin extends React.Component{
           for (var i = 0; i < res.data.length; i++){
             studentDict[res.data[i].class][res.data[i].section].push(res.data[i]);
           }
+          studentDictLength = {};
+          noticePageNumMax = {}
+          for (var k in studentDict){
+            studentDictLength[k] = {};
+            noticePageNumMax[k] = {};
+            for (var l in studentDict[k]){
+              studentDictLength[k][l] = studentDict[k][l].length;
+              noticePageNumMax[k][l] = 0;
+              var _noticePageNumMax = Math.floor(studentDict[k][l].length/this.state.noticePageLength);
+              if (_noticePageNumMax != noticePageNumMax[k][l]){
+                noticePageNumMax[k][l] = _noticePageNumMax;
+              }
+            }
+          }
           this.setState({'studentDict':studentDict});
+          this.setState({'noticePageNumMax':noticePageNumMax});
           //alert(this.state.studentDict);
         }
         else{alert("Invalid Login details");}
@@ -261,45 +296,47 @@ export default class ExamStudentViewAdmin extends React.Component{
   displayStudentByRow(){
     if (this.state.examObject.term_final == 'N'){
       return this.state.studentDict[this.state.selectedClass][this.state.selectedSec].map((row_set, i)=>{
-        return (
-          <View key={i} style={{
-            flex:1,
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}>
-            <Text>Full Name: {row_set.fullname} </Text>
-            <Text>Email:     {row_set.emailid} </Text>
-            <Text>Mobile:    {row_set.phone} </Text>
-            
-            <Text>Class:     {row_set.class}</Text>
-            <Text>Section:   {row_set.section}</Text>
-            <Text>RollNumber:{row_set.roll_number}</Text>
-            <Text onPress={()=>{this.goToAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance</Text>
-            
-          </View>
-        );
+        if (i >= this.state.noticeCurrentPageNum * this.state.noticePageLength && i < (this.state.noticeCurrentPageNum+1)*this.state.noticePageLength)
+          return (
+            <View key={i} style={{
+              flex:1,
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}>
+              <Text>Full Name: {row_set.fullname} </Text>
+              <Text>Email:     {row_set.emailid} </Text>
+              <Text>Mobile:    {row_set.phone} </Text>
+              
+              <Text>Class:     {row_set.class}</Text>
+              <Text>Section:   {row_set.section}</Text>
+              <Text>RollNumber:{row_set.roll_number}</Text>
+              <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance</Text>
+              
+            </View>
+          );
       });
     }
     else{
       return this.state.studentDict[this.state.selectedClass][this.state.selectedSec].map((row_set, i)=>{
-        return (
-          <View key={i} style={{
-            flex:1,
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}>
-            <Text>Full Name: {row_set.fullname} </Text>
-            <Text>Email:     {row_set.emailid} </Text>
-            <Text>Mobile:    {row_set.phone} </Text>            
-            <Text>Class:     {row_set.class}</Text>
-            <Text>Section:   {row_set.section}</Text>
-            <Text>RollNumber:{row_set.roll_number}</Text>
-            <Text></Text>
-            <Text onPress={()=>{this.goToAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance (Scholastic)</Text>
-            <Text onPress={()=>{this.goToViewAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance (Non-Scholastic)</Text>
-            
-          </View>
-        );
+        if (i >= this.state.noticeCurrentPageNum * this.state.noticePageLength && i < (this.state.noticeCurrentPageNum+1)*this.state.noticePageLength)
+          return (
+            <View key={i} style={{
+              flex:1,
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}>
+              <Text>Full Name: {row_set.fullname} </Text>
+              <Text>Email:     {row_set.emailid} </Text>
+              <Text>Mobile:    {row_set.phone} </Text>            
+              <Text>Class:     {row_set.class}</Text>
+              <Text>Section:   {row_set.section}</Text>
+              <Text>RollNumber:{row_set.roll_number}</Text>
+              <Text></Text>
+              <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance (Scholastic)</Text>
+              <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToViewAssignSubjectPage({exam_set:this.state.examObject,student_id:row_set.student_id})}}>View Student Performance (Non-Scholastic)</Text>
+              
+            </View>
+          );
       });
     }
   }
@@ -321,6 +358,7 @@ export default class ExamStudentViewAdmin extends React.Component{
         <View style={stylesAdmin.InputContainer}>
           <Text>Currently these students have been assigned the exam.</Text>
           { this.displayStudentByRow() }
+          { this.displayPrevNextOptions() }
         </View>
       );
     }
@@ -388,7 +426,8 @@ export default class ExamStudentViewAdmin extends React.Component{
               </ModalDropdown>
             </View>
             {this.displayStudents()}
-                 
+            <Text></Text>
+            <Text></Text>
           </ScrollView>
           <View>
           </View>
@@ -461,11 +500,105 @@ export default class ExamStudentViewAdmin extends React.Component{
     //alert({idx} + " " + {value});
     //alert("1");
     this.setState({'selectedClass':value});
+    this.setState({'noticeCurrentPageNum':0});
   }
   selectedSecMethod = (idx, value) => {
     //alert({idx} + " " + {value});
     //alert("1");
     this.setState({'selectedSec':value});
+    this.setState({'noticeCurrentPageNum':0});
+  }
+  displayPageText1(){
+    var int_arr=[];
+    for (var i = 1; i<=(this.state.noticePageNumMax[this.state.selectedClass][this.state.selectedSec]+1); ++i) {
+      int_arr.push(i);
+    }
+    return int_arr.map((row_set, i)=>{
+      if (i == (this.state.noticeCurrentPageNum)){
+        return(
+          <Text key={i}>{i+1}</Text>
+        );
+      }
+      else{
+        return(
+          <Text key={i} onPress={()=>{ this.setCurrentPage(i+1)}}>{i+1}</Text>
+        );
+      }
+    });
+  }
+  displayPrevNextOptions(){
+    if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum == this.state.noticePageNumMax[this.state.selectedClass][this.state.selectedSec]){
+      //no multiple pages
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+
+    }
+    else if (this.state.noticeCurrentPageNum == 0 && this.state.noticeCurrentPageNum != this.state.noticePageNumMax[this.state.selectedClass][this.state.selectedSec]){
+      //multiple pages and current element is 0
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text>No Prev</Text>
+          {this.displayPageText1()}
+          <Text onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+    else if (this.state.noticeCurrentPageNum == this.state.noticePageNumMax[this.state.selectedClass][this.state.selectedSec]){
+      //multiple pages and current element is last page
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text>No Next</Text>
+        
+        </View>
+      );
+    }
+    else{
+      //multiple pages and it's something inbetween
+      return(
+        <View 
+          style={{
+            flex:1, flexDirection:'row', justifyContent:'space-between'
+          }}
+        >
+          <Text onPress={()=>{this.decreaseRoll()}}>Prev</Text>
+          {this.displayPageText1()}
+          <Text onPress={()=>{this.increaseRoll()}}>Next</Text>
+        
+        </View>
+      );
+    }
+  }
+  increaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum+1});
+    //alert(this.state.current_id);
+  }
+  decreaseRoll = () =>{
+    this.setState({'noticeCurrentPageNum':this.state.noticeCurrentPageNum-1});
+  }
+  setCurrentPage = (i) =>{
+    //alert(i-1);
+    this.setState({'noticeCurrentPageNum':i-1});
   }
 
 }

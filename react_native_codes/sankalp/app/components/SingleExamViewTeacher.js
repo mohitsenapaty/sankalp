@@ -271,8 +271,8 @@ export default class SingleExamViewTeacher extends React.Component{
           <Text>Class:          {row_set.class}</Text>
           <Text>Section:        {row_set.section}</Text>
           <Text></Text>
-          <Text onPress={()=>{this.goToAssignGradePage({row_set:row_set, exam_data:this.state.examObject})}}>Assign Grade to Students.</Text>
-          <Text onPress={()=>{this.goToViewGradePage({row_set:row_set, exam_data:this.state.examObject})}}>View Student Grades.</Text>
+          <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.goToAssignGradePage({row_set:row_set, exam_data:this.state.examObject})}}>Assign Grade to Students.</Text>
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToViewGradePage({row_set:row_set, exam_data:this.state.examObject})}}>View Student Grades.</Text>
         </View>
       );
     });
@@ -311,8 +311,8 @@ export default class SingleExamViewTeacher extends React.Component{
         return(
           <View style={stylesAdmin.InputContainer}>
             <Text>You are class teacher of Class: {this.state.classTeacherObject[0].class} Section: {this.state.classTeacherObject[0].section}.</Text>
-            <Text onPress={()=>{this.goToViewClassTeacherPage(this.state.examObject)}}>Click Here to View Student Term Details.</Text>
-            <Text onPress={()=>{this.goToAddClassTeacherPage(this.state.examObject)}}>Click Here to Add Student Term Details.</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToViewClassTeacherPage(this.state.examObject)}}>Click Here to View Student Term Details.</Text>
+            <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.goToAddClassTeacherPage(this.state.examObject)}}>Click Here to Add Student Term Details.</Text>
           </View>
         );
       }
