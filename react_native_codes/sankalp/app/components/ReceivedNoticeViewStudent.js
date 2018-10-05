@@ -297,6 +297,7 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
               _goToExamPage={()=>this.goToExamPage()}
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -306,10 +307,10 @@ export default class ReceivedNoticeViewTeacher extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
         
-        <Text>Notices Added as follows</Text>
+        <Text style={stylesAdmin.HeadingText}>Notices Added as follows</Text>
         {this.displayNotices()}
         <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text>LOG OUT</Text>
+          <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
         </TouchableOpacity>     
       </ScrollView>
     </DrawerLayout>

@@ -385,6 +385,7 @@ export default class ExamStudentViewAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -395,7 +396,7 @@ export default class ExamStudentViewAdmin extends React.Component{
         <View style={{flex:1,}}>
           <ScrollView style={stylesAdmin.Container}>
           
-            <Text>Students of Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
+            <Text style={stylesAdmin.HeadingText}>Students of Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
             <View style={{flex:1, 
               flexDirection:'row',
               justifyContent:'space-between',

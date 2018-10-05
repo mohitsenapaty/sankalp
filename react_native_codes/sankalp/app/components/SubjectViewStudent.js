@@ -282,6 +282,7 @@ export default class SubjectViewStudent extends React.Component{
               _goToExamPage={()=>this.goToExamPage()}
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -291,10 +292,10 @@ export default class SubjectViewStudent extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
         
-        <Text>Subjects Added as follows</Text>
+        <Text style={stylesAdmin.HeadingText}>Subjects Added as follows</Text>
         {this.displaySubjects()}
         <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text>LOG OUT</Text>
+          <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
         </TouchableOpacity>     
       </ScrollView>
     </DrawerLayout>

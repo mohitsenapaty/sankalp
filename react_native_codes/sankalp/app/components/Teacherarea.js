@@ -221,10 +221,11 @@ export default class Teacherarea extends React.Component{
     if (this.state.latest_version != this.state.current_version){
       return (
         <View>
-          <Text>Your version is not upto date with the latest version.</Text>
-          <Text>Please download latest version from https://play.google.com/store/apps/details?id=com.sankalp.sankalpschool</Text>
-          <Text>Current version: {this.state.current_version}</Text>
-          <Text>Latest version: {this.state.latest_version}</Text>
+          <Text style={stylesAdmin.VersionMessageStyleUN}>Your version is not upto date with the latest version.</Text>
+          <Text style={stylesAdmin.VersionMessageStyleUN} onPress={()=>{Linking.openURL('https://play.google.com/store/apps/details?id=com.sankalp.sankalpschool')}}>Please download latest version from here.</Text>
+          <Text style={stylesAdmin.VersionMessageStyleUN}>Current version: {this.state.current_version}</Text>
+          <Text style={stylesAdmin.VersionMessageStyleUN}>Latest version: {this.state.latest_version}</Text>
+          <Text></Text>
         </View>
       );
 
@@ -232,8 +233,8 @@ export default class Teacherarea extends React.Component{
     else{
       return (
         <View>
-          <Text>Your version is upto date with the latest version.</Text>
-          <Text>Current version: {this.state.current_version}</Text>
+          <Text style={stylesAdmin.VersionMessageStyle}>Your version is upto date with the latest version.</Text>
+          <Text style={stylesAdmin.VersionMessageStyle}>Current version: {this.state.current_version}</Text>
           <Text></Text>
         </View>
       );
@@ -258,6 +259,7 @@ export default class Teacherarea extends React.Component{
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -268,24 +270,24 @@ export default class Teacherarea extends React.Component{
         <ScrollView style={stylesAdmin.Container}>
         {this.displayVersionMessage()}
         
-        <Text>Welcome {this.state.user_session.teacher_id}</Text>
-        <Text>Welcome {this.state.user_session.fullname}</Text>
-        <Text>Welcome {this.state.user_session.emailid}</Text>
-        <Text>Welcome {this.state.user_session.phone}</Text>
+        <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.teacher_id}</Text>
+        <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.fullname}</Text>
+        <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.emailid}</Text>
+        <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.phone}</Text>
         <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Assigned Subjects and Classes and send Notices.</Text>
+          <Text style={stylesAdmin.ButtonText}>View Assigned Subjects and Classes and send Notices.</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.goToExamPage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Exams.</Text>
+          <Text style={stylesAdmin.ButtonText}>View Exams.</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.goToReceivedNoticePage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Received Notices.</Text>
+          <Text style={stylesAdmin.ButtonText}>View Received Notices.</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.goToSentNoticePage} style={stylesAdmin.ButtonContainer}>
-          <Text>View Sent Notices.</Text>
+          <Text style={stylesAdmin.ButtonText}>View Sent Notices.</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text>LOG OUT</Text>
+          <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
         </TouchableOpacity>
             
       </ScrollView>

@@ -380,6 +380,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -389,8 +390,8 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <View style={{flex:1,}}>
           <ScrollView style={stylesAdmin.Container}>
-            <Text>Subject assignment</Text>
-            <Text>Students of Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
+            <Text style={stylesAdmin.HeadingText}>Subject assignment</Text>
+            <Text style={stylesAdmin.HeadingText}>Students of Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
             <View style={{flex:1, 
               flexDirection:'row',
               justifyContent:'space-between',
@@ -439,7 +440,7 @@ export default class AssignSubjectsToClassAdmin extends React.Component{
           </ScrollView>       
           <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.confirmAssignmentAlert} style={stylesAdmin.ButtonContainer}>
-              <Text>Click here to Confirm assignment.</Text>
+              <Text style={stylesAdmin.ButtonText}>Click here to Confirm assignment.</Text>
             </TouchableOpacity> 
           </View>
         </View>

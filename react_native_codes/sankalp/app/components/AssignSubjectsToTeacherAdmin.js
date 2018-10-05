@@ -325,7 +325,7 @@ export default class AssignSubjectsToTeacher extends React.Component{
           <Text>Subject Type:                 {row_set.is_major}</Text>
           <Text>Class:                        {row_set.class} </Text>
           <Text>Section:                      {row_set.section}</Text>
-          <Text onPress={()=>{this.deleteSubjectAssignmentAlert(row_set.subject_name, row_set.subject_id, row_set.class, row_set.section)}}>
+          <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteSubjectAssignmentAlert(row_set.subject_name, row_set.subject_id, row_set.class, row_set.section)}}>
             Delete Assignment
           </Text>
         </View>
@@ -345,7 +345,7 @@ export default class AssignSubjectsToTeacher extends React.Component{
           <Text>Email:     {row_set.emailid} </Text>
           <Text>Mobile:    {row_set.phone} </Text>
           <Text>Password:  {row_set.unencrypted}</Text>
-          <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
+          <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
         </View>
       );
     });
@@ -412,6 +412,7 @@ export default class AssignSubjectsToTeacher extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -472,7 +473,7 @@ export default class AssignSubjectsToTeacher extends React.Component{
           </ScrollView>       
           <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.confirmAssignmentAlert} style={stylesAdmin.ButtonContainer}>
-              <Text>Click here to Confirm assignment.</Text>
+              <Text style={stylesAdmin.ButtonText}>Click here to Confirm assignment.</Text>
             </TouchableOpacity> 
           </View>
         </View>

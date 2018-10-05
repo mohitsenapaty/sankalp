@@ -278,6 +278,7 @@ export default class ExamViewAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -292,7 +293,7 @@ export default class ExamViewAdmin extends React.Component{
           </ScrollView>
           <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goToAddExamsPage} style={stylesAdmin.ButtonContainer}>
-              <Text>Click here to add Exams.</Text>
+              <Text style={stylesAdmin.ButtonText}>Click here to add Exams.</Text>
             </TouchableOpacity> 
           </View>
         </View>

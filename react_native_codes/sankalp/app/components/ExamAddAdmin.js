@@ -243,6 +243,7 @@ export default class ExamAddAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -311,7 +312,7 @@ export default class ExamAddAdmin extends React.Component{
             <Text>Select Class: {this.state.isAllClassesChecked}</Text>
             {this.classSelectDisplay()}         
             <TouchableOpacity onPress={() => this.addExamsAlert()} style={stylesAdmin.ButtonContainer}>
-              <Text>ADD Exam </Text>
+              <Text style={stylesAdmin.ButtonText}>ADD Exam </Text>
             </TouchableOpacity>
           </View>    
         </ScrollView>

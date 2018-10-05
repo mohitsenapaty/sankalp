@@ -346,6 +346,7 @@ export default class SingleExamViewTeacher extends React.Component{
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -355,12 +356,12 @@ export default class SingleExamViewTeacher extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <View style={{flex:1,}}>
           <ScrollView style={stylesAdmin.Container}>
-            <Text>Exam Group Name:     {this.state.examObject.exam_group_name} </Text>
-            <Text>Exam Group Date:     {this.state.examObject.exam_group_date} </Text>
-            <Text>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
-            <Text>Exam Group Term:     {this.state.examObject.term_number} </Text>
-            <Text>Exam Group Session:  {this.state.examObject.session} </Text>
-            <Text>Final Term:          {this.state.examObject.term_final} </Text>
+            <Text style={stylesAdmin.HeadingText}>Exam Group Name:     {this.state.examObject.exam_group_name} </Text>
+            <Text style={stylesAdmin.HeadingText}>Exam Group Date:     {this.state.examObject.exam_group_date} </Text>
+            <Text style={stylesAdmin.HeadingText}>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
+            <Text style={stylesAdmin.HeadingText}>Exam Group Term:     {this.state.examObject.term_number} </Text>
+            <Text style={stylesAdmin.HeadingText}>Exam Group Session:  {this.state.examObject.session} </Text>
+            <Text style={stylesAdmin.HeadingText}>Final Term:          {this.state.examObject.term_final} </Text>
             <Text> </Text>
             {this.displayClassTeacherSection()}
             {this.displayTeacherSubjects()}     

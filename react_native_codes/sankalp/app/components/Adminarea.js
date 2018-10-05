@@ -14,6 +14,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
   ScrollView,
+  Linking,
 
 } from 'react-native';
 //import { Navigator } from 'react-native-deprecated-custom-components';
@@ -217,10 +218,11 @@ export default class Adminarea extends React.Component{
     if (this.state.latest_version != this.state.current_version){
       return (
         <View>
-          <Text>Your version is not upto date with the latest version.</Text>
-          <Text>Please download latest version from https://play.google.com/store/apps/details?id=com.sankalp.sankalpschool</Text>
-          <Text>Current version: {this.state.current_version}</Text>
-          <Text>Latest version: {this.state.latest_version}</Text>
+          <Text style={stylesAdmin.VersionMessageStyleUN}>Your version is not upto date with the latest version.</Text>
+          <Text style={stylesAdmin.VersionMessageStyleUN} onPress={()=>{Linking.openURL('https://play.google.com/store/apps/details?id=com.sankalp.sankalpschool')}}>Please download latest version from here.</Text>
+          <Text style={stylesAdmin.VersionMessageStyleUN}>Current version: {this.state.current_version}</Text>
+          <Text style={stylesAdmin.VersionMessageStyleUN}>Latest version: {this.state.latest_version}</Text>
+          <Text></Text>
         </View>
       );
 
@@ -228,8 +230,8 @@ export default class Adminarea extends React.Component{
     else{
       return (
         <View>
-          <Text>Your version is upto date with the latest version.</Text>
-          <Text>Current version: {this.state.current_version}</Text>
+          <Text style={stylesAdmin.VersionMessageStyle}>Your version is upto date with the latest version.</Text>
+          <Text style={stylesAdmin.VersionMessageStyle}>Current version: {this.state.current_version}</Text>
           <Text></Text>
         </View>
       );
@@ -257,6 +259,7 @@ export default class Adminarea extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -266,34 +269,36 @@ export default class Adminarea extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
           {this.displayVersionMessage()}
-          <Text>Welcome {this.state.user_session.user_name}</Text>
-          <Text>Welcome {this.state.user_session.name}</Text>
-          <Text>Welcome {this.state.user_session.email}</Text>
-          <Text>Welcome {this.state.user_session.phone}</Text>
+          <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.user_name}</Text>
+          <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.name}</Text>
+          <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.email}</Text>
+          <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.phone}</Text>
           <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-            <Text>LOG OUT</Text>
+            <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.goToStudentPage} style={stylesAdmin.ButtonContainer}>
-            <Text>Student Details</Text>
+            <Text style={stylesAdmin.ButtonText}>Student Details</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.goToTeacherPage} style={stylesAdmin.ButtonContainer}>
-            <Text>Teacher Details</Text>
+            <Text style={stylesAdmin.ButtonText}>Teacher Details</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
-            <Text>Subject Details</Text>
+            <Text style={stylesAdmin.ButtonText}>Subject Details</Text>
           </TouchableOpacity> 
           <TouchableOpacity onPress={this.goToAssignSubjectToClassPage} style={stylesAdmin.ButtonContainer}>
-            <Text>Assign Subject to Class.</Text>
+            <Text style={stylesAdmin.ButtonText}>Assign Subject to Class.</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.goToExamsPage} style={stylesAdmin.ButtonContainer}>
-            <Text>View Exam Details</Text>
+            <Text style={stylesAdmin.ButtonText}>View Exam Details</Text>
           </TouchableOpacity> 
           <TouchableOpacity onPress={this.goToNoticePage} style={stylesAdmin.ButtonContainer}>
-            <Text>Create Notice</Text>
+            <Text style={stylesAdmin.ButtonText}>Create Notice</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.goToViewNoticePage} style={stylesAdmin.ButtonContainer}>
-            <Text>View Notices</Text>
-          </TouchableOpacity>      
+            <Text style={stylesAdmin.ButtonText}>View Notices</Text>
+          </TouchableOpacity>
+          <Text></Text>
+          <Text></Text>      
         </ScrollView>
     </DrawerLayout>
       

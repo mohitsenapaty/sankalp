@@ -299,6 +299,7 @@ export default class SentNoticeViewTeacher extends React.Component{
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -308,10 +309,10 @@ export default class SentNoticeViewTeacher extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
         
-        <Text>Notices Added as follows</Text>
+        <Text style={stylesAdmin.HeadingText}>Notices Added as follows</Text>
         {this.displayNotices()}
         <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text>LOG OUT</Text>
+          <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
         </TouchableOpacity>     
       </ScrollView>
     </DrawerLayout>

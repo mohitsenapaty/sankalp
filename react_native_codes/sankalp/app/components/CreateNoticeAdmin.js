@@ -347,6 +347,7 @@ export default class CreateNoticeAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -357,7 +358,7 @@ export default class CreateNoticeAdmin extends React.Component{
         <ScrollView style={stylesAdmin.Container}>
         
           
-          <Text>Create Notice For: {this.state.noticeFor}</Text>
+          <Text style={stylesAdmin.HeadingText}>Create Notice For: {this.state.noticeFor}</Text>
           
           <View style={stylesAdmin.InputContainer}>
             <View style={{flex:1, 
@@ -386,7 +387,7 @@ export default class CreateNoticeAdmin extends React.Component{
             
           </View> 
           <TouchableOpacity onPress={() => this.addNoticeAlert()} style={stylesAdmin.ButtonContainer}>
-            <Text>Create Notice</Text>
+            <Text style={stylesAdmin.ButtonText}>Create Notice</Text>
           </TouchableOpacity>   
         </ScrollView>
       </DrawerLayout>

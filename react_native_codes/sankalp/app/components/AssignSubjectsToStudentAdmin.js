@@ -331,7 +331,7 @@ export default class assignSubjectsToStudent extends React.Component{
           <Text>Subject Code:                 {row_set.subject_code} </Text>
           <Text>Subject Type:                 {row_set.is_major}</Text>
           <Text>Teacher Name:                 {row_set.fullname}</Text>
-          <Text onPress={()=>{this.deleteSubjectAssignmentAlert(row_set.subject_name,row_set.subject_id)}}>Delete Assignment</Text>
+          <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteSubjectAssignmentAlert(row_set.subject_name,row_set.subject_id)}}>Delete Assignment</Text>
         </View>
       );
     });
@@ -349,7 +349,7 @@ export default class assignSubjectsToStudent extends React.Component{
           <Text>Email:     {row_set.emailid} </Text>
           <Text>Mobile:    {row_set.phone} </Text>
           <Text>Password:  {row_set.unencrypted}</Text>
-          <Text onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
+          <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteTeacherAlert(row_set.fullname)}}>Delete Teacher</Text>
         </View>
       );
     });
@@ -416,6 +416,7 @@ export default class assignSubjectsToStudent extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -425,9 +426,9 @@ export default class assignSubjectsToStudent extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <View style={{flex:1,}}>
           <ScrollView style={stylesAdmin.Container}>
-            <Text>Subject assignment for {this.props.navigation.state.params.i.fullname}</Text>
-            <Text>Student Class and Section: {this.props.navigation.state.params.i.class} {this.props.navigation.state.params.i.section}</Text>
-            <Text>Student roll_number {this.props.navigation.state.params.i.roll_number}</Text>            
+            <Text style={stylesAdmin.HeadingText} >Subject assignment for {this.props.navigation.state.params.i.fullname}</Text>
+            <Text style={stylesAdmin.HeadingText}>Student Class and Section: {this.props.navigation.state.params.i.class} {this.props.navigation.state.params.i.section}</Text>
+            <Text style={stylesAdmin.HeadingText}>Student roll_number {this.props.navigation.state.params.i.roll_number}</Text>            
             <Text>Select Subject </Text>
             <ModalDropdown options={this.state.subjectDataList} defaultValue="Please select a subject"
               renderRow={this.subjectRowRender.bind(this)} 
@@ -447,7 +448,7 @@ export default class assignSubjectsToStudent extends React.Component{
           </ScrollView>       
           <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.confirmAssignmentAlert} style={stylesAdmin.ButtonContainer}>
-              <Text>Click here to Confirm assignment.</Text>
+              <Text style={stylesAdmin.ButtonText}>Click here to Confirm assignment.</Text>
             </TouchableOpacity> 
           </View>
         </View>

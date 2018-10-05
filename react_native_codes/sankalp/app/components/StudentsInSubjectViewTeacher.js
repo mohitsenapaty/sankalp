@@ -301,6 +301,7 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -311,14 +312,14 @@ export default class StudentsInSubjectViewTeacher extends React.Component{
         <View style={{flex:1,}}>
           <ScrollView style={stylesAdmin.Container}>
           
-            <Text>Students of Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
-            <Text>Subject: {this.state.subjectObject.subject_name}</Text>
+            <Text style={stylesAdmin.HeadingText}>Students of Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
+            <Text style={stylesAdmin.HeadingText}>Subject: {this.state.subjectObject.subject_name}</Text>
             {this.displayStudents()}
                  
           </ScrollView>
           <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
-              <Text>Click here to go back</Text>
+              <Text style={stylesAdmin.ButtonText}>Click here to go back</Text>
             </TouchableOpacity> 
           </View>
         </View>

@@ -337,6 +337,7 @@ export default class SendNoticeIndividualStudentTeacher extends React.Component{
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -347,7 +348,7 @@ export default class SendNoticeIndividualStudentTeacher extends React.Component{
         <ScrollView style={stylesAdmin.Container}>
         
           
-          <Text>Create Notice For: {this.state.noticeFor}</Text>
+          <Text style={stylesAdmin.HeadingText}>Create Notice For: {this.state.noticeFor}</Text>
           
           <View style={stylesAdmin.InputContainer}>
             <View style={{flex:1, 
@@ -368,7 +369,7 @@ export default class SendNoticeIndividualStudentTeacher extends React.Component{
             
           </View> 
           <TouchableOpacity onPress={() => this.addNoticeAlert()} style={stylesAdmin.ButtonContainer}>
-            <Text>Create Notice</Text>
+            <Text style={stylesAdmin.ButtonText}>Create Notice</Text>
           </TouchableOpacity>   
         </ScrollView>
       </DrawerLayout>

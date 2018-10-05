@@ -162,6 +162,7 @@ export default class AddClassTeacherAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -172,8 +173,8 @@ export default class AddClassTeacherAdmin extends React.Component{
         <View style={{flex:1,}}>
           <ScrollView style={stylesAdmin.Container}>
           
-            <Text>Teacher Details</Text>
-            <Text>Teacher Name: {this.state.teacherObject.fullname} </Text>
+            <Text style={stylesAdmin.HeadingText}>Teacher Details</Text>
+            <Text style={stylesAdmin.HeadingText}>Teacher Name: {this.state.teacherObject.fullname} </Text>
             <Text> </Text>
             <View style={{flex:1, 
               flexDirection:'row',
@@ -207,7 +208,7 @@ export default class AddClassTeacherAdmin extends React.Component{
           </ScrollView>
           <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.addClassTeacherAlert} style={stylesAdmin.ButtonContainer}>
-              <Text>Click here to make class teacher.</Text>
+              <Text style={stylesAdmin.ButtonText}>Click here to make class teacher.</Text>
             </TouchableOpacity> 
           </View>
         </View>

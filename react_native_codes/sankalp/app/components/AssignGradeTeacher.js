@@ -331,6 +331,7 @@ export default class AssignGradeTeacher extends React.Component{
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -349,7 +350,7 @@ export default class AssignGradeTeacher extends React.Component{
             <Text>Class & Section:     {this.state.subjectObject.class} {this.state.subjectObject.section} </Text>
             {this.displayStudentByRollNumber()}
             <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
-              <Text>Go Back</Text>
+              <Text style={stylesAdmin.ButtonText}>Go Back</Text>
             </TouchableOpacity>  
           </ScrollView>
           

@@ -161,6 +161,7 @@ export default class TeacherAddAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -170,7 +171,7 @@ export default class TeacherAddAdmin extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
         
-          <Text>Add Teachers here.</Text>
+          <Text style={stylesAdmin.HeadingText}>Add Teachers here.</Text>
           <View style={stylesAdmin.InputContainer}>
             <TextInput style={stylesAdmin.Input} onChangeText={(fullname)=>this.setState({fullname})} value={this.state.fullname}  placeholder='Full Name of the teacher'></TextInput>
             <TextInput onChangeText={(emailid)=>this.setState({emailid})} value={this.state.emailid} style={stylesAdmin.Input} placeholder='Email ID of the Teacher'></TextInput>
@@ -178,7 +179,7 @@ export default class TeacherAddAdmin extends React.Component{
             <TextInput style={stylesAdmin.Input} onChangeText={(user_pwd)=>this.setState({user_pwd})} value={this.state.user_pwd}  placeholder='Password of the teacher'></TextInput>
             <Text> </Text>           
             <TouchableOpacity onPress={() => this.addTeachersAlert()} style={stylesAdmin.ButtonContainer}>
-              <Text>ADD Teacher</Text>
+              <Text style={stylesAdmin.ButtonText}>ADD Teacher</Text>
             </TouchableOpacity>
           </View>    
         </ScrollView>

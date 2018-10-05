@@ -288,6 +288,7 @@ export default class SubjectViewAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -297,13 +298,10 @@ export default class SubjectViewAdmin extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
         
-        <Text>Subjects Added as follows</Text>
+        <Text style={stylesAdmin.HeadingText}>Subjects Added as follows</Text>
         {this.displaySubjects()}
-        <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text>LOG OUT</Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={this.goToAddSubjectPage} style={stylesAdmin.ButtonContainer}>
-          <Text>Click here to add subjects</Text>
+          <Text style={stylesAdmin.ButtonText}>Click here to add subjects</Text>
         </TouchableOpacity>      
       </ScrollView>
     </DrawerLayout>

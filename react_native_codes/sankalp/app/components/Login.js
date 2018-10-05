@@ -51,8 +51,8 @@ export default class Login extends React.Component{
               </TouchableOpacity>
             </View>
             <View style={stylesLogin.RegisterContainer}>
-              <Text>
-                Don't have password/Forgot password? <Text style={stylesLogin.RegisterText} onPress={this.register}>Click Here</Text>
+              <Text style={stylesLogin.RegisterText}>
+                Don't have password/Forgot password? <Text style={stylesLogin.RegisterTextBold} onPress={this.register}>Click Here</Text>
               </Text>
             </View>
           </View>

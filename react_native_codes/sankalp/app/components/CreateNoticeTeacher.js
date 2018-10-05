@@ -163,6 +163,7 @@ export default class CreateNoticeTeacher extends React.Component{
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -181,7 +182,7 @@ export default class CreateNoticeTeacher extends React.Component{
               justifyContent:'space-between',
               alignItems:'center',
             }}>
-              <Text>Notice For:  {this.state.noticeObject.class} {this.state.noticeObject.section}</Text>
+              <Text style={stylesAdmin.HeadingText}>Notice For:  {this.state.noticeObject.class} {this.state.noticeObject.section}</Text>
               <Text>Class Subject: {this.state.noticeObject.subject_name}</Text>
             </View>
             <TextInput style={stylesAdmin.Input} onChangeText={(subject)=>this.setState({subject})} value={this.state.subject}  placeholder='Subject (within 100 words)'></TextInput>
@@ -191,7 +192,7 @@ export default class CreateNoticeTeacher extends React.Component{
             
           </View> 
           <TouchableOpacity onPress={() => this.addNoticeAlert()} style={stylesAdmin.ButtonContainer}>
-            <Text>Create Notice</Text>
+            <Text style={stylesAdmin.ButtonText}>Create Notice</Text>
           </TouchableOpacity>   
         </ScrollView>
       </DrawerLayout>

@@ -289,6 +289,7 @@ export default class ExamViewStudent extends React.Component{
               _goToExamPage={()=>this.goToExamPage()}
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar

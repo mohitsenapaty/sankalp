@@ -488,6 +488,7 @@ export default class ViewGradeStudent extends React.Component{
               _goToExamPage={()=>this.goToExamPage()}
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -508,7 +509,7 @@ export default class ViewGradeStudent extends React.Component{
           <View style={stylesAdmin.ButtonContainerBackground}>
             {this.displayPDFDownloadLink()}
             <TouchableOpacity onPress={this.goToPDFPage} style={stylesLogin.ButtonContainer}>
-              <Text>Generate PDF</Text>
+              <Text style={stylesAdmin.ButtonText}>Generate PDF</Text>
             </TouchableOpacity>
           </View>
         </View>

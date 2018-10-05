@@ -367,6 +367,7 @@ export default class AddTermValueTeacher extends React.Component{
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _goToSentNoticePage={()=>this.goToSentNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -387,7 +388,7 @@ export default class AddTermValueTeacher extends React.Component{
             <Text> </Text>
             <Text> </Text>
             <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
-              <Text>Go Back</Text>
+              <Text style={stylesAdmin.ButtonText}>Go Back</Text>
             </TouchableOpacity>
           </ScrollView>  
         </View>

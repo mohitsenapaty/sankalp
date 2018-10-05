@@ -156,6 +156,7 @@ export default class SubjectAddAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -165,7 +166,7 @@ export default class SubjectAddAdmin extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <ScrollView style={stylesAdmin.Container}>
         
-          <Text>Add subjects here.</Text>
+          <Text style={stylesAdmin.HeadingText}>Add subjects here.</Text>
           <View style={stylesAdmin.InputContainer}>
             <TextInput style={stylesAdmin.Input} onChangeText={(subjectName)=>this.setState({subjectName})} value={this.state.subjectName}  placeholder='Subject Name e.g. ENGLISH'></TextInput>
             <TextInput onChangeText={(subjectCode)=>this.setState({subjectCode})} value={this.state.subjectCode} style={stylesAdmin.Input} placeholder='Subject Code e.g. ENG'></TextInput>
@@ -174,7 +175,7 @@ export default class SubjectAddAdmin extends React.Component{
         
             </ModalDropdown>
             <TouchableOpacity onPress={() => this.addSubjectsAlert()} style={stylesAdmin.ButtonContainer}>
-              <Text>ADD Subject</Text>
+              <Text style={stylesAdmin.ButtonText}>ADD Subject</Text>
             </TouchableOpacity>
           </View>    
         </ScrollView>

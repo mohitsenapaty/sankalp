@@ -8,12 +8,19 @@ import {
   AsyncStorage,
   TouchableOpacity,
   ScrollView,
+  Image,
 
 } from 'react-native';
+
+const imgObject = {
+  'Kaanger_Valley_Academy_Raipur':require('../img/Kaanger_Valley_Academy_Raipur_icon.jpg'),
+
+}
 
 export default class MenuAdmin extends Component {
   constructor(props){
     super(props);
+    //this.state={'schoolName':'Kaanger_Valley_Academy_Raipur', 'img':'../img/Kaanger_Valley_Academy_Raipur_icon.jpg'};
   }
   goToProfilePage = () =>{
     this.props._goToProfilePage();
@@ -45,7 +52,15 @@ export default class MenuAdmin extends Component {
   render() {
     return (
       <View style={{ flex:1, backgroundColor: '#33cc33'}}>
-        <ScrollView>
+        <Image
+          style={{ marginTop:50, marginLeft:20, marginRight:20}}
+          source={imgObject[this.props.schoolName]}
+        />
+        <ScrollView >
+          
+          <Text style={{ paddingLeft:20, paddingTop:16, fontSize: 16, color:'white', fontWeight: 'bold'}}>
+            Kaanger Valley Academy Raipur
+          </Text>
           <TouchableOpacity onPress={()=>this.goToProfilePage()}>
             <Text style={{color: 'white', fontSize: 16, paddingLeft: 20, paddingTop: 16}}>Profile</Text>
           </TouchableOpacity>

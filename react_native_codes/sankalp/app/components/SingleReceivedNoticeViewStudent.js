@@ -139,6 +139,7 @@ export default class SingleReceivedNoticeViewTeacher extends React.Component{
               _goToExamPage={()=>this.goToExamPage()}
               _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -156,7 +157,7 @@ export default class SingleReceivedNoticeViewTeacher extends React.Component{
           <Text></Text>
           <Text>{this.state.noticeObject.message}</Text>
         <TouchableOpacity onPress={this.goBack} style={stylesAdmin.ButtonContainer}>
-          <Text>Go Back</Text>
+          <Text style={stylesAdmin.ButtonText}>Go Back</Text>
         </TouchableOpacity>     
       </ScrollView>
     </DrawerLayout>

@@ -297,6 +297,7 @@ export default class StudentViewValueAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -306,14 +307,14 @@ export default class StudentViewValueAdmin extends React.Component{
             onLeftPress={this.toggleDrawer}/>
         <View style={{flex:1,}}>
           <ScrollView style={stylesAdmin.Container}>
-            <Text>Exam Group Name:     {this.state.examObject.exam_group_name} </Text>
-            <Text>Exam Group Date:     {this.state.examObject.exam_group_date} </Text>
-            <Text>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
+            <Text style={stylesAdmin.HeadingText}>Exam Group Name:     {this.state.examObject.exam_group_name} </Text>
+            <Text style={stylesAdmin.HeadingText}>Exam Group Date:     {this.state.examObject.exam_group_date} </Text>
+            <Text style={stylesAdmin.HeadingText}>Exam Group Type:     {this.state.examObject.exam_group_type} </Text>
             {this.displayGrading()}
           </ScrollView>
           <View style={stylesAdmin.ButtonContainerBackground}>
             <TouchableOpacity onPress={this.goBackOnePage} style={stylesAdmin.ButtonContainer}>
-              <Text>Go back</Text>
+              <Text style={stylesAdmin.ButtonText}>Go back</Text>
             </TouchableOpacity> 
           </View>
         </View>

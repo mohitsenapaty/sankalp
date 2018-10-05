@@ -170,6 +170,7 @@ export default class StudentAddAdmin extends React.Component{
               _goToNoticePage={()=>this.goToNoticePage()}
               _goToViewNoticePage={()=>this.goToViewNoticePage()}
               _logout={()=>this.logout()}
+              schoolName={this.state.schoolName}
             />}
         >
           <ActionBar
@@ -180,7 +181,7 @@ export default class StudentAddAdmin extends React.Component{
         <ScrollView style={stylesAdmin.Container}>
         
           
-          <Text>Add Students to Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
+          <Text style={stylesAdmin.HeadingText}>Add Students to Class: {this.state.selectedClass}, Sec: {this.state.selectedSec} </Text>
           
           <View style={stylesAdmin.InputContainer}>
             <View style={{flex:1, 
@@ -222,7 +223,7 @@ export default class StudentAddAdmin extends React.Component{
             <TextInput style={stylesAdmin.Input} onChangeText={(mother_name)=>this.setState({mother_name})} value={this.state.mother_name}  placeholder='Students Mother name'></TextInput>
             <Text> </Text>           
             <TouchableOpacity onPress={() => this.addStudentsAlert()} style={stylesAdmin.ButtonContainer}>
-              <Text>ADD Student</Text>
+              <Text style={stylesAdmin.ButtonText}>ADD Student</Text>
             </TouchableOpacity>
           </View>    
         </ScrollView>
