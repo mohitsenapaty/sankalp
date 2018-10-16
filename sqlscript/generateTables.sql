@@ -204,3 +204,43 @@ create table student_pwd_request(
 create index index_student_pwd_request on student_pwd_request(student_id);
 
 alter table student_academic_enrollment_detail add primary key(student_id);
+
+create table hostel_detail(
+    hostel_id SERIAL UNIQUE NOT NULL,
+    hostel_name varchar(100),
+    hostel_address varchar(200),
+    primary key (hostel_id)
+);
+
+create table student_residential_detail(
+    student_id int not null,
+    date_of_birth varchar(20),
+    hostel_resident varchar(3),
+    hostel_id int,
+    transportation varchar(3),
+    fdb_db varchar(2),
+    primary key (student_id)
+);
+
+create table house_detail(
+    house_id SERIAL UNIQUE NOT NULL,
+    house_name varchar(30),
+    house_code varchar(10),
+    primary key (house_id)
+);
+
+create table student_house_detail(
+    student_id int not null,
+    house_id int,
+    primary key (student_id)
+);
+
+create table holiday_detail(
+    holiday_id SERIAL UNIQUE NOT NULL,
+    session varchar(20),
+    occasion varchar(50),
+    details varchar(500),
+    start_date varchar(20),
+    end_date varchar(20),
+    primary key (holiday_id)
+);

@@ -75,6 +75,13 @@ import SentNoticeViewTeacher from './app/components/SentNoticeViewTeacher';
 import SingleSentNoticeViewTeacher from './app/components/SingleSentNoticeViewTeacher';
 import SendNoticeIndividualStudentTeacher from './app/components/SendNoticeIndividualStudentTeacher';
 
+import SingleStudentDetailAdmin from './app/components/SingleStudentDetailAdmin';
+import StudentEditAdmin from './app/components/StudentEditAdmin';
+import StudentAddPersonalDetailAdmin from './app/components/StudentAddPersonalDetailAdmin';
+import StudentAddHouseDetailAdmin from './app/components/StudentAddHouseDetailAdmin';
+
+import MoreViewAdmin from './app/components/MoreViewAdmin';
+
 import PasswordArea from './app/components/PasswordArea';
 
 import {StackNavigator} from 'react-navigation';
@@ -123,7 +130,12 @@ const NavigationApp = StackNavigator(
     AddClassTeacherAdmin:{screen: AddClassTeacherAdmin},
     AddTermValueTeacher:{screen: AddTermValueTeacher},
     ViewTermValueTeacher:{screen: ViewTermValueTeacher},
+    SingleStudentDetailAdmin:{screen: SingleStudentDetailAdmin},
+    StudentEditAdmin:{screen: StudentEditAdmin},
+    StudentAddPersonalDetailAdmin:{screen:StudentAddPersonalDetailAdmin},
+    StudentAddHouseDetailAdmin:{screen:StudentAddHouseDetailAdmin},
     PasswordArea:{screen: PasswordArea},
+    MoreViewAdmin:{screen: MoreViewAdmin},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

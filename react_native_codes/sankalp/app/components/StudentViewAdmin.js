@@ -310,6 +310,7 @@ export default class StudentViewAdmin extends React.Component{
             <Text>Father Name:     {row_set.father_name}</Text>
             <Text>Mother Name:   {row_set.mother_name}</Text>
             <Text>Enrollment Number:{row_set.enrollment_number}</Text>
+            <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToMorePage(row_set)}}>More Student Non Academic Details.</Text>
             <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.goToAssignSubjectPage(row_set)}}>Assign Subjects to Student</Text>
             <Text style={stylesAdmin.AssignLinkText} onPress={()=>{this.goToSendNotice(row_set)}}>Send Notice to Student</Text>
             <Text style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteStudentAlert(row_set.fullname)}}>Delete Student.</Text>
@@ -528,6 +529,9 @@ export default class StudentViewAdmin extends React.Component{
   }
   goToAddStudentPage = () =>{
     this.props.navigation.navigate('StudentAddAdmin');
+  }
+  goToMorePage = (i) =>{
+    this.props.navigation.navigate('SingleStudentDetailAdmin', {i},);
   }
   selectedClassMethod = (idx, value) => {
     //alert({idx} + " " + {value});

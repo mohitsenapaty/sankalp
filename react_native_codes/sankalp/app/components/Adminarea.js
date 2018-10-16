@@ -297,6 +297,9 @@ export default class Adminarea extends React.Component{
           <TouchableOpacity onPress={this.goToViewNoticePage} style={stylesAdmin.ButtonContainer}>
             <Text style={stylesAdmin.ButtonText}>View Notices</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={this.goToViewMorePage} style={stylesAdmin.ButtonContainer}>
+            <Text style={stylesAdmin.ButtonText}>More Options</Text>
+          </TouchableOpacity>
           <Text></Text>
           <Text></Text>      
         </ScrollView>
@@ -355,6 +358,9 @@ export default class Adminarea extends React.Component{
   goToViewNoticePage = () =>{
     //alert("notice page");
     this.props.navigation.navigate('NoticeViewAdmin');
+  }
+  goToViewMorePage = () =>{
+    this.props.navigation.navigate('MoreViewAdmin');
   }
 
 }

@@ -51,6 +51,10 @@ var fetchClassStudentsRouter = require('./fetchClassStudents.route');
 var fetchValuesForStudentRouter = require('./fetchValuesForStudent.route');
 var generatePDFSingleStudentFullRouter = require('./generatePDFSingleStudentFull.route');
 var getPasswordSMSRouter = require('./getPasswordSMS.route');
+var fetchSingleStudentCompleteDetailRouter = require('./fetchSingleStudentCompleteDetail.route');
+var fetchSingleStudentPersonalDetailRouter = require('./fetchSingleStudentPersonalDetail.route');
+var fetchSingleStudentHouseDetailRouter = require('./fetchSingleStudentHouseDetail.route');
+var editStudentLoginRouter = require('./editStudentLogin.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -102,6 +106,10 @@ app.use('/fetchClassStudents', fetchClassStudentsRouter);
 app.use('/fetchValuesForStudent', fetchValuesForStudentRouter);
 app.use('/generatePDFSingleStudentFull', generatePDFSingleStudentFullRouter);
 app.use('/getPasswordSMS', getPasswordSMSRouter);
+app.use('/fetchSingleStudentCompleteDetail', fetchSingleStudentCompleteDetailRouter);
+app.use('/fetchSingleStudentPersonalDetail', fetchSingleStudentPersonalDetailRouter);
+app.use('/fetchSingleStudentHouseDetail', fetchSingleStudentHouseDetailRouter);
+app.use('/editStudentLogin', editStudentLoginRouter);
 
 const server = http.createServer(app);
 server.listen(8002, ()=>{
