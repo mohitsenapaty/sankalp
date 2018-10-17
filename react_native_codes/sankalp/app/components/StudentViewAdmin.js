@@ -444,7 +444,7 @@ export default class StudentViewAdmin extends React.Component{
   deleteStudentAlert = (i) =>{
     Alert.alert(
       'Confirm Delete Student',
-      'Do you want to add the student ' + i + '?',
+      'Do you want to delete the student ' + i + '?',
       [
         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
         {text: 'Yes', onPress: () => this.deleteStudent(i)},

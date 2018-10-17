@@ -352,12 +352,13 @@ export default class Adminarea extends React.Component{
   }
   goToHostelPage = () =>{
 
+    this.props.navigation.navigate('HostelViewAdmin');
   }
   goToHousePage = () =>{
-
+    this.props.navigation.navigate('HouseViewAdmin');
   }
   goToCalendarPage = () =>{
-    
+
   }
 
 }

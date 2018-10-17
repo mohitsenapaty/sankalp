@@ -297,6 +297,9 @@ export default class StudentAddAdmin extends React.Component{
         }
         else{alert("Error adding student, student name or email or phone might exist already.");}
       })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
       .done();
     }
     catch(error){

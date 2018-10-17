@@ -81,6 +81,8 @@ import StudentAddPersonalDetailAdmin from './app/components/StudentAddPersonalDe
 import StudentAddHouseDetailAdmin from './app/components/StudentAddHouseDetailAdmin';
 
 import MoreViewAdmin from './app/components/MoreViewAdmin';
+import HostelViewAdmin from './app/components/HostelViewAdmin';
+import HouseViewAdmin from './app/components/HouseViewAdmin';
 
 import PasswordArea from './app/components/PasswordArea';
 
@@ -136,6 +138,8 @@ const NavigationApp = StackNavigator(
     StudentAddHouseDetailAdmin:{screen:StudentAddHouseDetailAdmin},
     PasswordArea:{screen: PasswordArea},
     MoreViewAdmin:{screen: MoreViewAdmin},
+    HostelViewAdmin:{screen: HostelViewAdmin},
+    HouseViewAdmin:{screen: HouseViewAdmin},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

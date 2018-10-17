@@ -55,6 +55,12 @@ var fetchSingleStudentCompleteDetailRouter = require('./fetchSingleStudentComple
 var fetchSingleStudentPersonalDetailRouter = require('./fetchSingleStudentPersonalDetail.route');
 var fetchSingleStudentHouseDetailRouter = require('./fetchSingleStudentHouseDetail.route');
 var editStudentLoginRouter = require('./editStudentLogin.route');
+var fetchAllHostelRouter = require('./fetchAllHostels.route');
+var addHostelRouter = require('./addHostel.route');
+var deleteHostelRouter = require('./deleteHostel.route');
+var fetchAllHouseRouter = require('./fetchAllHouse.route');
+var addHouseRouter = require('./addHouse.route');
+var deleteHouseRouter = require('./deleteHouse.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -110,6 +116,12 @@ app.use('/fetchSingleStudentCompleteDetail', fetchSingleStudentCompleteDetailRou
 app.use('/fetchSingleStudentPersonalDetail', fetchSingleStudentPersonalDetailRouter);
 app.use('/fetchSingleStudentHouseDetail', fetchSingleStudentHouseDetailRouter);
 app.use('/editStudentLogin', editStudentLoginRouter);
+app.use('/fetchAllHostels', fetchAllHostelRouter);
+app.use('/addHostel', addHostelRouter);
+app.use('/deleteHostel', deleteHostelRouter);
+app.use('/fetchAllHouse', fetchAllHouseRouter);
+app.use('/addHouse', addHouseRouter);
+app.use('/deleteHouse', deleteHouseRouter);
 
 const server = http.createServer(app);
 server.listen(8002, ()=>{
