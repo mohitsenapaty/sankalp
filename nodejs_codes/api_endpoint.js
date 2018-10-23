@@ -61,6 +61,13 @@ var deleteHostelRouter = require('./deleteHostel.route');
 var fetchAllHouseRouter = require('./fetchAllHouse.route');
 var addHouseRouter = require('./addHouse.route');
 var deleteHouseRouter = require('./deleteHouse.route');
+var editStudentHostelRouter = require('./editStudentHostel.route');
+var editStudentHouseRouter = require('./editStudentHouse.route');
+var deleteStudentHostelRouter = require('./deleteStudentHostel.route');
+var deleteStudentHouseRouter = require('./deleteStudentHouse.route');
+var addEventsRouter = require('./addEvents.route');
+var fetchAllEventsRouter = require('./fetchAllEvents.route');
+var deleteEventsRouter = require('./deleteEvents.route');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -122,6 +129,13 @@ app.use('/deleteHostel', deleteHostelRouter);
 app.use('/fetchAllHouse', fetchAllHouseRouter);
 app.use('/addHouse', addHouseRouter);
 app.use('/deleteHouse', deleteHouseRouter);
+app.use('/editStudentHostel', editStudentHostelRouter);
+app.use('/editStudentHouse', editStudentHouseRouter);
+app.use('/deleteStudentHostel', deleteStudentHostelRouter);
+app.use('/deleteStudentHouse', deleteStudentHouseRouter);
+app.use('/addEvents', addEventsRouter);
+app.use('/fetchAllEvents', fetchAllEventsRouter);
+app.use('/deleteEvents', deleteEventsRouter);
 
 const server = http.createServer(app);
 server.listen(8002, ()=>{

@@ -216,9 +216,10 @@ create table student_residential_detail(
     student_id int not null,
     date_of_birth varchar(20),
     hostel_resident varchar(3),
+    residential_address varchar(100),
     hostel_id int,
     transportation varchar(3),
-    fdb_db varchar(2),
+    fdb_db varchar(3),
     primary key (student_id)
 );
 
@@ -235,12 +236,13 @@ create table student_house_detail(
     primary key (student_id)
 );
 
-create table holiday_detail(
+create table calender_event_detail(
     holiday_id SERIAL UNIQUE NOT NULL,
     session varchar(20),
     occasion varchar(50),
     details varchar(500),
     start_date varchar(20),
     end_date varchar(20),
+    start_dt date,
     primary key (holiday_id)
 );

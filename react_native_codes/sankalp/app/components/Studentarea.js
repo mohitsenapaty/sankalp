@@ -272,9 +272,7 @@ export default class Studentarea extends React.Component{
         <Text style={stylesAdmin.HeadingText}>Class:       {this.state.user_session.class}</Text>
         <Text style={stylesAdmin.HeadingText}>Section:     {this.state.user_session.section}</Text>
         <Text style={stylesAdmin.HeadingText}>Roll_number: {this.state.user_session.roll_number}</Text>        
-        <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-          <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
-        </TouchableOpacity>
+        
         <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
           <Text style={stylesAdmin.ButtonText}>View Subjects</Text>
         </TouchableOpacity>
@@ -284,7 +282,14 @@ export default class Studentarea extends React.Component{
         <TouchableOpacity onPress={this.goToExamPage} style={stylesAdmin.ButtonContainer}>
           <Text style={stylesAdmin.ButtonText}>View Exams</Text>
         </TouchableOpacity>
-            
+        <TouchableOpacity onPress={this.goToCalendarPage} style={stylesAdmin.ButtonContainer}>
+          <Text style={stylesAdmin.ButtonText}>Go to Calendar.</Text>
+        </TouchableOpacity> 
+        <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
+          <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
+        </TouchableOpacity>
+        <Text></Text>
+        <Text></Text>           
       </ScrollView>
     </DrawerLayout>
       
@@ -331,6 +336,9 @@ export default class Studentarea extends React.Component{
   }
   goToReceivedNoticePage = () =>{
     this.props.navigation.navigate('ReceivedNoticeViewStudent');
+  }
+  goToCalendarPage = () =>{
+    this.props.navigation.navigate('CalendarViewStudent');
   }
 
 }

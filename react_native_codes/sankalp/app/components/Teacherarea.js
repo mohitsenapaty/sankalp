@@ -286,10 +286,14 @@ export default class Teacherarea extends React.Component{
         <TouchableOpacity onPress={this.goToSentNoticePage} style={stylesAdmin.ButtonContainer}>
           <Text style={stylesAdmin.ButtonText}>View Sent Notices.</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={this.goToCalendarPage} style={stylesAdmin.ButtonContainer}>
+          <Text style={stylesAdmin.ButtonText}>Go to Calendar.</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
           <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
         </TouchableOpacity>
-            
+        <Text></Text>
+        <Text></Text>
       </ScrollView>
     </DrawerLayout>
       
@@ -339,6 +343,9 @@ export default class Teacherarea extends React.Component{
   }
   goToSentNoticePage = () =>{
     this.props.navigation.navigate('SentNoticeViewTeacher');
+  }
+  goToCalendarPage = () =>{
+    this.props.navigation.navigate('CalendarViewTeacher');
   }
 
 }

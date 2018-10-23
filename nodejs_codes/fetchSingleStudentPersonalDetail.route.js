@@ -49,7 +49,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("select a.*, b.* from student_residential_detail a join hostel_detail b on a.hostel_id = b.hostel_id where a.student_id=$1;"
+      db_client.query("select a.*, b.* from student_residential_detail a left outer join hostel_detail b on a.hostel_id = b.hostel_id where a.student_id=$1;"
         ,[student_id] 
         ,function(err, res)
       {
@@ -62,7 +62,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
           });
         }
         else
-        { //console.log(res);
+        { console.log(res.rows);
           console.log(res.rows.length);
 
           var data_arr = [];

@@ -86,6 +86,11 @@ import HouseViewAdmin from './app/components/HouseViewAdmin';
 
 import PasswordArea from './app/components/PasswordArea';
 
+import CalendarViewAdmin from './app/components/CalendarViewAdmin';
+import CalendarViewTeacher from './app/components/CalendarViewTeacher';
+import CalendarViewStudent from './app/components/CalendarViewStudent';
+import CalendarAddAdmin from './app/components/CalendarAddAdmin';
+
 import {StackNavigator} from 'react-navigation';
 
 const NavigationApp = StackNavigator(
@@ -140,6 +145,10 @@ const NavigationApp = StackNavigator(
     MoreViewAdmin:{screen: MoreViewAdmin},
     HostelViewAdmin:{screen: HostelViewAdmin},
     HouseViewAdmin:{screen: HouseViewAdmin},
+    CalendarViewAdmin:{screen: CalendarViewAdmin},
+    CalendarAddAdmin:{screen: CalendarAddAdmin},
+    CalendarViewTeacher:{screen: CalendarViewTeacher},
+    CalendarViewStudent:{screen: CalendarViewStudent},
     /*
     Memberarea:{screen: Memberarea},
     Registerarea:{screen: Registerarea},

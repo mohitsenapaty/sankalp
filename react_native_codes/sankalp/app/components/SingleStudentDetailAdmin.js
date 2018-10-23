@@ -296,13 +296,105 @@ export default class SingleStudentDetailAdmin extends React.Component{
     catch(error){
       alert(error);
     }
+    try{
+      //alert("aaa" + this.state.student_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchSingleStudentHouseDetail/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'student_house_data':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.student_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchSingleStudentPersonalDetail/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'student_personal_data':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
   }
   personal_detail_render(){
-    if (this.state.student_personal_data){
+    if (this.state.student_personal_data && this.state.student_personal_data.hostel_resident == 'Yes'){
       return(
         <View style={stylesAdmin.InputContainer}>
           <Text>Personal Details have been added.</Text>
-          <Text></Text>
+          <Text>Date of birth: {this.state.student_personal_data.date_of_birth}</Text>
+          <Text>Hostel Resident: {this.state.student_personal_data.hostel_resident}</Text>
+          <Text>Hostel Name: {this.state.student_personal_data.hostel_name}</Text>
+          <Text>Hostel Address: {this.state.student_personal_data.hostel_address}</Text>
+          <Text>FDB or DB: {this.state.student_personal_data.fdb_db}</Text>
+          <Text style={stylesAdmin.ButtonText} style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deletePersonalDetailAlert()}}>Delete Personal Details.</Text>
+        </View>
+      );
+    }
+    else if (this.state.student_personal_data && this.state.student_personal_data.hostel_resident == 'No'){
+      return(
+        <View style={stylesAdmin.InputContainer}>
+          <Text>Personal Details have been added.</Text>
+          <Text>Date of birth: {this.state.student_personal_data.date_of_birth}</Text>
+          <Text>Hostel Resident: {this.state.student_personal_data.hostel_resident}</Text>
+          <Text>Residential Address: {this.state.student_personal_data.residential_address}</Text>
+          <Text>Transportation: {this.state.student_personal_data.transportation}</Text>
+          <Text>FDB or DB: {this.state.student_personal_data.fdb_db}</Text>
           <Text style={stylesAdmin.ButtonText} style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deletePersonalDetailAlert()}}>Delete Personal Details.</Text>
         </View>
       );
@@ -322,7 +414,7 @@ export default class SingleStudentDetailAdmin extends React.Component{
       return(
         <View style={stylesAdmin.InputContainer}>
           <Text>House Details have been added.</Text>
-          <Text></Text>
+          <Text>House Name: {this.state.student_house_data.house_name} House Code: {this.state.student_house_data.house_code} </Text>
           <Text style={stylesAdmin.ButtonText} style={stylesAdmin.DeleteLinkText} onPress={()=>{this.deleteHouseDetailAlert()}}>Delete house Details.</Text>
         </View>
       );
@@ -473,16 +565,80 @@ export default class SingleStudentDetailAdmin extends React.Component{
     );
   }
   goToAddPersonalDetailPage = (i) =>{
-    
+    this.props.navigation.navigate('StudentEditAdmin', {i});
   }
   goToAddHouseDetailPage = (i) =>{
-
+    this.props.navigation.navigate('StudentEditAdmin', {i});
   }
   deletePersonalDetail = () =>{
+    try{
+      //alert("a"); 
+      fetch(globalAssets.IP_IN_USE+'/deleteStudentHouse/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          alert("Student House Details deleted successfully.")
 
+        }
+        else{alert("Error deleting student house detail.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
   }
   deleteHouseDetail = () =>{
-    
+    try{
+      //alert("a"); 
+      fetch(globalAssets.IP_IN_USE+'/deleteStudentHostel/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          alert("Student House Details deleted successfully.")
+
+        }
+        else{alert("Error deleting student house detail.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
   }
 
 }

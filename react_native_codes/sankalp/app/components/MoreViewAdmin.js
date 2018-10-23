@@ -358,7 +358,7 @@ export default class Adminarea extends React.Component{
     this.props.navigation.navigate('HouseViewAdmin');
   }
   goToCalendarPage = () =>{
-
+    this.props.navigation.navigate('CalendarViewAdmin');
   }
 
 }

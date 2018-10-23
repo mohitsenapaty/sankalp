@@ -23,15 +23,22 @@ import {
 import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import DrawerLayout from 'react-native-drawer-layout';
+import ModalDropdown from 'react-native-modal-dropdown';
 import MenuAdmin from './MenuAdmin';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
+import DatePicker from 'react-native-datepicker';
 var version_package = require('./../../package.json');
+
 //import Login from './Login';
 var GLOB_IP_PROD='http://52.27.104.46'
 var GLOB_IP_DEV='http://127.0.0.1:8000'
 
 var IP_IN_USE=GLOB_IP_PROD
+
+var yes_no = ['Yes', 'No']
+var fdb_db_arr = ['FDB', 'DB'];
+var transport_arr = ['P', 'S'];
 
 //type Props = {};
 export default class StudentEditAdmin extends React.Component{
@@ -56,6 +63,19 @@ export default class StudentEditAdmin extends React.Component{
       mother_name: props.navigation.state.params.i.mother_name,
       enrollment_number: props.navigation.state.params.i.enrollment_number,
       fullname: props.navigation.state.params.i.fullname,
+      'hostel_data':[],
+      'house_data':[],
+      'selectedHostelId':0,
+      'selectedHostelName':'',
+      'selectedHostelAddress':'',
+      'selectedHouseId':0,
+      'selectedHouseName':'',
+      'selectedHouseCode':'',
+      'hostelResident':'No',
+      'birthDate':'15-08-2018',
+      'residentialAddress':'',
+      'FDB_DB':'DB',
+      'transportation':'P',
 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
@@ -206,7 +226,15 @@ export default class StudentEditAdmin extends React.Component{
           var ret_data = JSON.stringify(res.data);
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
-          this.setState({'student_data':res.data});
+          this.setState({'student_house_data':res.data});
+          if (this.state.student_house_data && this.state.student_house_data.house_id)
+            //this.state.selectedHostelId = this.state.student_personal_data.hostel_id;
+            this.setState({'selectedHouseId':this.state.student_house_data.house_id});
+          if (this.state.student_house_data && this.state.student_house_data.house_name)
+            //this.state.selectedHostelName = this.state.student_personal_data.hostel_name;
+            this.setState({'selectedHouseName':this.state.student_house_data.house_name});
+          if (this.state.student_house_data && this.state.student_house_data.house_code)
+            this.setState({'selectedHouseCode':this.state.student_house_data.house_code});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
         }
@@ -244,7 +272,109 @@ export default class StudentEditAdmin extends React.Component{
           var ret_data = JSON.stringify(res.data);
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
-          this.setState({'student_data':res.data});
+          this.setState({'student_personal_data':res.data});
+          if (this.state.student_personal_data && this.state.student_personal_data.date_of_birth)
+            //this.state.birthDate = this.state.student_personal_data.date_of_birth;
+            this.setState({'birthDate':this.state.student_personal_data.date_of_birth});
+          if (this.state.student_personal_data && this.state.student_personal_data.hostel_resident)
+            //this.state.hostelResident = this.state.student_personal_data.hostel_resident;
+            this.setState({'hostelResident':this.state.student_personal_data.hostel_resident});
+          if (this.state.student_personal_data && this.state.student_personal_data.residential_address)
+            //this.state.residentialAddress = this.state.student_personal_data.residential_address;
+            this.setState({'residentialAddress':this.state.student_personal_data.residential_address});
+          if (this.state.student_personal_data && this.state.student_personal_data.transportation)
+            //this.state.hostelResident = this.state.student_personal_data.transportation;
+            this.setState({'transportation':this.state.student_personal_data.transportation});
+          if (this.state.student_personal_data && this.state.student_personal_data.fdb_db)
+            //this.state.FDB_DB = this.state.student_personal_data.fdb_db;
+            this.setState({'FDB_DB':this.state.student_personal_data.fdb_db});
+          if (this.state.student_personal_data && this.state.student_personal_data.hostel_id)
+            //this.state.selectedHostelId = this.state.student_personal_data.hostel_id;
+            this.setState({'selectedHostelId':this.state.student_personal_data.hostel_id});
+          if (this.state.student_personal_data && this.state.student_personal_data.hostel_name)
+            //this.state.selectedHostelName = this.state.student_personal_data.hostel_name;
+            this.setState({'selectedHostelName':this.state.student_personal_data.hostel_name});
+          if (this.state.student_personal_data && this.state.student_personal_data.hostel_address)
+            this.setState({'selectedHostelAddress':this.state.student_personal_data.hostel_address});
+            //this.state.selectedHostelAddress = this.state.student_personal_data.hostel_address;
+          //alert(this.state.hostelResident);
+          //alert(this.state.student_personal_data.hostel_name);
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.student_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchAllHostels/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          //student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'hostel_data':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchAllHouse/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          //student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'house_data':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
         }
@@ -289,6 +419,191 @@ export default class StudentEditAdmin extends React.Component{
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
           this.setState({'student_data':res.data});
+          if (this.state.student_data && this.state.student_data.hostel_resident)
+            this.state.hostelResident = this.state.student_data.hostel_resident;
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.student_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchSingleStudentHouseDetail/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'student_house_data':res.data});
+          if (this.state.student_house_data && this.state.student_house_data.house_id)
+            //this.state.selectedHostelId = this.state.student_personal_data.hostel_id;
+            this.setState({'selectedHouseId':this.state.student_house_data.house_id});
+          if (this.state.student_house_data && this.state.student_house_data.house_name)
+            //this.state.selectedHostelName = this.state.student_personal_data.hostel_name;
+            this.setState({'selectedHouseName':this.state.student_house_data.house_name});
+          if (this.state.student_house_data && this.state.student_house_data.house_code)
+            this.setState({'selectedHouseCode':this.state.student_house_data.house_code});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.student_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchSingleStudentPersonalDetail/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'student_personal_data':res.data});
+          if (this.state.student_personal_data && this.state.student_personal_data.date_of_birth)
+            //this.state.birthDate = this.state.student_personal_data.date_of_birth;
+            this.setState({'birthDate':this.state.student_personal_data.date_of_birth});
+          if (this.state.student_personal_data && this.state.student_personal_data.hostel_resident)
+            //this.state.hostelResident = this.state.student_personal_data.hostel_resident;
+            this.setState({'hostelResident':this.state.student_personal_data.hostel_resident});
+          if (this.state.student_personal_data && this.state.student_personal_data.residential_address)
+            //this.state.residentialAddress = this.state.student_personal_data.residential_address;
+            this.setState({'residentialAddress':this.state.student_personal_data.residential_address});
+          if (this.state.student_personal_data && this.state.student_personal_data.transportation)
+            //this.state.hostelResident = this.state.student_personal_data.transportation;
+            this.setState({'transportation':this.state.student_personal_data.transportation});
+          if (this.state.student_personal_data && this.state.student_personal_data.fdb_db)
+            //this.state.FDB_DB = this.state.student_personal_data.fdb_db;
+            this.setState({'FDB_DB':this.state.student_personal_data.fdb_db});
+          if (this.state.student_personal_data && this.state.student_personal_data.hostel_id)
+            //this.state.selectedHostelId = this.state.student_personal_data.hostel_id;
+            this.setState({'selectedHostelId':this.state.student_personal_data.hostel_id});
+          if (this.state.student_personal_data && this.state.student_personal_data.hostel_name)
+            //this.state.selectedHostelName = this.state.student_personal_data.hostel_name;
+            this.setState({'selectedHostelName':this.state.student_personal_data.hostel_name});
+          if (this.state.student_personal_data && this.state.student_personal_data.hostel_address)
+            this.setState({'selectedHostelAddress':this.state.student_personal_data.hostel_address});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.student_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchAllHostels/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          //student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'hostel_data':res.data});
+          //this.setState({'subjectDataList':res.data});
+          //alert(this.state.subjectDataList);
+        }
+        else{alert("Invalid Login details");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+
+    try{
+      //alert("aaa" + this.state.user_id); 
+      fetch(globalAssets.IP_IN_USE+'/fetchAllHouse/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          //student_id: this.state.student_id,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          var ret_data = JSON.stringify(res.data);
+          //this.state.numberOfSubjects=ret_data.length;
+          //alert(ret_data);
+          this.setState({'house_data':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
         }
@@ -303,7 +618,361 @@ export default class StudentEditAdmin extends React.Component{
       alert(error);
     }
   }
-  
+  hostelRender(){
+    if (this.state.student_personal_data && this.state.hostelResident == 'Yes')
+      return(
+        <View>
+          <Text style={stylesAdmin.HeadingText}>Old Hostel Name        : {this.state.student_personal_data.hostel_name}</Text>
+          <Text style={stylesAdmin.HeadingText}>Old Hostel Address     : {this.state.student_personal_data.hostel_address}</Text>
+          <Text style={stylesAdmin.HeadingText}>New Hostel Name        : {this.state.selectedHostelName}</Text>
+          <Text style={stylesAdmin.HeadingText}>New Hostel Address     : {this.state.selectedHostelAddress}</Text>
+          <Text></Text>
+          <Text>Select Hostel: </Text>            
+          <ModalDropdown options={this.state.hostel_data} defaultValue={this.state.selectedHostelName}
+            renderRow={this.hostelRowRender.bind(this)} 
+            renderButtonText = {this.selectedHostelRowRender.bind(this)}
+            onSelect={this.selectedHostelMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          </ModalDropdown>          
+          
+        </View>
+      );
+    else if (this.state.hostelResident == 'Yes'){
+      return(
+        <View>
+          <Text style={stylesAdmin.HeadingText}>Old Hostel Name        : </Text>
+          <Text style={stylesAdmin.HeadingText}>Old Hostel Address     : </Text>
+          <Text style={stylesAdmin.HeadingText}>New Hostel Name        : {this.state.selectedHostelName}</Text>
+          <Text style={stylesAdmin.HeadingText}>New Hostel Address     : {this.state.selectedHostelAddress}</Text>
+          <Text></Text>
+          <Text>Select Hostel: </Text>            
+          <ModalDropdown options={this.state.hostel_data} defaultValue="Please select a hostel"
+            renderRow={this.hostelRowRender.bind(this)} 
+            renderButtonText = {this.selectedHostelRowRender.bind(this)}
+            onSelect={this.selectedHostelMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          </ModalDropdown>
+          
+
+        </View>
+      );
+    }
+    else if (this.state.student_personal_data && this.state.hostelResident == 'No'){
+      return(
+        <View>
+          
+          <Text>Old Residential Address: </Text>
+          <TextInput style={stylesAdmin.Input} onChangeText={(residentialAddress)=>this.setState({residentialAddress})} value={this.state.residentialAddress}  placeholder='Student residential address'></TextInput>
+          <Text>Old Transportation: {this.state.student_personal_data.transportation}</Text>
+          <Text>Transportation: {this.state.transportation}</Text>
+          <ModalDropdown options={transport_arr} defaultValue={this.state.transportation}
+            onSelect={this.selectedTransportMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          </ModalDropdown>
+          
+        </View>
+      );
+    }
+    else{
+      return(
+        <View>
+          
+          <Text>Old Residential Address: </Text>
+          <TextInput style={stylesAdmin.Input} onChangeText={(residentialAddress)=>this.setState({residentialAddress})} value={this.state.residentialAddress}  placeholder='Student residential address'></TextInput>
+          <Text>Old Transportation:</Text>
+          <Text>Transportation: {this.state.transportation}</Text>
+          <ModalDropdown options={transport_arr} defaultValue={this.state.transportation}
+            onSelect={this.selectedTransportMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          </ModalDropdown>
+          
+        </View>
+      );
+    }
+    
+  }
+  personal_data_render(){
+    if (this.state.student_personal_data){
+      return(
+        <View>
+          <Text>Old Date of birth: {this.state.student_personal_data.date_of_birth}</Text>
+          <DatePicker
+              style={{width: 200}}
+              date={this.state.birthDate}
+              mode="date"
+              placeholder="select date"
+              format="DD-MM-YYYY"
+              minDate="01-01-1990"
+              maxDate="01-01-2060"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+              }}
+              onDateChange={(date) => {this.setState({birthDate: date})}}
+            />
+          
+          <Text>Is hostel resident? {this.state.hostelResident}</Text>
+          <ModalDropdown options={yes_no} defaultValue={this.state.student_personal_data.hostel_resident}
+            onSelect={this.selectedResidencyMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          
+          </ModalDropdown>
+          {this.hostelRender()}
+          <Text>Old FDB or DB?: {this.state.student_personal_data.fdb_db}</Text>
+          <Text>FDB or DB?: {this.state.FDB_DB}</Text>
+          <ModalDropdown options={fdb_db_arr} defaultValue={this.state.student_personal_data.fdb_db}
+            onSelect={this.selectedFDBMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          
+          </ModalDropdown>
+           
+          <TouchableOpacity onPress={this.saveHostelAlert} style={stylesAdmin.ButtonContainer}>
+            <Text style={stylesAdmin.ButtonText}>Save Personal Details</Text>
+          </TouchableOpacity>
+          
+        </View>
+      );
+    }
+    else if (this.state.student_personal_data && this.state.hostelResident == 'No'){
+      return(
+        <View>
+          <Text>Old Date of birth: </Text>
+          <DatePicker
+              style={{width: 200}}
+              date={this.state.birthDate}
+              mode="date"
+              placeholder="select date"
+              format="DD-MM-YYYY"
+              minDate="01-01-1990"
+              maxDate="01-01-2060"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+              }}
+              onDateChange={(date) => {this.setState({birthDate: date})}}
+            />
+          <Text></Text>
+          <Text>Is hostel resident? {this.state.hostelResident}</Text>
+          <ModalDropdown options={yes_no} defaultValue="No"
+            onSelect={this.selectedResidencyMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          
+          </ModalDropdown>
+          {this.hostelRender()}
+          <Text>Old Residential Address: </Text>
+          <TextInput style={stylesAdmin.Input} onChangeText={(residentialAddress)=>this.setState({residentialAddress})} value={this.state.residentialAddress}  placeholder='Student residential address'></TextInput>
+          <Text>Old Transportation: </Text>
+          <Text>Transportation: {this.state.transportation}</Text>
+          <ModalDropdown options={transport_arr} defaultValue={this.state.transportation}
+            onSelect={this.selectedTransportMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          </ModalDropdown>
+          <Text>FDB or DB?: </Text>
+          <Text>FDB or DB?: {this.state.FDB_DB}</Text>
+          <ModalDropdown options={fdb_db_arr} defaultValue="DB"
+            onSelect={this.selectedFDBMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          
+          </ModalDropdown> 
+          <TouchableOpacity onPress={this.saveHostelAlert} style={stylesAdmin.ButtonContainer}>
+            <Text style={stylesAdmin.ButtonText}>Save Personal Details</Text>
+          </TouchableOpacity>
+          
+        </View>
+      );
+    }
+    else{
+      return(
+        <View>
+          <Text>Old Date of birth: </Text>
+          <DatePicker
+              style={{width: 200}}
+              date={this.state.birthDate}
+              mode="date"
+              placeholder="select date"
+              format="DD-MM-YYYY"
+              minDate="01-01-1990"
+              maxDate="01-01-2060"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+              }}
+              onDateChange={(date) => {this.setState({birthDate: date})}}
+            />
+          
+          <Text>Is hostel resident? {this.state.hostelResident}</Text>
+          <ModalDropdown options={yes_no} defaultValue="No"
+            onSelect={this.selectedResidencyMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          
+          </ModalDropdown>
+          {this.hostelRender()}
+          <Text>FDB or DB?: </Text>
+          <Text>FDB or DB?: {this.state.FDB_DB}</Text>
+          <ModalDropdown options={fdb_db_arr} defaultValue="DB"
+            onSelect={this.selectedFDBMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          
+          </ModalDropdown> 
+          <TouchableOpacity onPress={this.saveHostelAlert} style={stylesAdmin.ButtonContainer}>
+            <Text style={stylesAdmin.ButtonText}>Save Personal Details</Text>
+          </TouchableOpacity>
+          
+        </View>
+      );
+    }
+  }
+  house_render() {
+    if (this.state.student_house_data){
+      return(
+        <View>
+          <Text style={stylesAdmin.HeadingText}>Old House Name        : {this.state.student_house_data.house_name}</Text>
+          <Text style={stylesAdmin.HeadingText}>Old House Code        : {this.state.student_house_data.house_code}</Text>
+          <Text style={stylesAdmin.HeadingText}>New House Name        : {this.state.selectedHouseName}</Text>
+          <Text style={stylesAdmin.HeadingText}>New House Code        : {this.state.selectedHouseCode}</Text>
+          <Text></Text>
+          <Text>Select House: </Text>            
+          <ModalDropdown options={this.state.house_data} defaultValue={this.state.selectedHouseName}
+            renderRow={this.houseRowRender.bind(this)} 
+            renderButtonText = {this.selectedHouseRowRender.bind(this)}
+            onSelect={this.selectedHouseMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          
+          </ModalDropdown>
+          <TouchableOpacity onPress={this.saveHouseAlert} style={stylesAdmin.ButtonContainer}>
+            <Text style={stylesAdmin.ButtonText}>Save House Details</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    else{
+      return(
+        <View>
+          <Text style={stylesAdmin.HeadingText}>Old House Name        : </Text>
+          <Text style={stylesAdmin.HeadingText}>Old House Code        : </Text>
+          <Text style={stylesAdmin.HeadingText}>New House Name        : {this.state.selectedHouseName}</Text>
+          <Text style={stylesAdmin.HeadingText}>New House Code        : {this.state.selectedHouseCode}</Text>
+          <Text></Text>
+          <Text>Select House: </Text>            
+          <ModalDropdown options={this.state.house_data} defaultValue='Please select a house'
+            renderRow={this.houseRowRender.bind(this)} 
+            renderButtonText = {this.selectedHouseRowRender.bind(this)}
+            onSelect={this.selectedHouseMethod}
+            style={{
+              borderWidth: 0,
+              borderRadius: 3,
+              width:200,
+              backgroundColor: 'cornflowerblue',
+            }}
+          >
+          
+          </ModalDropdown>
+          <TouchableOpacity onPress={this.saveHouseAlert} style={stylesAdmin.ButtonContainer}>
+            <Text style={stylesAdmin.ButtonText}>Save House Details</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  }
   render() {
 
     return (
@@ -354,7 +1023,19 @@ export default class StudentEditAdmin extends React.Component{
             
           </View>
           <Text></Text>
-          <Text></Text>      
+          <Text></Text>
+
+          <View style={stylesAdmin.InputContainer}>
+            {this.personal_data_render()}
+          </View>
+          <Text></Text>
+          <Text></Text>
+
+          <View style={stylesAdmin.InputContainer}>
+            {this.house_render()}            
+          </View>
+          <Text></Text>
+          <Text></Text>     
         </ScrollView>
         <View style={stylesAdmin.ButtonContainerBackground}>
            
@@ -468,6 +1149,162 @@ export default class StudentEditAdmin extends React.Component{
     catch(error){
       alert(error);
     }
+  }
+  saveHostelAlert = () =>{
+    Alert.alert(
+      'Confirm Edit Student hostel Details',
+      'Do you want to edit the student hostel details?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => this.saveHostel()},
+      ],
+      { cancelable: false }
+    );
+    
+  }
+  saveHostel = () =>{
+    //this.props.navigation.navigate('StudentEditAdmin', {i});
+    try{
+      //alert("a"); 
+      fetch(globalAssets.IP_IN_USE+'/editStudentHostel/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          date_of_birth: this.state.birthDate,
+          student_id: this.state.student_id,
+          hostel_resident: this.state.hostelResident,
+          hostel_id: this.state.selectedHostelId,
+          residential_address: this.state.residentialAddress,
+          transportation: this.state.transportation,
+          fdb_db: this.state.FDB_DB,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          alert("Student Hostel Details edited successfully.")
+
+        }
+        else{alert("Error adding student hostel detail.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+  }
+  saveHouseAlert = () =>{
+    Alert.alert(
+      'Confirm Edit Student House Details',
+      'Do you want to edit the student house details?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => this.saveHouse()},
+      ],
+      { cancelable: false }
+    );
+    
+  }
+  saveHouse = () =>{
+    //this.props.navigation.navigate('StudentEditAdmin', {i});
+    try{
+      //alert("a"); 
+      fetch(globalAssets.IP_IN_USE+'/editStudentHouse/'+ this.state.user_token+'/'+ this.state.schoolName + '/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.state.user_id,
+          loginType: this.state.loginType,
+          student_id: this.state.student_id,
+          house_id: this.state.selectedHouseId,
+        }),
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        //console.log(res);
+        //alert(res.success);
+        //alert("a");
+        if (res.success === 1){
+          alert("Student House Details edited successfully.")
+
+        }
+        else{alert("Error adding student house detail.");}
+      })
+      .catch((err)=>{
+        alert("Network error. Please try again.");
+      })
+      .done();
+    }
+    catch(error){
+      alert(error);
+    }
+  }
+  selectedResidencyMethod = (idx, value) => {
+    //alert({idx} + " " + {value});
+    //alert("1");
+    this.setState({'hostelResident':value});
+    
+    //alert(value);
+  }
+  selectedFDBMethod = (idx, value) => {
+    //alert({idx} + " " + {value});
+    //alert("1");
+    this.setState({'FDB_DB':value});
+    
+    //alert(value);
+  }
+  selectedTransportMethod = (idx, value) =>{
+    this.setState({'transportation':value});
+  }
+  selectedHostelMethod = (idx, value) => {
+    //alert({idx} + " " + {value});
+    //alert("1");
+    this.setState({'selectedHostelId':value.hostel_id});
+    this.setState({'selectedHostelName':value.hostel_name});
+    this.setState({'selectedHostelAddress':value.hostel_address});
+    //alert(value);
+  }
+  hostelRowRender = (rowData) =>{
+    return(
+      <Text>{rowData.hostel_name}</Text>
+    );
+  }
+  selectedHostelRowRender = (rowData) =>{
+    return(
+      <Text>{rowData.hostel_name}</Text>
+    );
+  }
+  selectedHouseMethod = (idx, value) => {
+    //alert({idx} + " " + {value});
+    //alert("1");
+    this.setState({'selectedHouseId':value.house_id});
+    this.setState({'selectedHouseName':value.house_name});
+    this.setState({'selectedHouseCode':value.house_code});
+    //alert(value);
+  }
+  houseRowRender = (rowData) =>{
+    return(
+      <Text>{rowData.house_name}</Text>
+    );
+  }
+  selectedHouseRowRender = (rowData) =>{
+    return(
+      <Text>{rowData.house_name}</Text>
+    );
   }
 
 }

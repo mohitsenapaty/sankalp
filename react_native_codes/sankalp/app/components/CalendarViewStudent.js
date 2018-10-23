@@ -14,17 +14,16 @@ import {
   AsyncStorage,
   TouchableOpacity,
   ScrollView,
-  Linking,
+  Alert,
 
 } from 'react-native';
 //import { Navigator } from 'react-native-deprecated-custom-components';
 import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
 import DrawerLayout from 'react-native-drawer-layout';
-import MenuAdmin from './MenuAdmin';
+import MenuStudent from './MenuStudent';
 import stylesLogin, {globalAssets} from './globalExports';
 import {stylesAdmin} from './globalExports';
-var version_package = require('./../../package.json');
 //import Login from './Login';
 var GLOB_IP_PROD='http://52.27.104.46'
 var GLOB_IP_DEV='http://127.0.0.1:8000'
@@ -32,19 +31,22 @@ var GLOB_IP_DEV='http://127.0.0.1:8000'
 var IP_IN_USE=GLOB_IP_PROD
 
 //type Props = {};
-export default class Adminarea extends React.Component{
+export default class ExamViewStudent extends React.Component{
   
   constructor(props){
     super(props);
     this.state={
       'user_session':{},
+      'user_id':'',
       'drawerClosed':true,
       'user_token':'',
-      'latest_version':'',
-      'current_version':'',
-      'user_id':'',
-      'loginType':'Admin',
-      'schoolName':'',
+      'numberOfSubjects':0,
+      'subjectDataList':[],
+      'numberOfTeachers':0,
+      'teacherDataList':[],
+      'examDataList':[],
+      'loginType':'Student',
+      'schoolName':'', 
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -76,15 +78,14 @@ export default class Adminarea extends React.Component{
   }
   _loadInitialState = async() => {
     //search for KYC/bank status using async
-    this.setState({'current_version':version_package.version});
     var value = await AsyncStorage.getItem('user_session');
     if (value !== null){
       //json_value = JSON.stringify(value);
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_session':obj_value});
-      this.setState({'user_id':obj_value.admin_id});
-
+      this.setState({'user_id':obj_value.student_id});
+      //alert(obj_value);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -96,7 +97,6 @@ export default class Adminarea extends React.Component{
       //alert(json_value);
       obj_value = JSON.parse(value);
       this.setState({'user_token':obj_value});
-      //alert(this.state.user_token);
     }
     else{
       this.props.navigation.navigate('Login');
@@ -120,7 +120,7 @@ export default class Adminarea extends React.Component{
       obj_value = JSON.stringify(value);
 
       //alert(obj_value);
-      if (obj_value == '"Admin"'){
+      if (obj_value == '"Student"'){
         //alert("1");
       }
       else{
@@ -131,11 +131,10 @@ export default class Adminarea extends React.Component{
     else{
       this.props.navigation.navigate('Login');
     }
-    this.timer = setInterval(()=> this.refreshVersion(), 30000);
 
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllEvents/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -155,7 +154,7 @@ export default class Adminarea extends React.Component{
           var ret_data = JSON.stringify(res.data);
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
-          this.setState({'latest_version':res.data});
+          this.setState({'examDataList':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
         }
@@ -169,17 +168,19 @@ export default class Adminarea extends React.Component{
     catch(error){
       alert(error);
     }
+
+    this.timer = setInterval(()=> this.refreshTeachers(), 10000)
     
   }
-  refreshVersion = async() =>{
+  refreshTeachers = async() =>{
+    //alert("refresh");
     var isFocused = this.props.navigation.isFocused();    
     //alert(isFocused);
     if (!isFocused)
       return;
-    this.setState({'current_version':version_package.version});
     try{
       //alert("aaa" + this.state.user_id); 
-      fetch(globalAssets.IP_IN_USE+'/fetchVersionInfo/', {
+      fetch(globalAssets.IP_IN_USE+'/fetchAllEvents/'+this.state.user_token+'/'+ this.state.schoolName + '/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -199,7 +200,7 @@ export default class Adminarea extends React.Component{
           var ret_data = JSON.stringify(res.data);
           //this.state.numberOfSubjects=ret_data.length;
           //alert(ret_data);
-          this.setState({'latest_version':res.data});
+          this.setState({'examDataList':res.data});
           //this.setState({'subjectDataList':res.data});
           //alert(this.state.subjectDataList);
         }
@@ -214,25 +215,56 @@ export default class Adminarea extends React.Component{
       alert(error);
     }
   }
-  displayVersionMessage(){
-    if (this.state.latest_version != this.state.current_version){
-      return (
-        <View>
-          <Text style={stylesAdmin.VersionMessageStyleUN}>Your version is not upto date with the latest version.</Text>
-          <Text style={stylesAdmin.VersionMessageStyleUN} onPress={()=>{Linking.openURL('https://play.google.com/store/apps/details?id=com.sankalp.sankalpschool')}}>Please download latest version from here.</Text>
-          <Text style={stylesAdmin.VersionMessageStyleUN}>Current version: {this.state.current_version}</Text>
-          <Text style={stylesAdmin.VersionMessageStyleUN}>Latest version: {this.state.latest_version}</Text>
-          <Text></Text>
+  examResultsDisplay(row_set){
+    if (row_set.results_declared == 'Y'){
+      return(
+        <View>          
+          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam Results</Text>
         </View>
-      );
-
+      );   
     }
     else{
+      return(
+        <View>          
+          <Text >Results have not been declared.</Text>
+        </View>
+      );
+    }
+
+  }
+  displayExamsByRow(){
+    return this.state.examDataList.map((row_set, i)=>{
       return (
-        <View>
-          <Text style={stylesAdmin.VersionMessageStyle}>Your version is upto date with the latest version.</Text>
-          <Text style={stylesAdmin.VersionMessageStyle}>Current version: {this.state.current_version}</Text>
-          <Text></Text>
+        <View key={i} style={{
+          flex:1,
+          borderBottomColor: 'black',
+          borderBottomWidth: 1,
+        }}>
+          <Text>Event occasion. :     {row_set.occasion} </Text>
+          <Text>Event details   :     {row_set.details} </Text>
+          <Text>Event session   :     {row_set.session} </Text>
+          <Text>Event start date:     {row_set.start_date} </Text>
+          <Text>Event end date  :     {row_set.end_date} </Text>
+                   
+        </View>
+      );
+    });
+  }
+  displayExams(){
+    if (this.state.examDataList.length == 0){
+      return(
+        <View style={stylesAdmin.InputContainer}>
+          <Text>Currently no events have been added yet.</Text>
+
+        </View>
+      );
+    }
+    else{
+      //alert(this.state.subjectDataList);
+      return(
+        <View style={stylesAdmin.InputContainer}>
+          <Text>Currently these events have been added yet.</Text>
+          { this.displayExamsByRow() }
         </View>
       );
     }
@@ -249,15 +281,11 @@ export default class Adminarea extends React.Component{
           drawerPosition={DrawerLayout.positions.left}
           onDrawerOpen={this.setDrawerState}
           onDrawerClose={this.setDrawerState}
-          renderNavigationView={() => <MenuAdmin 
+          renderNavigationView={() => <MenuStudent
               _goToProfilePage={()=>this.goToProfilePage()}
-              _goToStudentPage={()=>this.goToStudentPage()}
               _goToSubjectPage={()=>this.goToSubjectPage()}
-              _goToTeacherPage={()=>this.goToTeacherPage()}
-              _goToAssignSubjectToClassPage={()=>this.goToAssignSubjectToClassPage()}
-              _goToExamsPage={()=>this.goToExamsPage()}
-              _goToNoticePage={()=>this.goToNoticePage()}
-              _goToViewNoticePage={()=>this.goToViewNoticePage()}
+              _goToExamPage={()=>this.goToExamPage()}
+              _goToReceivedNoticePage={()=>this.goToReceivedNoticePage()}
               _logout={()=>this.logout()}
               schoolName={this.state.schoolName}
             />}
@@ -267,43 +295,14 @@ export default class Adminarea extends React.Component{
             backgroundColor="#33cc33"
             leftIconName={'menu'}
             onLeftPress={this.toggleDrawer}/>
-        <ScrollView style={stylesAdmin.Container}>
-          {this.displayVersionMessage()}
-          <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.user_name}</Text>
-          <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.name}</Text>
-          <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.email}</Text>
-          <Text style={stylesAdmin.HeadingText}>Welcome {this.state.user_session.phone}</Text>
-          
-          <TouchableOpacity onPress={this.goToStudentPage} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>Student Details</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.goToTeacherPage} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>Teacher Details</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.goToSubjectPage} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>Subject Details</Text>
-          </TouchableOpacity> 
-          <TouchableOpacity onPress={this.goToAssignSubjectToClassPage} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>Assign Subject to Class.</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.goToExamsPage} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>View Exam Details</Text>
-          </TouchableOpacity> 
-          <TouchableOpacity onPress={this.goToNoticePage} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>Create Notice</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.goToViewNoticePage} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>View Notices</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.goToViewMorePage} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>More Options</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.logout} style={stylesAdmin.ButtonContainer}>
-            <Text style={stylesAdmin.ButtonText}>LOG OUT</Text>
-          </TouchableOpacity>
-          <Text></Text>
-          <Text></Text>      
-        </ScrollView>
+        <View style={{flex:1,}}>
+          <ScrollView style={stylesAdmin.Container}>
+          {this.displayExams()}
+                 
+          </ScrollView>
+          <View style={stylesAdmin.ButtonContainerBackground}>
+          </View>
+        </View>
     </DrawerLayout>
       
     );  
@@ -328,42 +327,32 @@ export default class Adminarea extends React.Component{
     //this.props.navigation.navigate('Login');
   }
 
+
   goToProfilePage = () =>{
-    this.props.navigation.navigate('Adminarea');
+    this.props.navigation.navigate('Studentarea');
   }
   goToStudentPage = () =>{
     //alert("student page");
-    this.props.navigation.navigate('StudentViewAdmin');
 
   }
   goToSubjectPage = () =>{
     //alert("subject page");
-    this.props.navigation.navigate('SubjectViewAdmin');
+    this.props.navigation.navigate('SubjectViewStudent');
+  }
+  goToExamPage = () =>{
+    //alert("exam page");
+    this.props.navigation.navigate('ExamViewStudent');
   }
   goToTeacherPage = () =>{
     //alert("teacher page");
-    this.props.navigation.navigate('TeacherViewAdmin');
+    //this.props.navigation.navigate('TeacherViewAdmin');
   }
-  goToAssignSubjectToClassPage = () =>{
-    //alert("assign subject to Class");
-    this.props.navigation.navigate('AddSubjectToClassAdmin');
+  goToReceivedNoticePage = () =>{
+    this.props.navigation.navigate('ReceivedNoticeViewStudent');
   }
-  goToExamsPage = () =>{
-    //alert("Exams page");
-    this.props.navigation.navigate('ExamViewAdmin');
-  }
-  goToNoticePage = () =>{
-    //alert("notice page");
-    this.props.navigation.navigate('CreateNoticeAdmin');
-  }
-  goToViewNoticePage = () =>{
-    //alert("notice page");
-    this.props.navigation.navigate('NoticeViewAdmin');
-  }
-  goToViewMorePage = () =>{
-    this.props.navigation.navigate('MoreViewAdmin');
-  }
-
+  goToSingleExamPage = (i) =>{
+    //alert(i);
+    this.props.navigation.navigate('ViewGradeStudent', {i});
+  }  
 }
-
 

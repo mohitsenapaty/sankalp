@@ -7,7 +7,7 @@ var crypto = require('crypto');
 
 router.post('/:pwd/:schoolName/', function(req, resp, next){
 
-	console.log(req.body);
+  console.log(req.body);
   //console.log(next);
   var schoolName = (req.params.schoolName).toLowerCase();
   //console.log(schoolName);
@@ -16,7 +16,22 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
 
   var userid = req.body.user_id;
   var userID = parseInt(userid, 10);
+  var student_id = req.body.student_id;
   var loginType = req.body.loginType;
+  var hostel_id = req.body.hostel_id;
+  var date_of_birth = req.body.date_of_birth;
+  var transportation = req.body.transportation;
+  var hostel_resident = req.body.hostel_resident;
+  var residential_address = req.body.residential_address;
+  var fdb_db = req.body.fdb_db;
+  if (hostel_resident == 'Yes'){
+    residential_address = "";
+    transportation = "";
+  }
+  else{
+    hostel_id = -1;
+  }
+
   
   var login_data = {'success':0,'data':[],'token':''};
   //console.log(SHA224(password, "utf8").toString('hex'));
@@ -48,7 +63,8 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
         console.log(err); resp.send(login_data);
       }
 
-      db_client.query("SELECT * FROM house_detail;", function(err, res)
+      db_client.query("DELETE FROM student_residential_detail WHERE student_id=$1;"
+        ,[student_id], function(err, res)
       {
         if (err){
           console.log(err); 
@@ -61,22 +77,31 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
         else
         { //console.log(res);
           console.log(res.rows.length);
-
-          var data_arr = [];
-          for (var i = 0; i < res.rows.length; i++){
-            data_arr.push(res.rows[i]);
-          }
           //var data_dict = {'data_arr':data_arr}
-          console.log(data_arr);
-          login_data['data'] = data_arr;
-          login_data['success'] = 1;
-          login_data['token'] = got_id;
+          //console.log(data_arr);
+          db_client.query("INSERT INTO student_residential_detail values($1, $2, $3, $4, $5, $6, $7);",
+            [student_id, date_of_birth, hostel_resident, residential_address, hostel_id, transportation, fdb_db], function(err1, res1)
+          {
+            if (err1){
+              db_client.end(function(err2){
 
-          resp.send(login_data);
-          //close connection
-          db_client.end(function(err1){
+                if (err1){console.log(err2);}
+              });
+            }
+            else{
+              console.log(res.rows.length);
 
-            if (err1){console.log(err1);}
+              login_data['data'] = "Success";
+              login_data['success'] = 1;
+              //login_data['token'] = got_id;
+
+              resp.send(login_data);
+
+              db_client.end(function(err2){
+
+                if (err1){console.log(err2);}
+              });
+            }
           });
         }
       });
@@ -86,46 +111,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
 
   }
   else if (loginType == 'Student'){
-    var db_client = new pg.Client(conString);
-    db_client.connect(function(err_){
 
-      if (err_){
-        console.log(err); resp.send(login_data);
-      }
-
-      db_client.query("SELECT * FROM house_detail;", function(err, res)
-      {
-        if (err){
-          console.log(err); 
-          resp.send(login_data);
-          db_client.end(function(err1){
-
-            if (err1){console.log(err1);}
-          });
-        }
-        else
-        { //console.log(res);
-          console.log(res.rows.length);
-
-          var data_arr = [];
-          for (var i = 0; i < res.rows.length; i++){
-            data_arr.push(res.rows[i]);
-          }
-          //var data_dict = {'data_arr':data_arr}
-          console.log(data_arr);
-          login_data['data'] = data_arr;
-          login_data['success'] = 1;
-          login_data['token'] = got_id;
-
-          resp.send(login_data);
-          //close connection
-          db_client.end(function(err1){
-
-            if (err1){console.log(err1);}
-          });
-        }
-      });
-    });
   }
   else{
     resp.send(login_data);
