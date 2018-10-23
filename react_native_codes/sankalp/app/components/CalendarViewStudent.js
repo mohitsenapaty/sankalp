@@ -15,11 +15,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Dimensions,
 
 } from 'react-native';
 //import { Navigator } from 'react-native-deprecated-custom-components';
 import {StackNavigator} from 'react-navigation';
 import ActionBar from 'react-native-action-bar';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import DrawerLayout from 'react-native-drawer-layout';
 import MenuStudent from './MenuStudent';
 import stylesLogin, {globalAssets} from './globalExports';
@@ -29,6 +31,8 @@ var GLOB_IP_PROD='http://52.27.104.46'
 var GLOB_IP_DEV='http://127.0.0.1:8000'
 
 var IP_IN_USE=GLOB_IP_PROD
+var interval_factor = 5000;
+var interval_tick = 10000;
 
 //type Props = {};
 export default class ExamViewStudent extends React.Component{
@@ -47,6 +51,7 @@ export default class ExamViewStudent extends React.Component{
       'examDataList':[],
       'loginType':'Student',
       'schoolName':'', 
+      'tabViewOptions':{index: 0, routes:[{key:'previous', title: 'Past Events'}, {key:'next', title: 'Upcoming Events'}]},
     };
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.setDrawerState = this.setDrawerState.bind(this);
@@ -169,10 +174,22 @@ export default class ExamViewStudent extends React.Component{
       alert(error);
     }
 
-    this.timer = setInterval(()=> this.refreshTeachers(), 10000)
+    this.timer = setInterval(()=> this.refreshTeachers(), 5000);
+
+    var new_obj =  {index: this.state.tabViewOptions.index, routes:[{key:'previous', title: 'Past Events'}, {key:'next', title: 'Upcoming Events'}]}; 
+    this.setState({'tabViewOptions':new_obj});
     
   }
   refreshTeachers = async() =>{
+
+    if (interval_factor%interval_tick == 0)
+    {
+      interval_factor += 5000;
+      return;
+    }
+    else{
+      interval_factor += 5000;
+    }
     //alert("refresh");
     var isFocused = this.props.navigation.isFocused();    
     //alert(isFocused);
@@ -214,43 +231,53 @@ export default class ExamViewStudent extends React.Component{
     catch(error){
       alert(error);
     }
+
+    var new_obj =  {index: this.state.tabViewOptions.index, routes:[{key:'previous', title: 'Past Events'}, {key:'next', title: 'Upcoming Events'}]}; 
+    this.setState({'tabViewOptions':new_obj});
   }
-  examResultsDisplay(row_set){
-    if (row_set.results_declared == 'Y'){
-      return(
-        <View>          
-          <Text style={stylesAdmin.NavigateLinkText} onPress={()=>{this.goToSingleExamPage(row_set)}}>View Exam Results</Text>
-        </View>
-      );   
+  displayExamsByRow(i){
+    if (i == 0){
+      return this.state.examDataList.map((row_set, i)=>{
+        var event_date = new Date(row_set.start_dt);
+        var cur_date = new Date(Date.now());
+        if (event_date < cur_date)
+          return (
+            <View key={i} style={{
+              flex:1,
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}>
+              <Text>Event occasion. :     {row_set.occasion} </Text>
+              <Text>Event details   :     {row_set.details} </Text>
+              <Text>Event session   :     {row_set.session} </Text>
+              <Text>Event start date:     {row_set.start_date} </Text>
+              <Text>Event end date  :     {row_set.end_date} </Text>         
+            </View>
+          );
+      });
     }
     else{
-      return(
-        <View>          
-          <Text >Results have not been declared.</Text>
-        </View>
-      );
+      return this.state.examDataList.map((row_set, i)=>{
+        var event_date = new Date(row_set.start_dt);
+        var cur_date = new Date(Date.now());
+        if (event_date > cur_date)
+          return (
+            <View key={i} style={{
+              flex:1,
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}>
+              <Text>Event occasion. :     {row_set.occasion} </Text>
+              <Text>Event details   :     {row_set.details} </Text>
+              <Text>Event session   :     {row_set.session} </Text>
+              <Text>Event start date:     {row_set.start_date} </Text>
+              <Text>Event end date  :     {row_set.end_date} </Text>         
+            </View>
+          );
+      });
     }
-
   }
-  displayExamsByRow(){
-    return this.state.examDataList.map((row_set, i)=>{
-      return (
-        <View key={i} style={{
-          flex:1,
-          borderBottomColor: 'black',
-          borderBottomWidth: 1,
-        }}>
-          <Text>Event occasion. :     {row_set.occasion} </Text>
-          <Text>Event details   :     {row_set.details} </Text>
-          <Text>Event session   :     {row_set.session} </Text>
-          <Text>Event start date:     {row_set.start_date} </Text>
-          <Text>Event end date  :     {row_set.end_date} </Text>
-                   
-        </View>
-      );
-    });
-  }
-  displayExams(){
+  displayExams(i){
     if (this.state.examDataList.length == 0){
       return(
         <View style={stylesAdmin.InputContainer}>
@@ -264,11 +291,27 @@ export default class ExamViewStudent extends React.Component{
       return(
         <View style={stylesAdmin.InputContainer}>
           <Text>Currently these events have been added yet.</Text>
-          { this.displayExamsByRow() }
+          { this.displayExamsByRow(i) }
         </View>
       );
     }
   }
+  firstRoute = () => (
+    <View style={{flex:1,}}> 
+      <ScrollView style={stylesAdmin.Container}>
+            {this.displayExams(0)}
+
+      </ScrollView>
+    </View>
+  );
+  secondRoute = () => (
+    <View style={{flex:1,}}> 
+      <ScrollView style={stylesAdmin.Container}>
+            {this.displayExams(1)}
+
+      </ScrollView>
+    </View>
+  );
   render() {
 
     return (
@@ -296,10 +339,18 @@ export default class ExamViewStudent extends React.Component{
             leftIconName={'menu'}
             onLeftPress={this.toggleDrawer}/>
         <View style={{flex:1,}}>
-          <ScrollView style={stylesAdmin.Container}>
-          {this.displayExams()}
-                 
-          </ScrollView>
+          <TabView
+            navigationState={this.state.tabViewOptions}
+            renderScene={SceneMap({
+              previous: this.firstRoute,
+              next: this.secondRoute,
+            })}
+            renderTabBar={props => <TabBar {...props} style={{backgroundColor:"#33cc33"}}/>}
+            onIndexChange={(index_) => { new_obj =  {index: index_, routes:[{key:'previous', title: 'Past Events'}, {key:'next', title: 'Upcoming Events'}]}; this.setState({'tabViewOptions':new_obj});}}
+            
+          >
+
+          </TabView>
           <View style={stylesAdmin.ButtonContainerBackground}>
           </View>
         </View>
