@@ -30,4 +30,8 @@ urlpatterns = [
     url(r'^kva/admin_view_exam/', kvaschool_views.admin_view_exam, name='kva_admin_view_exam'),
     url(r'^kva/admin_perform_view/(?P<exam_id1>\d+)/', kvaschool_views.admin_perform_view, name='kva_admin_perform_view'),
     url(r'^kva/admin_download_file/(?P<file_name>\w+)/', kvaschool_views.admin_download_file, name='kva_admin_download_file'),
+    url(r'^kva/add_student/', kvaschool_views.add_student, name='kva_add_student'),
+    url(r'^kva/add_teacher/', kvaschool_views.add_teacher, name='kva_add_teacher'),
+    url(r'^kva/view_student_admin/', kvaschool_views.view_student_admin, name='kva_view_student_admin'),
+    url(r'^kva/view_teacher_admin/', kvaschool_views.view_teacher_admin, name='kva_view_teacher_admin'),
 ]

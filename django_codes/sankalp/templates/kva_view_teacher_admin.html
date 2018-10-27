@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>SANKALP_KVA</TITLE>
+    </HEAD>
+    <BODY>
+        Add Status: {{ msg }}
+        {% if status == 1 %}
+            <p><table>
+                <tr>
+                <th>Teacher id</th>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Unencrypted</th>
+                <th>Password (Encrypted)</th>
+                </tr>
+                {% for elem in studentList %}
+                    <tr>
+                    <td>{{ elem.teacher_id }}</td> 
+                    <td>{{ elem.fullname }}</td> 
+                    <td>{{ elem.email }}</td> 
+                    <td>{{ elem.phone }}</td>
+                    <td>{{ elem.unencrypted }}</td>             
+                    <td>{{ elem.password }}</td>  
+                    </tr>
+                {% endfor %}
+            </table></p>
+        {% else %}
+        
+        {% endif %}
+        <a href="/index/kva/admin_profile_info/">Go back</a>
+    </BODY>
+</HTML>

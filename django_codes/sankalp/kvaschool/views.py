@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import *
+import random, string
 import hashlib, os
 from collections import OrderedDict
 from django.core.files.storage import FileSystemStorage
@@ -246,3 +247,122 @@ def admin_download_file(request, file_name):
     response = HttpResponse(myfile, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + file_name
     return response
+
+
+def add_student(request):
+    class_ = request.POST.get("class")
+    section = request.POST.get("section")
+    add_result = False
+    try:
+        _fullname = request.POST.get("fullname")
+        _email = request.POST.get("email")
+        _phone = request.POST.get("phone")
+        _enrollment_number = request.POST.get("enrollment_number")
+        _father_name = request.POST.get("father_name")
+        _mother_name = request.POST.get("mother_name")
+        _class = request.POST.get("class")
+        _sec = request.POST.get("section")
+        _roll_number = request.POST.get("roll_number")
+        _unencrypted = id_generator()
+        _encrypt_password = hashlib.sha224(_unencrypted).hexdigest()
+        if not (_roll_number.isdigit()):
+            return render(request, 'kva_add_student.html', {'msg':'Student Addition Failed. Details might be incorrect or already present.'})
+        student_login_entry = StudentLogin(fullname=_fullname,emailid=_email,phone=_phone,password=_encrypt_password,unencrypted=_unencrypted,enrollment_number=_enrollment_number,father_name=_father_name,mother_name=_mother_name)
+        student_login_entry.save()
+        _student_id = StudentLogin.objects.get(enrollment_number=_enrollment_number).student_id
+        student_academic_detail_entry = StudentAcademicEnrollmentDetail(student_id=_student_id,roll_number=_roll_number,class_field=_class,section=_sec)  
+        student_academic_detail_entry.save()
+        add_result = True      
+    except Exception as ex:
+        print 'b'    
+        print ex
+    if add_result:
+        return render(request, 'kva_add_.html', {'msg':'Student Addition Successful'})
+    else:
+        return render(request, 'kva_add_.html', {'msg':'Student Addition Failed. Details might be already present.'})
+
+def id_generator(size=10, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
+def add_teacher(request):
+    #class_ = request.POST.get("class")
+    #section = request.POST.get("section")
+    add_result = False
+    try:
+        _fullname = request.POST.get("fullname")
+        _email = request.POST.get("email")
+        _phone = request.POST.get("phone")
+        #_enrollment_number = request.POST.get("enrollment_number")
+        #_father_name = request.POST.get("father_name")
+        #_mother_name = request.POST.get("mother_name")
+        #_class = request.POST.get("class")
+        #_sec = request.POST.get("section")
+        #_roll_number = request.POST.get("roll_number")
+        _unencrypted = id_generator()
+        _encrypt_password = hashlib.sha224(_unencrypted).hexdigest()
+        #if not (_roll_number.isdigit()):
+        #    return render(request, 'kva_add_student.html', {'msg':'Student Addition Failed. Details might be incorrect or already present.'})
+        teacher_login_entry = TeacherLogin(fullname=_fullname,emailid=_email,phone=_phone,password=_encrypt_password,unencrypted=_unencrypted)
+        teacher_login_entry.save()
+        #_teacher_id = TeacherLogin.objects.get(enrollment_number=_enrollment_number).student_id
+        #student_academic_detail_entry = StudentAcademicEnrollmentDetail(student_id=_student_id,roll_number=_roll_number,class_field=_class,section=_sec)
+        #student_academic_detail_entry.save()
+        add_result = True
+    except Exception as ex:
+        print 'b'
+        print ex
+    if add_result:
+        return render(request, 'kva_add_.html', {'msg':'Teacher Addition Successful'})
+    else:
+        return render(request, 'kva_add_.html', {'msg':'Teacher Addition Failed. Details might be already present.'})
+
+
+def view_student_admin(request):
+    class_ = request.POST.get("class", "1")
+    section_ = request.POST.get("section", "A")
+    view_result = False
+    student_list = []
+    try:
+        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_)
+        for st_obj in st_arr:
+            st_id = st_obj.__dict__.get("student_id")
+            st_full_obj = StudentLogin.objects.get(student_id=st_id).__dict__
+            st_full_obj["class"]=st_obj.__dict__.get("class_field")
+            st_full_obj["section"]=st_obj.__dict__.get("section")
+            st_full_obj["roll_number"]=st_obj.__dict__.get("roll_number")
+            student_list.append(st_full_obj)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        return render(request, 'kva_view_student_admin.html', {'msg':'Teacher Addition Successful', 'studentList':student_list, 'status':1})
+    else:
+        return render(request, 'kva_view_student_admin.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0})
+  
+
+def view_teacher_admin(request):
+    #class_ = request.POST.get("class", "1")
+    #section_ = request.POST.get("section", "A")
+    view_result = False
+    teacher_list = []
+    try:
+        st_arr = TeacherLogin.objects.all()
+        for st_obj in st_arr:
+            #st_id = st_obj.__dict__.get("student_id")
+            #st_full_obj = StudentLogin.objects.get(student_id=st_id).__dict__
+            #st_full_obj["class"]=st_obj.__dict__.get("class_field")
+            #st_full_obj["section"]=st_obj.__dict__.get("section")
+            #st_full_obj["roll_number"]=st_obj.__dict__.get("roll_number")
+            teacher_list.append(st_obj.__dict__)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        return render(request, 'kva_view_teacher_admin.html', {'msg':'Teacher Addition Successful', 'studentList':teacher_list, 'status':1})
+    else:
+        return render(request, 'kva_view_teacher_admin.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0})
+
+

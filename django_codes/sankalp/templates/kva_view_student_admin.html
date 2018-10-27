@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>SANKALP_KVA</TITLE>
+    </HEAD>
+    <BODY>
+        <p>
+            <b>Upload Teacher One by One:</b> </br>
+            <form action="/index/kva/view_student_admin/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            Select Class:
+            <select name="class">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                  </select><br>
+            Select Section:
+                  <select name="section">
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+
+                  </select>
+            <p></p>
+            <input type="submit"
+            value="Find"
+            style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+            </form>
+        </p>        
+        Add Status: {{ msg }}
+        {% if status == 1 %}
+            <p><table>
+                <tr>
+                <th>Student id</th>
+                <th>Roll Number</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Unencrypted</th>
+                <th>Password (Encrypted)</th>
+                <th>Enrolment Number</th>
+                <th>Father Name</th>
+                <th>Mother Name</th>
+                </tr>
+                {% for elem in studentList %}
+                    <tr>
+                    <td>{{ elem.student_id }}</td> 
+                    <td>{{ elem.roll_number }}</td> 
+                    <td>{{ elem.class }}</td> 
+                    <td>{{ elem.section }}</td> 
+                    <td>{{ elem.fullname }}</td> 
+                    <td>{{ elem.email }}</td> 
+                    <td>{{ elem.phone }}</td>
+                    <td>{{ elem.unencrypted }}</td>             
+                    <td>{{ elem.password }}</td>  
+                    <td>{{ elem.enrollment_number }}</td>
+                    <td>{{ elem.father_name }}</td>
+                    <td>{{ elem.mother_name }}</td>
+                    </tr>
+                {% endfor %}
+            </table></p>
+        {% else %}
+        
+        {% endif %}
+        <a href="/index/kva/admin_profile_info/">Go back</a>
+    </BODY>
+</HTML>

@@ -49,9 +49,9 @@
                 Admin username: {{ admin_login.user_name }} </br>
             </p>
             <p>
-                <a href="/index/kva/view_student/">View Students.</a>
-                <a href="/index/kva/view_teacher/">View Teachers.</a>
-                <a href="/index/kva/view_subject/">View Subjects.</a>
+                <a href="/index/kva/view_student_admin/">View Students.</a>
+                <a href="/index/kva/view_teacher_admin/">View Teachers.</a>
+                <a href="/index/kva/view_subject_admin/">View Subjects.</a>
                 <a href="/index/kva/admin_view_exam/">View Exams.</a>
                 <a href="/index/kva/view_notice/">View Notices.</a>
                 <b></b>                
@@ -102,6 +102,66 @@
                       <option value="B">B</option>
                       <option value="C">C</option>
                       
+                  </select>
+                  <input type="submit"
+                   value="Upload"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+                </form>
+            </p>
+            <p>
+                <b>Upload Teacher One by One:</b> </br>
+                <form action="/index/kva/add_teacher/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  Full Name:<br>
+                  <input type="text" name="fullname" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  Email:<br>
+                  <input type="text" name="email" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  Phone:<br>
+                  <input type="text" name="phone" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  <p></p>
+                  <input type="submit"
+                   value="Upload"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+                </form>
+            </p>
+            <p>
+                <b>Upload Student One by One:</b> </br>
+                <form action="/index/kva/add_student/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  Full Name:<br>
+                  <input type="text" name="fullname" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  Roll Number:<br>
+                  <input type="text" name="roll_number" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  Email:<br>
+                  <input type="text" name="email" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  Phone:<br>
+                  <input type="text" name="phone" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  Enrolment Number:<br>
+                  <input type="text" name="enrollment_number" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  Father's Name:<br>
+                  <input type="text" name="father_name" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  Mother's Name:<br>
+                  <input type="text" name="mother_name" required="required" style="border: 1px solid black; padding: 5px;"><br>
+                  <p></p>
+                  <select name="class">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                  </select>
+                  <select name="section">
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+
                   </select>
                   <input type="submit"
                    value="Upload"
