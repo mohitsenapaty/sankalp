@@ -87,6 +87,20 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class CalenderEventDetail(models.Model):
+    holiday_id = models.AutoField(primary_key=True)
+    session = models.CharField(max_length=20, blank=True, null=True)
+    occasion = models.CharField(max_length=50, blank=True, null=True)
+    details = models.CharField(max_length=500, blank=True, null=True)
+    start_date = models.CharField(max_length=20, blank=True, null=True)
+    end_date = models.CharField(max_length=20, blank=True, null=True)
+    start_dt = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calender_event_detail'
+
+
 class ClassTeacherDetail(models.Model):
     teacher_id = models.IntegerField(unique=True)
     class_field = models.CharField(db_column='class', primary_key=True, max_length=2)  # Field renamed because it was a Python reserved word.
@@ -185,6 +199,26 @@ class ExamGroupScoring(models.Model):
         unique_together = (('exam_group_id', 'subject_id', 'student_id'),)
 
 
+class HostelDetail(models.Model):
+    hostel_id = models.AutoField(primary_key=True)
+    hostel_name = models.CharField(max_length=100, blank=True, null=True)
+    hostel_address = models.CharField(max_length=200, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'hostel_detail'
+
+
+class HouseDetail(models.Model):
+    house_id = models.AutoField(primary_key=True)
+    house_name = models.CharField(max_length=30, blank=True, null=True)
+    house_code = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'house_detail'
+
+
 class NotificationDetail(models.Model):
     notification_id = models.AutoField(primary_key=True)
     notification_creator = models.CharField(max_length=15)
@@ -250,6 +284,15 @@ class StudentCsa(models.Model):
         unique_together = (('exam_group_id', 'student_id'),)
 
 
+class StudentHouseDetail(models.Model):
+    student_id = models.IntegerField(primary_key=True)
+    house_id = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_house_detail'
+
+
 class StudentLogin(models.Model):
     student_id = models.AutoField(primary_key=True)
     fullname = models.CharField(max_length=50)
@@ -297,6 +340,20 @@ class StudentRemarks(models.Model):
         managed = False
         db_table = 'student_remarks'
         unique_together = (('exam_group_id', 'student_id'),)
+
+
+class StudentResidentialDetail(models.Model):
+    student_id = models.IntegerField(primary_key=True)
+    date_of_birth = models.CharField(max_length=20, blank=True, null=True)
+    hostel_resident = models.CharField(max_length=3, blank=True, null=True)
+    residential_address = models.CharField(max_length=100, blank=True, null=True)
+    hostel_id = models.IntegerField(blank=True, null=True)
+    transportation = models.CharField(max_length=3, blank=True, null=True)
+    fdb_db = models.CharField(max_length=3, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_residential_detail'
 
 
 class StudentSubjectDetail(models.Model):
