@@ -1,0 +1,194 @@
+{% load static %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>SANKALP</TITLE>
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/common/home_style.css'%}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <style>
+  table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        th {
+          height:20px;
+        }
+        th, td {
+            padding: 5px;
+        }
+  </style>
+    </HEAD>
+    <BODY>
+	<div class="top"> 
+		<p>
+		<center> KVA SCHOOL ADMIN LOGIN</center>	
+		</p>
+	</div>
+	<div class="left">
+		
+  	    {% if is_logged_in == 0 %} 
+		<p>You are not logged in</p>
+	  		<p><a href="#" id ="a_log_in">Live Learning Login</a></p>
+	    {% else %}
+		<p>Welcome, {{ username }} Logined as {{ logintype }}</p>
+	        {% if logintype == 'Admin' %}
+                    <p><a href="/index/kva/admin_profile_info/" >Profile</a></p>
+                {% elif logintype == 'Teacher' %}
+                    <p><a href="/index/kva/teacher_profile_info/" >Profile</a></p>
+                {% else %}
+                    <p><a href="/student_profile_info/" >Profile</a></p>
+            {% endif %}
+		<p><a href="/index/kva/log_out/" id ="a_log_out">Log out</a></p>
+		{% endif %}
+		<p><a href="/index/kva/home/">Main Page</a></p>
+  		
+	</div>
+	<div class="main">
+	{% if error_message != 'None' %}
+		<div><p>{{ error_message }}</p></div>
+	{% endif %}
+        {% if is_logged_in == 0 %}
+	    <div>You need to login to access this page</div>
+        {% else %}
+        <div>
+            <p>
+                <center>Welcome, {{username}}</center>
+            </p>
+            <p>
+                Admin id: {{ admin_login.admin_id }} </br>
+                Admin username: {{ admin_login.user_name }} </br>
+            </p>
+            <p>
+                <a href="/index/kva/view_student_admin/">View Students.</a>
+                <a href="/index/kva/view_teacher_admin/">View Teachers.</a>
+                <a href="/index/kva/view_subject_admin/">View Subjects.</a>
+                <a href="/index/kva/view_exam_admin/">View Exams.</a>
+                <a href="/index/kva/view_notice_admin/">View Notices.</a>
+                <a href="/index/kva/view_calendar_admin/">View Calendar.</a>
+                <b></b>                
+            </p>
+            <p>
+                <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
+                <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
+                <b></b>                
+            </p>
+        </div>
+        <div>
+            {% if post_status == 1 %}
+              <b>Data added successfully</b>
+            {% else %}
+              <b>Data not added/Invalid Data addition.</b>
+            {% endif %}
+            {% if status == 1 %}
+              <b>List of Teachers:-</b>
+              {% for elem in teacherList %}
+              <p>
+                  <p><table>
+                    <tr>
+                    <th>Teacher id</th>
+                    <th>Fullname</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Unencrypted</th>
+                    </tr>  
+                    <tr>
+                    <td>{{ elem.teacher_id }}</td> 
+                    <td>{{ elem.fullname }}</td> 
+                    <td>{{ elem.emailid }}</td> 
+                    <td>{{ elem.phone }}</td>
+                    <td>{{ elem.unencrypted }}</td>             
+                    </tr>
+                  </table>
+                {% if teacher_id == elem.teacher_id %}
+                    <br>
+                    <table>
+                        <tr>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Subject Name</th>
+                        <th>Subject Code</th>
+                        <th>Major/Minor</th>
+                        <th>Delete Subject Link</th>
+                        </tr> 
+                  {% for elem in teacher_subjects %}
+
+                       
+                        <tr>
+                        <td>{{ elem.class_field }}</td> 
+                        <td>{{ elem.section }}</td> 
+                        <td>{{ elem.subject_name }}</td> 
+                        <td>{{ elem.subject_code }}</td>
+                        <td>{{ elem.is_major }}</td>             
+                        <td>Click Here</td>
+                        </tr>
+                      
+                  {% endfor %}
+                    </table>
+                    <br>
+                    <form action="/index/kva/assign_teacher_subject_admin/{{ elem.teacher_id }}/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      Class:
+                      <select name="class">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                      </select>
+                      <br>
+                      Section:
+                      <select name="section">
+                          <option value="A">A</option>
+                          <option value="B">B</option>
+                          <option value="C">C</option>
+
+                      </select>
+                      <br>
+                      Subject:
+                      <select name="subject_id">
+                        {% for elem in subjectList %}
+                          <option value="{{elem.subject_id}}">{{elem.subject_name}}</option>
+                        {% endfor %}
+                      </select>
+                      <br>
+                      <input type="submit"
+                       value="Upload"
+                       style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+                      
+                    </form>
+                  </p>
+                {% endif %}
+              </p>
+                
+              {% endfor %}
+            {% endif %}
+            <p>
+            </p>
+        </div>
+        {% endif %}
+	</div>
+	<div class="topleft">
+		<p>
+	    <center>Learn With Dharna</center>
+		</p>
+	</div>
+    </BODY>
+<script type="text/javascript"> 
+/*function funcMissionStatement(){
+	var el = document.getElementById('foo');
+	var el = document.getElementById('foo');
+	var el = document.getElementById('foo');
+	var el = document.getElementById('foo');
+	var el = document.getElementById('foo'); 
+}
+*/
+</HTML>

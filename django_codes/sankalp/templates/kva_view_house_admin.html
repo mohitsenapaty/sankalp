@@ -72,6 +72,8 @@
             <p>
                 <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
                 <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
+                <a href="/index/kva/view_hostel_admin/">Add/View Hostels</a>
+                <a href="/index/kva/view_house_admin/">Add/View Houses.</a>
                 <b></b>                
             </p>
         </div>
@@ -80,29 +82,37 @@
         {% if status == 1 %}
             <p><table>
                 <tr>
-                <th>Teacher id</th>
-                <th>Fullname</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Unencrypted</th>
-                <th>Password (Encrypted)</th>]
-                <th>Delete</th>
+                <th>House id</th>
+                <th>House Name</th>
+                <th>House Code</th>
+                <th>Delete Link</th>
                 </tr>
-                {% for elem in studentList %}
+                {% for elem in houseList %}
                     <tr>
-                    <td>{{ elem.teacher_id }}</td> 
-                    <td>{{ elem.fullname }}</td> 
-                    <td>{{ elem.emailid }}</td> 
-                    <td>{{ elem.phone }}</td>
-                    <td>{{ elem.unencrypted }}</td>             
-                    <td>{{ elem.password }}</td>  
-                    <td><a href='/index/kva/delete_teacher_admin/{{elem.teacher_id}}/'>Click here</td>
+                    <td>{{ elem.house_id }}</td> 
+                    <td>{{ elem.house_name }}</td> 
+                    <td>{{ elem.house_code }}</td> 
+                    <td><a href='/index/kva/delete_house_admin/{{elem.house_id}}/'>Click here</td>
                     </tr>
                 {% endfor %}
             </table></p>
         {% else %}
         
         {% endif %}
+        <p>
+            <b>Add Houses:</b> </br>
+            <form action="/index/kva/add_house_admin/" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              House Name:<br>
+              <input type="text" name="house_name" required="required" style="border: 1px solid black; padding: 5px;"><br>
+              House Code:<br>
+              <input type="text" name="house_code" required="required" style="border: 1px solid black; padding: 5px;"><br>
+              <p></p>
+              <input type="submit"
+               value="Upload"
+               style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+            </form>
+        </p>
         <a href="/index/kva/admin_profile_info/">Go back</a>
                     <p>
             </p>

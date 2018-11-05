@@ -7,6 +7,10 @@ var crypto = require('crypto');
 
 var request = require('request');
 
+var api_key_shatabdi = '6db4aded-e001-11e8-a895-0200cd936042';
+var api_key_mohit = '41398bea-aaf7-11e8-a895-0200cd936042';
+var api_in_use = api_key_shatabdi;
+
 router.post('/:pwd/:schoolName/', function(req, resp, next){
 
 	console.log(req.body);
@@ -22,16 +26,44 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
   var subject = req.body.subject;
   var message = req.body.message;
   var noticeFor = req.body.noticeFor;
-  var all_class_selected =req.body.all_class_selected;
+  var all_class_selected_temp =req.body.all_class_selected;
   var classes_selected = req.body.classes_selected;
-  var all_section_selected =req.body.all_section_selected;
+  var all_section_selected_temp =req.body.all_section_selected;
   var sections_selected = req.body.sections_selected;
   var singleStudent = req.body.singleStudent;
   var student_id=req.body.student_id;
   
   var login_data = {'success':0,'data':'','token':''};
 
-  console.log(all_class_selected);
+  console.log(all_section_selected);
+  if (all_class_selected_temp == true)
+  {
+    //console.log("qq");
+    var all_class_selected = true;
+  }
+  else if (all_class_selected_temp == 'True'){
+    var all_class_selected =true;
+  }
+  else{
+    var all_class_selected = false;
+  }
+  if (all_section_selected_temp == true)
+  {
+    //console.log("qq");
+    var all_section_selected = true;
+  }
+  else if (all_section_selected_temp == 'True'){
+    var all_section_selected =true;
+  }
+  else{
+    var all_section_selected = false;
+  }
+  if (all_class_selected == true){
+    console.log("qq");
+  }
+  if (all_section_selected == true){
+    console.log("1qq1");
+  }
   //console.log(classes_selected);
   //resp.send(login_data);
   //return;
@@ -119,7 +151,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                 {
                   request(
                     {
-                      url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                      url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS", 
                       method:"POST", 
                       json:true, 
                       body:myJSONObject
@@ -221,7 +253,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                 try{
                   request(
                     {
-                      url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                      url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS",
                       method:"POST", 
                       json:true, 
                       body:myJSONObject
@@ -295,6 +327,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
             });
           }
           if (noticeFor=='Student' && all_class_selected==true){
+            console.log("dsadsa");
             db_client.query("select a.phone from student_login a;",
               function(err1_, res1_)
             {
@@ -323,7 +356,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                 try{
                   request(
                     {
-                      url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                      url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS", 
                       method:"POST", 
                       json:true, 
                       body:myJSONObject
@@ -427,7 +460,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                 try{
                   request(
                     {
-                      url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                      url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS", 
                       method:"POST", 
                       json:true, 
                       body:myJSONObject
@@ -501,6 +534,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
             });
           }
           if (noticeFor=='Student' && all_class_selected == false && all_section_selected == false && singleStudent == false){
+            console.log("njba bcjks");
             db_client.query("select a.phone from student_login a join student_academic_enrollment_detail b on a.student_id=b.student_id where b.class=ANY($1) and b.section=ANY($2);"
               ,[classes_selected, sections_selected]
               ,function(err1_, res1_)
@@ -532,7 +566,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                   try{
                     request(
                       {
-                        url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                        url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS", 
                         method:"POST", 
                         json:true, 
                         body:myJSONObject
@@ -637,7 +671,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                   try{
                     request(
                       {
-                        url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                        url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS", 
                         method:"POST", 
                         json:true, 
                         body:myJSONObject
@@ -711,7 +745,11 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
               }
             });
           }
-          
+          else{
+            //login_data['data'] = "Error";
+            //login_data['success'] = 0;
+            //resp.send(login_data);
+          }
           
         }
       });
@@ -777,7 +815,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                   try{
                     request(
                       {
-                        url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                        url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS",
                         method:"POST", 
                         json:true, 
                         body:myJSONObject
@@ -883,7 +921,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                   try{
                     request(
                       {
-                        url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                        url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS", 
                         method:"POST", 
                         json:true, 
                         body:myJSONObject

@@ -36,7 +36,7 @@
             {% if logintype == 'Admin' %}
                     <p><a href="/index/kva/admin_profile_info/" >Profile</a></p>
                 {% elif logintype == 'Teacher' %}
-                    <p><a href="/teacher_profile_info/" >Profile</a></p>
+                    <p><a href="/index/kva/teacher_profile_info/" >Profile</a></p>
                 {% else %}
                     <p><a href="/student_profile_info/" >Profile</a></p>
             {% endif %}
@@ -57,54 +57,66 @@
                 <center>Welcome, {{username}}</center>
             </p>
             <p>
-                Admin id: {{ admin_login.admin_id }} </br>
-                Admin username: {{ admin_login.user_name }} </br>
+                Teacher id: {{ teacher_login.teacher_id }} </br>
+                Teacher username: {{ teacher_login.fullname }} </br>
+                Teacher emailid: {{ teacher_login.emailid }} </br>
+                Teacher phone: {{ teacher_login.phone }} </br>
             </p>
             <p>
-                <a href="/index/kva/view_student_admin/">View Students.</a>
-                <a href="/index/kva/view_teacher_admin/">View Teachers.</a>
-                <a href="/index/kva/view_subject_admin/">View Subjects.</a>
-                <a href="/index/kva/view_exam_admin/">View Exams.</a>
-                <a href="/index/kva/view_notice_admin/">View Notices.</a>
-                <a href="/index/kva/view_calendar_admin/">View Calendar.</a>
-                <b></b>                
-            </p>
-            <p>
-                <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
-                <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
+                <a href="/index/kva/teacher_view_exam/">View Exams.</a>
+                <a href="/index/kva/view_notice/">View Received Notices.</a>
+                <a href="/index/kva/view_notice/">View Sent Notices.</a>
+                <a href="/index/kva/view_calendar/">View Calendar.</a>
                 <b></b>                
             </p>
         </div>
         <div> 
-            Add Status: {{ msg }}
-        {% if status == 1 %}
-            <p><table>
+            {% if subject_students > 0 %}
+            <p>
+              <b>Following students have appeared the exam for Class: {{class_value}} Section: {{section}} and Subject {{subject_name}}:-</b>
+              <p>
+                <table>
                 <tr>
-                <th>Teacher id</th>
-                <th>Fullname</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Unencrypted</th>
-                <th>Password (Encrypted)</th>]
-                <th>Delete</th>
+                <th>Student id</th>
+                <th>Roll Number</th>
+                <th>Full Name</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Send Notice Link</th>
                 </tr>
-                {% for elem in studentList %}
+                {% for elem in subject_students_arr %}
                     <tr>
-                    <td>{{ elem.teacher_id }}</td> 
+                    <td>{{ elem.student_id }}</td> 
+                    <td>{{ elem.roll_number }}</td> 
                     <td>{{ elem.fullname }}</td> 
-                    <td>{{ elem.emailid }}</td> 
-                    <td>{{ elem.phone }}</td>
-                    <td>{{ elem.unencrypted }}</td>             
-                    <td>{{ elem.password }}</td>  
-                    <td><a href='/index/kva/delete_teacher_admin/{{elem.teacher_id}}/'>Click here</td>
+                    <td>{{ elem.class_field }}</td>
+                    <td>{{ elem.section }}</td>
+                    <td>
+                        <a>Link to send notice</a>
+                    </td>
                     </tr>
                 {% endfor %}
-            </table></p>
-        {% else %}
-        
-        {% endif %}
-        <a href="/index/kva/admin_profile_info/">Go back</a>
-                    <p>
+                </table>
+              </p>
+            </p>
+            {% else %}
+            <p>
+              <b>No subjects have been assigned to you.</b>
+            </p>
+            {% endif %}
+            
+            {% if cld_status == 0 %}
+            <p>
+              <b>You are not a class teacher.</b>
+            </p>
+            {% else %}
+            <p>
+              <b>You are class teacher of {{cld.class_field}} {{cld.section}}.</b><br>
+              Click Here to View Values of Students<br>
+              Click Here to Assign Values to Students <br>
+            </p>
+            {% endif %}
+            <p>
             </p>
         </div>
         {% endif %}

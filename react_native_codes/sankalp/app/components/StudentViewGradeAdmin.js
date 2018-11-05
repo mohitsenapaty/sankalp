@@ -333,7 +333,7 @@ export default class StudentViewGradeAdmin extends React.Component{
 
 
   goToProfilePage = () =>{
-    this.props.navigation.navigate('Studentarea');
+    this.props.navigation.navigate('Adminarea');
   }
   goToStudentPage = () =>{
     //alert("student page");

@@ -76,30 +76,55 @@
             </p>
         </div>
         <div> 
-            Add Status: {{ msg }}
+            Past Events:-<br>
         {% if status == 1 %}
             <p><table>
                 <tr>
-                <th>Teacher id</th>
-                <th>Fullname</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Unencrypted</th>
-                <th>Password (Encrypted)</th>]
+                <th>Event id</th>
+                <th>Session</th>
+                <th>Occasion</th>
+                <th>Details</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Delete</th>
                 </tr>
-                {% for elem in studentList %}
+                {% for elem in beforeEventList %}
                     <tr>
-                    <td>{{ elem.teacher_id }}</td> 
-                    <td>{{ elem.fullname }}</td> 
-                    <td>{{ elem.emailid }}</td> 
-                    <td>{{ elem.phone }}</td>
-                    <td>{{ elem.unencrypted }}</td>             
-                    <td>{{ elem.password }}</td>  
-                    <td><a href='/index/kva/delete_teacher_admin/{{elem.teacher_id}}/'>Click here</td>
+                    <td>{{ elem.holiday_id }}</td> 
+                    <td>{{ elem.session }}</td> 
+                    <td>{{ elem.occasion }}</td> 
+                    <td>{{ elem.details }}</td>
+                    <td>{{ elem.start_date }}</td>             
+                    <td>{{ elem.end_date }}</td>  
+                    <td><a href='/index/kva/delete_calendar_admin/{{elem.holiday_id}}/'>Click here</td>
                     </tr>
                 {% endfor %}
             </table></p>
+
+            Upcoming Events:-<br>
+            <p><table>
+                <tr>
+                <th>Event id</th>
+                <th>Session</th>
+                <th>Occasion</th>
+                <th>Details</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Delete</th>
+                </tr>
+                {% for elem in afterEventList %}
+                    <tr>
+                    <td>{{ elem.holiday_id }}</td> 
+                    <td>{{ elem.session }}</td> 
+                    <td>{{ elem.occasion }}</td> 
+                    <td>{{ elem.details }}</td>
+                    <td>{{ elem.start_date }}</td>             
+                    <td>{{ elem.end_date }}</td>   
+                    <td><a href='/index/kva/delete_calendar_admin/{{elem.holiday_id}}/'>Click here</td>
+                    </tr>
+                {% endfor %}
+            </table></p>
+
         {% else %}
         
         {% endif %}

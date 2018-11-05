@@ -1,0 +1,270 @@
+{% load static %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>SANKALP</TITLE>
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/common/home_style.css'%}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <style>
+  table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        th {
+          height:20px;
+        }
+        th, td {
+            padding: 5px;
+        }
+  </style>
+    </HEAD>
+    <BODY>
+  <div class="top"> 
+    <p>
+    <center> KVA SCHOOL ADMIN LOGIN</center>  
+    </p>
+  </div>
+  <div class="left">
+    
+        {% if is_logged_in == 0 %} 
+    <p>You are not logged in</p>
+        <p><a href="#" id ="a_log_in">Live Learning Login</a></p>
+      {% else %}
+    <p>Welcome, {{ username }} Logined as {{ logintype }}</p>
+          {% if logintype == 'Admin' %}
+                    <p><a href="/index/kva/admin_profile_info/" >Profile</a></p>
+                {% elif logintype == 'Teacher' %}
+                    <p><a href="/teacher_profile_info/" >Profile</a></p>
+                {% else %}
+                    <p><a href="/student_profile_info/" >Profile</a></p>
+            {% endif %}
+    <p><a href="/index/kva/log_out/" id ="a_log_out">Log out</a></p>
+    {% endif %}
+    <p><a href="/index/kva/home/">Main Page</a></p>
+      
+  </div>
+  <div class="main">
+  {% if error_message != 'None' %}
+    <div><p>{{ error_message }}</p></div>
+  {% endif %}
+        {% if is_logged_in == 0 %}
+      <div>You need to login to access this page</div>
+        {% else %}
+        <div>
+            <p>
+                <center>Welcome, {{username}}</center>
+            </p>
+            <p>
+                Admin id: {{ admin_login.admin_id }} </br>
+                Admin username: {{ admin_login.user_name }} </br>
+            </p>
+            <p>
+                <a href="/index/kva/view_student_admin/">View Students.</a>
+                <a href="/index/kva/view_teacher_admin/">View Teachers.</a>
+                <a href="/index/kva/view_subject_admin/">View Subjects.</a>
+                <a href="/index/kva/view_exam_admin/">View Exams.</a>
+                <a href="/index/kva/view_notice_admin/">View Notices.</a>
+                <a href="/index/kva/view_calendar_admin/">View Calendar.</a>
+                <b></b>                
+            </p>
+            <p>
+                <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
+                <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
+                <b></b>                
+            </p>
+        </div>
+        <div> 
+            <p>
+                <b>View Students of Class: {{class_value}} {{section}}</b> </br>
+                <form action="/index/kva/admin_student_performance_view/{{exam_id}}/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                Select Class:
+                <select name="class">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                      </select><br>
+                Select Section:
+                      <select name="section">
+                          <option value="A">A</option>
+                          <option value="B">B</option>
+                          <option value="C">C</option>
+
+                      </select>
+                <p></p>
+                <input type="submit"
+                value="Find"
+                style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+                </form>
+            </p>
+            <p>
+            {% if status == 1 %}
+                <p>
+                <table>
+                <tr>
+                    <th>Student id</th>
+                    <th>Fullname</th>
+                    <th>Roll Number</th>
+                    <th>Enrolment Number</th>
+                    <th colspan="4">Co-scholastic activities</th>
+                </tr>
+                {% for elem in studentList %}  
+                    <tr>
+                    <td>{{ elem.student_id }}</td> 
+                    <td>{{ elem.fullname }}</td> 
+                    <td>{{ elem.roll_number }}</td>             
+                    <td>{{ elem.enrollment_number }}</td>                     
+                    <td>Literary Interest</td>
+                    <td>Communication Skill</td>
+                    <td>Arts and Crafts</td>
+                    <td>Music</td>
+                    </tr>
+                    <tr>
+                    <td colspan="4">Grade</td>
+                    {% if elem.csa.csa_status == 1 %} 
+                        <td>{{elem.csa.literary_interest}}</td>
+                        <td>{{elem.csa.communication_skill}}</td>
+                        <td>{{elem.csa.art_craft}}</td>
+                        <td>{{elem.csa.music}}</td>
+                    {% else %}
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+                </table>
+                </p>
+                <p>
+                <table>
+                <tr>
+                    <th>Student id</th>
+                    <th>Fullname</th>
+                    <th>Roll Number</th>
+                    <th>Enrolment Number</th>
+                    <th colspan="3">Personal Traits</th>
+                </tr>
+                {% for elem in studentList %}  
+                    <tr>
+                    <td>{{ elem.student_id }}</td> 
+                    <td>{{ elem.fullname }}</td> 
+                    <td>{{ elem.roll_number }}</td>             
+                    <td>{{ elem.enrollment_number }}</td>                     
+                    <td>Discipline</td>
+                    <td>Punctuality</td>
+                    <td>Hygiene</td>
+                    </tr>
+                    <tr>
+                    <td colspan="4">Grade</td>
+                    {% if elem.pt.pt_status == 1 %} 
+                        <td>{{elem.pt.discipline}}</td>
+                        <td>{{elem.pt.punctuality}}</td>
+                        <td>{{elem.pt.hygiene}}</td>
+                    {% else %}
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+                </table>
+                </p>
+                <p>
+                <table>
+                <tr>
+                    <th>Student id</th>
+                    <th>Fullname</th>
+                    <th>Roll Number</th>
+                    <th>Enrolment Number</th>
+                    <th colspan="5">Attendance Height and Weight</th>
+                </tr>
+                {% for elem in studentList %}  
+                    <tr>
+                    <td>{{ elem.student_id }}</td> 
+                    <td>{{ elem.fullname }}</td> 
+                    <td>{{ elem.roll_number }}</td>             
+                    <td>{{ elem.enrollment_number }}</td>                     
+                    <td>Number of Working days</td>
+                    <td>Number of days Present</td>
+                    <td>Height</td>
+                    <td>Weight</td>
+                    <td>BMI</td>
+                    </tr>
+                    <tr>
+                    <td colspan="4">Grade</td>
+                    {% if elem.ahs.ahs_status == 1 %} 
+                        <td>{{elem.ahs.total_working_days}}</td>
+                        <td>{{elem.ahs.attendance}}</td>
+                        <td>{{elem.ahs.height}} cm</td>
+                        <td>{{elem.ahs.weight}} kg</td>
+                        <td>{{elem.ahs.bmi}}</td>
+                    {% else %}
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                        <td>Not Assigned</td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+                </table>
+                </p>
+                <p>
+                <table>
+                <tr>
+                    <th>Student id</th>
+                    <th>Fullname</th>
+                    <th>Roll Number</th>
+                    <th>Enrolment Number</th>
+                    <th colspan="1">Remarks</th>
+                </tr>
+                {% for elem in studentList %}  
+                    <tr>
+                    <td>{{ elem.student_id }}</td> 
+                    <td>{{ elem.fullname }}</td> 
+                    <td>{{ elem.roll_number }}</td>             
+                    <td>{{ elem.enrollment_number }}</td>                     
+                    {% if elem.rm.rm_status == 1 %} 
+                        <td>{{elem.rm.remarks}}</td>
+                    {% else %}
+                        <td>Not Assigned</td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+                </table>
+                </p>
+            {% endif %}
+            </p>
+            <p>
+            </p>
+        </div>
+        {% endif %}
+  </div>
+  <div class="topleft">
+    <p>
+      <center>Learn With Dharna</center>
+    </p>
+  </div>
+    </BODY>
+<script type="text/javascript"> 
+/*function funcMissionStatement(){
+  var el = document.getElementById('foo');
+  var el = document.getElementById('foo');
+  var el = document.getElementById('foo');
+  var el = document.getElementById('foo');
+  var el = document.getElementById('foo'); 
+}
+*/
+</HTML>

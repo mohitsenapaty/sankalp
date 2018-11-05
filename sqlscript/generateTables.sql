@@ -246,3 +246,21 @@ create table calender_event_detail(
     start_dt date,
     primary key (holiday_id)
 );
+
+ALTER TABLE teacher_subject_detail ADD COLUMN id_ SERIAL;
+
+ALTER TABLE student_subject_detail ADD COLUMN id_ SERIAL;
+
+ALTER TABLE exam_group_scoring ADD COLUMN id_ SERIAL;
+
+ALTER TABLE exam_group_reports_single ADD COLUMN id_ SERIAL;
+
+ALTER TABLE student_ahs ADD COLUMN id_ SERIAL;
+
+ALTER TABLE student_csa ADD COLUMN id_ SERIAL;
+
+ALTER TABLE student_personal_trait ADD COLUMN id_ SERIAL;
+
+ALTER TABLE student_remarks ADD COLUMN id_ SERIAL;
+
+ALTER TABLE notification_target ADD COLUMN id_ SERIAL;

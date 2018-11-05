@@ -1,0 +1,404 @@
+{% load static %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>SANKALP</TITLE>
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/common/home_style.css'%}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+  table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        th {
+          height:20px;
+        }
+        th, td {
+            padding: 5px;
+        }
+  </style>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+    //$( "#datepicker1" ).datepicker();
+    //$( "#datepicker2" ).datepicker();
+  } );
+  /*
+  $(document).ready(function() { 
+    document.getElementById("all_class").checked = true;
+    $("#classes").hide();
+    document.getElementById("all_class_notice").checked = true;
+    $("#classes_notice").hide();
+    document.getElementById("all_sec_notice").checked = true;
+    $("#sec_notice").hide();
+  });
+  function valueChanged()
+  {
+    if($('#all_class').is(":checked"))   
+        $("#classes").hide();
+    else
+        $("#classes").show();
+  }
+  function valueChangedNoticeClass()
+  {
+    if($('#all_class_notice').is(":checked"))   
+        $("#classes_notice").hide();
+    else
+        $("#classes_notice").show();
+  }
+  function valueChangedNoticeSection()
+  {
+    if($('#all_sec_notice').is(":checked"))   
+        $("#sec_notice").hide();
+    else
+        $("#sec_notice").show();
+  }
+  */
+  </script>
+    </HEAD>
+    <BODY>
+  <div class="top"> 
+    <p>
+    <center> KVA SCHOOL ADMIN LOGIN</center>  
+    </p>
+  </div>
+  <div class="left">
+    
+        {% if is_logged_in == 0 %} 
+    <p>You are not logged in</p>
+        <p><a href="#" id ="a_log_in">Live Learning Login</a></p>
+      {% else %}
+    <p>Welcome, {{ username }} Logined as {{ logintype }}</p>
+          {% if logintype == 'Admin' %}
+                    <p><a href="/index/kva/admin_profile_info/" >Profile</a></p>
+                {% elif logintype == 'Teacher' %}
+                    <p><a href="/teacher_profile_info/" >Profile</a></p>
+                {% else %}
+                    <p><a href="/student_profile_info/" >Profile</a></p>
+            {% endif %}
+    <p><a href="/index/kva/log_out/" id ="a_log_out">Log out</a></p>
+    {% endif %}
+    <p><a href="/index/kva/home/">Main Page</a></p>
+      
+  </div>
+  <div class="main">
+  {% if error_message != 'None' %}
+    <div><p>{{ error_message }}</p></div>
+  {% endif %}
+        {% if is_logged_in == 0 %}
+      <div>You need to login to access this page</div>
+        {% else %}
+        <div>
+            <p>
+                <center>Welcome, {{username}}</center>
+            </p>
+            <p>
+                Admin id: {{ admin_login.admin_id }} </br>
+                Admin username: {{ admin_login.user_name }} </br>
+            </p>
+            <p>
+                <a href="/index/kva/view_student_admin/">View Students.</a>
+                <a href="/index/kva/view_teacher_admin/">View Teachers.</a>
+                <a href="/index/kva/view_subject_admin/">View Subjects.</a>
+                <a href="/index/kva/view_exam_admin/">View Exams.</a>
+                <a href="/index/kva/view_notice_admin/">View Notices.</a>
+                <a href="/index/kva/view_calendar_admin/">View Calendar.</a>
+                <b></b>                
+            </p>
+            <p>
+                <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
+                <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
+                <b></b>                
+            </p>
+        </div>
+        <div> 
+            <p>
+            <form action="/index/kva/view_student_admin/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            Select Class:
+            <select name="class">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                  </select><br>
+            Select Section:
+                  <select name="section">
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+
+                  </select>
+            <p></p>
+            <input type="submit"
+            value="Find"
+            style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+            </form>
+        </p>        
+        {% if status == 1 %}
+            <p>
+            </p>
+            <b>Primary Details:</b>
+            <p><table>
+                <tr>
+                <th>Student id</th>
+                <th>Roll Number</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Unencrypted</th>
+                <th>Enrolment Number</th>
+                <th>Father Name</th>
+                <th>Mother Name</th>
+                <th>Assigned subjects</th>
+                <th>Delete</th>
+                </tr>
+                <tr>
+                <td>{{ studentDict.student_id }}</td> 
+                <td>{{ studentDict.roll_number }}</td> 
+                <td>{{ studentDict.class_val }}</td> 
+                <td>{{ studentDict.section }}</td> 
+                <td>{{ studentDict.fullname }}</td> 
+                <td>{{ studentDict.emailid }}</td> 
+                <td>{{ studentDict.phone }}</td>
+                <td>{{ studentDict.unencrypted }}</td>               
+                <td>{{ studentDict.enrollment_number }}</td>
+                <td>{{ studentDict.father_name }}</td>
+                <td>{{ studentDict.mother_name }}</td>
+                <td><a href="/index/kva/assign_student_subject_admin/{{studentDict.student_id}}/">Student Subjects</a></td>
+                <td><a href="/index/kva/delete_student_admin/{{studentDict.student_id}}/">Delete</a></td>
+                </tr>
+            </table></p>
+            <p>
+                <b>Edit Student Details:</b> </br>
+                <form action="/index/kva/edit_student_admin/{{ studentDict.student_id }}/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  Full Name:<br>
+                  <input type="text" name="fullname"  style="border: 1px solid black; padding: 5px;"><br>
+                  Roll Number:<br>
+                  <input type="text" name="roll_number" style="border: 1px solid black; padding: 5px;"><br>
+                  Email:<br>
+                  <input type="text" name="email"  style="border: 1px solid black; padding: 5px;"><br>
+                  Phone:<br>
+                  <input type="text" name="phone" style="border: 1px solid black; padding: 5px;"><br>
+                  Father's Name:<br>
+                  <input type="text" name="father_name"  style="border: 1px solid black; padding: 5px;"><br>
+                  Mother's Name:<br>
+                  <input type="text" name="mother_name" style="border: 1px solid black; padding: 5px;"><br>
+                  <p></p>
+                  Class:<br>
+                  <select name="class">
+                      {% for i in classList %}
+                      <option value="{{i}}">{{i}}</option>
+                      {% endfor %}
+                  </select><br>
+                  Section:<br>
+                  <select name="section">
+                      {% for i in sectionList %}
+                      <option value="{{i}}">{{i}}</option>
+                      {% endfor %}
+
+                  </select><br>
+                  <input type="submit"
+                   value="Upload"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+                </form>
+            </p>
+            <b>DOB and Residential Details:</b>
+            {% if studentDict.srd.is_added == 1 %}
+            <p><table>
+                <tr>
+                <th>Student id</th>
+                <th>Student Name</th>
+                <th>DOB</th>
+                <th>Hostel Resident?</th>
+                <th>Residential Address</th>
+                <th>Hostel Id</th>
+                <th>Hostel Name</th>
+                <th>Transportation</th>
+                <th>FDB/DB</th>
+                </tr>
+                <tr>
+                <td>{{ studentDict.student_id }}</td> 
+                <td>{{ studentDict.fullname }}</td>
+                <td>{{ studentDict.srd.date_of_birth }}</td> 
+                <td>{{ studentDict.srd.hostel_resident }}</td> 
+                <td>{{ studentDict.srd.residential_address }}</td> 
+                <td>{{ studentDict.srd.hostel_id }}</td> 
+                <td>{{ studentDict.srd.hostel_name }}</td> 
+                <td>{{ studentDict.srd.transportation }}</td>
+                <td>{{ studentDict.srd.fdb_db }}</td>               
+                </tr>
+            </table></p>
+            <p>
+                <b>Edit Residential details:</b> </br>
+                <form action="/index/kva/edit_student_residential_admin/{{ studentDict.student_id }}/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  Date of Birth:<br> <input type="text" id="datepicker" name="dob">
+                  <br>
+                  Hostel Resident:<br>
+                  <select name="hostel_resident" id="hostel_resident">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                  </select><br>
+                  
+                  <div id="hostel_input">
+                  Select Hostel: (if Hostel resident is set to yes)<br>
+                  <select name="hostel_id">
+                      {% for i in hostelList %}
+                      <option value="{{i.hostel_id}}">{{i.hostel_name}}</option>
+                      {% endfor %}
+                  </select><br>
+                  </div>
+                  <div id="residential_input">
+                  Residential Address: (if hostel resident is set to no)<br>
+                  <input type="text" name="residential_address"  style="border: 1px solid black; padding: 5px;"><br>
+                  Transportation: (if hostel resident is set to no)<br>
+                  <input type="text" name="transportation"  style="border: 1px solid black; padding: 5px;"><br>
+                  </div>
+                  FDB or DB:<br>
+                  <input type="text" name="fdb_db" style="border: 1px solid black; padding: 5px;"><br>
+                  <p></p>
+                  <input type="submit"
+                   value="Upload"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+                </form>
+            </p>
+            {% else %}
+            <br>No student Details has been added. Add student details below<br>
+            <p>
+                <b>Add Residential details:</b> </br>
+                <form action="/index/kva/edit_student_residential_admin/{{ studentDict.student_id }}/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  Date of Birth:<br> <input type="text" id="datepicker" name="dob" required="required">
+                  <br>
+                  Hostel Resident:<br>
+                  <select name="hostel_resident" id="hostel_resident">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                  </select><br>
+                  
+                  <div id="hostel_input">
+                  Select Hostel: (if Hostel resident is set to yes)<br>
+                  <select name="hostel_id">
+                      {% for i in hostelList %}
+                      <option value="{{i.hostel_id}}">{{i.hostel_name}}</option>
+                      {% endfor %}
+                  </select><br>
+                  </div>
+                  <div id="residential_input">
+                  Residential Address: (if hostel resident is set to no)<br>
+                  <input type="text" name="residential_address"  style="border: 1px solid black; padding: 5px;"><br>
+                  Transportation: (if hostel resident is set to no)<br>
+                  <select name="transportation" >
+                      <option value="P">P</option>
+                      <option value="S">S</option>
+                  </select><br>
+                  </div>
+                  FDB or DB:<br>
+                  <select name="fdb_db" >
+                      <option value="DB">DB</option>
+                      <option value="FDB">FDB</option>
+                  </select><br>
+                  <p></p>
+                  <input type="submit"
+                   value="Upload"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+                </form>
+            </p>
+            {% endif %}
+            <b>House Details:</b>
+            {% if studentDict.shd.is_added == 1 %}
+            <p><table>
+                <tr>
+                <th>Student id</th>
+                <th>Student Name</th>
+                <th>House ID</th>
+                <th>House Name?</th>
+                </tr>
+                <tr>
+                <td>{{ studentDict.student_id }}</td> 
+                <td>{{ studentDict.fullname }}</td>
+                <td>{{ studentDict.shd.house_id }}</td> 
+                <td>{{ studentDict.shd.house_name }}</td>               
+                </tr>
+            </table></p>
+            <p>
+            <b>Edit student house</b>
+            <form action="/index/kva/edit_student_house_admin/{{ studentDict.student_id }}/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        
+            Select House:<br>
+                  <select name="house_id">
+                      {% for i in houseList %}
+                      <option value="{{i.house_id}}">{{i.house_name}}</option>
+                      {% endfor %}
+
+                  </select>
+            <p></p>
+            <input type="submit"
+            value="Add"
+            style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+            </form>
+            </p> 
+            {% else %}
+            <br>No student Details has been added.<br>
+            <p>
+            <b>Add student house</b>
+            <form action="/index/kva/edit_student_house_admin/{{ studentDict.student_id }}/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        
+            Select House:<br>
+                  <select name="house_id">
+                      {% for i in houseList %}
+                      <option value="{{i.house_id}}">{{i.house_name}}</option>
+                      {% endfor %}
+
+                  </select>
+            <p></p>
+            <input type="submit"
+            value="Add"
+            style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+            </form>
+            </p> 
+            {% endif %}
+        {% else %}
+        
+        {% endif %}
+        <a href="/index/kva/admin_profile_info/">Go back</a>
+            <p>
+            </p>
+        </div>
+        {% endif %}
+  </div>
+  <div class="topleft">
+    <p>
+      <center>Learn With Dharna</center>
+    </p>
+  </div>
+    </BODY>
+<script type="text/javascript"> 
+/*function funcMissionStatement(){
+  var el = document.getElementById('foo');
+  var el = document.getElementById('foo');
+  var el = document.getElementById('foo');
+  var el = document.getElementById('foo');
+  var el = document.getElementById('foo'); 
+}
+*/
+</HTML>

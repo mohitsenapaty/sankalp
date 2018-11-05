@@ -72,51 +72,42 @@
             <p>
                 <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
                 <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
-                <a href="/index/kva/view_hostel_admin/">Add/View Hostels</a>
-                <a href="/index/kva/view_house_admin/">Add/View Houses.</a>
                 <b></b>                
             </p>
         </div>
         <div> 
             <p>
-                <h3>View All exams</h3> </br>
+                <h3>View notice {{noticeDict.notification_id}} </br>
+                    Notice Creator: {{ noticeDict.notification_creator }} </br>
+                    Creator Id: {{ noticeDict.notification_creator }} </br>
+                    Creator Name: {{ noticeDict.creator_name }} </br>
+                    Subject: {{ noticeDict.subject }} </br>
+                    Message: {{ noticeDict.message }} </br>
+                    Created At: {{ noticeDict.created_at }} </br>
+                </h3>
+
+            </p>
+            <p>
+                <h3>Notice Target details</h3> </br>
             </p>
             <p>
                 <table>
                 <tr>
-                <th>Exam id</th>
-                <th>Exam name</th>
-                <th>Exam date</th>
-                <th>Exam type</th>
-                <th>Session</th>
-                <th>Results declared</th>
-                <th>Term Final</th>
-                <th>Term Number</th>
-                <th>View Student Performance</th>
-                <th>View Student Values</th>
-                <th>Declare Result Link</th>
-                <th>View PDF</th>
+                <th>Notice id</th>
+                <th>Target Type</th>
+                <th>Target Id</th>
+                <th>Target Name</th>
+                <th>Target Class</th>
+                <th>Target Section</th>
                 </tr>
-                {% for elem in exam_arr %}
+                {% for elem in noticeDict.target %}
                     <tr>
-                    <td>{{ elem.exam_group_id }}</td> 
-                    <td>{{ elem.exam_group_name }}</td> 
-                    <td>{{ elem.exam_group_date }}</td> 
-                    <td>{{ elem.exam_group_type }}</td> 
-                    <td>{{ elem.session }}</td> 
-                    <td>{{ elem.results_declared }}</td> 
-                    <td>{{ elem.term_final }}</td>
-                    <td>{{ elem.term_number }}</td>
-                    <td><a href='/index/kva/admin_student_performance_view/{{elem.exam_group_id}}/'>Click here</td>
-                    <td>
-                    {% if elem.term_final == 'Y' %}
-                    <a href='/index/kva/admin_student_value_view/{{elem.exam_group_id}}/'>Click here</a>
-                    {% else %}
-                    No Values
-                    {% endif %}
-                    </td>
-                    <td><a href='/index/kva/declare_result/{{elem.exam_group_id}}/'>Click here to declare results</a></td> 
-                    <td><a href='/index/kva/admin_perform_view/{{elem.exam_group_id}}/'>Click here</td>
+                    <td>{{ elem.notification_id }}</td> 
+                    <td>{{ elem.target_type }}</td> 
+                    <td>{{ elem.target_id }}</td> 
+                    <td>{{ elem.target_name }}</td> 
+                    <td>{{ elem.target_class }}</td> 
+                    <td>{{ elem.target_section }}</td> 
                     </tr>
                 {% endfor %}
                 </table>
