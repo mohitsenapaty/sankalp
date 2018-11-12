@@ -7,7 +7,7 @@
         <TITLE>SANKALP</TITLE>
 	<link rel="stylesheet" type="text/css" href="{% static 'styles/common/home_style.css'%}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <style>
+  <style>
   table, th, td {
           border: 1px solid black;
           border-collapse: collapse;
@@ -57,51 +57,59 @@
                 <center>Welcome, {{username}}</center>
             </p>
             <p>
-                Teacher id: {{ teacher_login.teacher_id }} </br>
-                Teacher username: {{ teacher_login.fullname }} </br>
-                Teacher emailid: {{ teacher_login.emailid }} </br>
-                Teacher phone: {{ teacher_login.phone }} </br>
+                Admin id: {{ admin_login.admin_id }} </br>
+                Admin username: {{ admin_login.user_name }} </br>
             </p>
             <p>
-                <a href="/index/kva/teacher_view_exam/">View Exams.</a>
-                <a href="/index/kva/teacher_view_received_notice/">View Received Notices.</a>
-                <a href="/index/kva/teacher_view_sent_notice/">View Sent Notices.</a>
-                <a href="/index/kva/teacher_view_calendar/">View Calendar.</a>
+                <a href="/index/kva/view_student_admin/">View Students.</a>
+                <a href="/index/kva/view_teacher_admin/">View Teachers.</a>
+                <a href="/index/kva/view_subject_admin/">View Subjects.</a>
+                <a href="/index/kva/view_exam_admin/">View Exams.</a>
+                <a href="/index/kva/view_notice_admin/">View Notices.</a>
+                <a href="/index/kva/view_calendar_admin/">View Calendar.</a>
+                <b></b>                
+            </p>
+            <p>
+                <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
+                <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
+                <a href="/index/kva/view_hostel_admin/">Add/View Hostels</a>
+                <a href="/index/kva/view_house_admin/">Add/View Houses.</a>
                 <b></b>                
             </p>
         </div>
-        <div> 
+        <div>
             <p>
-                <h3>View All exams</h3> </br>
+                {% if ctd.status == 1 %}
+                    <b>Teacher is classteacher of {{ctd.class_field}} {{ctd.section}}.</b>
+
+                {% else %}
+                    <b>Teacher {{ctd.fullname}} is not a classteacher.</b>
+                <p>
+                    Go to Following class and section
+                    <form action="/index/kva/assign_classteacher_admin/{{ctd.teacher_id}}/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        Class:
+                        <select name="class">
+                        {% for i in classList %}
+                          <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                        </select>
+                        <br>
+                        Section:
+                        <select name="section">
+                        {% for i in sectionList %}
+                          <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                        </select>
+                        <br>
+                        <input type="submit"
+                         value="Go"
+                         style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+                    </form>
+                </p>
+                {% endif %}
             </p>
-            <p>
-                <table>
-                <tr>
-                <th>Exam id</th>
-                <th>Exam name</th>
-                <th>Exam date</th>
-                <th>Exam type</th>
-                <th>Session</th>
-                <th>Results declared</th>
-                <th>Term Final</th>
-                <th>Term Number</th>
-                <th>Actions</th>
-                </tr>
-                {% for elem in exam_arr %}
-                    <tr>
-                    <td>{{ elem.exam_group_id }}</td> 
-                    <td>{{ elem.exam_group_name }}</td> 
-                    <td>{{ elem.exam_group_date }}</td> 
-                    <td>{{ elem.exam_group_type }}</td> 
-                    <td>{{ elem.session }}</td> 
-                    <td>{{ elem.results_declared }}</td> 
-                    <td>{{ elem.term_final }}</td>
-                    <td>{{ elem.term_number }}</td> 
-                    <td><a href='/index/kva/teacher_single_exam_view/{{elem.exam_group_id}}/'>Click here to view exam.</td>
-                    </tr>
-                {% endfor %}
-                </table>
-            </p>
+            
             <p>
             </p>
         </div>

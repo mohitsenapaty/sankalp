@@ -10,6 +10,7 @@ var request = require('request');
 var api_key_shatabdi = '6db4aded-e001-11e8-a895-0200cd936042';
 var api_key_mohit = '41398bea-aaf7-11e8-a895-0200cd936042';
 var api_in_use = api_key_shatabdi;
+var TemplateName = 'School'
 
 router.post('/:pwd/:schoolName/', function(req, resp, next){
 
@@ -146,7 +147,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                 }
                 phoneStr+=res1_.rows[res1_.rows.length-1].phone;
                 console.log(phoneStr);
-                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
+                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":TemplateName};
                 try
                 {
                   request(
@@ -249,7 +250,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                   phoneStr+=res1_.rows[i].phone+",";
                 }
                 phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
+                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":TemplateName};
                 try{
                   request(
                     {
@@ -352,7 +353,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                   phoneStr+=res1_.rows[i].phone+",";
                 }
                 phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
+                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":TemplateName};
                 try{
                   request(
                     {
@@ -455,7 +456,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                   phoneStr+=res1_.rows[i].phone+",";
                 }
                 phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
+                var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":TemplateName};
 
                 try{
                   request(
@@ -561,7 +562,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                     phoneStr+=res1_.rows[i].phone+",";
                   }
                   phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
+                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":TemplateName};
 
                   try{
                     request(
@@ -667,7 +668,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                     phoneStr+=res1_.rows[i].phone+",";
                   }
                   phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
+                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":TemplateName};
                   try{
                     request(
                       {
@@ -810,7 +811,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                     phoneStr+=res1_.rows[i].phone+",";
                   }
                   phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
+                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":TemplateName};
 
                   try{
                     request(
@@ -916,7 +917,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
                     phoneStr+=res1_.rows[i].phone+",";
                   }
                   phoneStr+=res1_.rows[res1_.rows.length-1].phone;
-                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":"Basic"};
+                  var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":phoneStr , "TemplateName":TemplateName};
 
                   try{
                     request(

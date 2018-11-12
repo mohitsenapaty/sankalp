@@ -60,9 +60,12 @@ urlpatterns = [
     url(r'^kva/delete_calendar_admin/(?P<event_id1>\d+)/$', kvaschool_views.delete_event_admin, name='kva_delete_event_admin'),
     url(r'^kva/delete_hostel_admin/(?P<hostel_id1>\d+)/$', kvaschool_views.delete_hostel_admin, name='kva_delete_hostel_admin'),
     url(r'^kva/delete_house_admin/(?P<house_id1>\d+)/$', kvaschool_views.delete_house_admin, name='kva_delete_house_admin'),
+    url(r'^kva/delete_teacher_subject_admin/(?P<teacher_id1>\d+)/(?P<subject_id1>\d+)/(?P<class_field1>\w+)/(?P<section1>\w+)/$', kvaschool_views.delete_teacher_subject_admin, name='kva_delete_teacher_subject_admin'),
+    url(r'^kva/delete_classteacher_admin/(?P<teacher_id1>\d+)/$', kvaschool_views.delete_classteacher_admin, name='kva_delete_classteacher_admin'),
     url(r'^kva/assign_teacher_subject_admin/(?P<teacher_id1>\d+)/$', kvaschool_views.assign_teacher_subject_admin, name='kva_assign_teacher_subject_admin'),
     url(r'^kva/assign_class_subject_admin/$', kvaschool_views.assign_class_subject_admin, name='kva_assign_class_subject_admin'),
     url(r'^kva/assign_student_subject_admin/(?P<student_id1>\d+)/$', kvaschool_views.assign_student_subject_admin, name='kva_assign_student_subject_admin'),
+    url(r'^kva/assign_classteacher_admin/(?P<teacher_id1>\d+)/$', kvaschool_views.assign_classteacher_admin, name='kva_assign_classteacher_admin'),
     #teacher
     url(r'^kva/teacher_profile_info/$', kvaschool_views.teacher_profile_info, name='kva_teacher_profile_info'),
     url(r'^kva/teacher_view_exam/$', kvaschool_views.teacher_view_exam, name='kva_teacher_view_exam'),
@@ -72,4 +75,17 @@ urlpatterns = [
     url(r'^kva/teacher_subject_student_view/(?P<subject_id1>\d+)/(?P<class_field1>\w+)/(?P<section1>\w+)/$', kvaschool_views.teacher_subject_student_view, name='teacher_subject_student_view'),
     url(r'^kva/teacher_view_value/(?P<exam_id1>\d+)/(?P<class_field1>\w+)/(?P<section1>\w+)/$', kvaschool_views.teacher_view_value, name='kva_teacher_view_value'),
     url(r'^kva/teacher_assign_value/(?P<exam_id1>\d+)/(?P<student_id1>\d+)/(?P<table1>\w+)/(?P<row1>\w+)/(?P<class_field1>\w+)/(?P<section1>\w+)/$', kvaschool_views.teacher_assign_value, name='kva_teacher_assign_value'),
+    url(r'^kva/teacher_send_notice/(?P<class_field1>\w+)/(?P<section1>\w+)/(?P<student_id1>\d+)/$', kvaschool_views.teacher_send_notice, name='kva_teacher_send_notice'),
+    url(r'^kva/teacher_send_class_notice/(?P<subject_id1>\d+)/(?P<class_field1>\w+)/(?P<section1>\w+)/$', kvaschool_views.teacher_send_class_notice, name='kva_teacher_class_send_notice'),
+    url(r'^kva/teacher_view_calendar/$', kvaschool_views.teacher_view_calendar, name='kva_teacher_view_calendar'),
+    url(r'^kva/teacher_view_sent_notice/$', kvaschool_views.teacher_view_sent_notice, name='kva_teacher_view_sent_notice'),
+    url(r'^kva/teacher_view_received_notice/$', kvaschool_views.teacher_view_received_notice, name='kva_teacher_view_received_notice'),
+    #student
+    url(r'^kva/student_profile_info/$', kvaschool_views.student_profile_info, name='kva_student_profile_info'),
+    url(r'^kva/student_view_received_notice/$', kvaschool_views.student_view_received_notice, name='kva_student_view_received_notice'),
+    url(r'^kva/student_view_calendar/$', kvaschool_views.student_view_calendar, name='kva_student_view_calendar'),
+    url(r'^kva/student_view_subjects/$', kvaschool_views.student_view_subjects, name='kva_student_view_subjects'),
+    url(r'^kva/student_view_exam/$', kvaschool_views.student_view_exam, name='kva_student_view_exam'),
+    url(r'^kva/student_single_exam_view/(?P<exam_id1>\d+)/$', kvaschool_views.student_single_exam_view, name='kva_student_single_exam_view'),
+
 ]

@@ -72,6 +72,8 @@
             <p>
                 <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
                 <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
+                <a href="/index/kva/view_hostel_admin/">Add/View Hostels</a>
+                <a href="/index/kva/view_house_admin/">Add/View Houses.</a>
                 <b></b>                
             </p>
         </div>
@@ -85,7 +87,8 @@
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Unencrypted</th>
-                <th>Password (Encrypted)</th>]
+                <th>Class Teacher</th>
+                <th>Delete Class Teacher</th>
                 <th>Delete</th>
                 </tr>
                 {% for elem in studentList %}
@@ -94,9 +97,23 @@
                     <td>{{ elem.fullname }}</td> 
                     <td>{{ elem.emailid }}</td> 
                     <td>{{ elem.phone }}</td>
-                    <td>{{ elem.unencrypted }}</td>             
-                    <td>{{ elem.password }}</td>  
-                    <td><a href='/index/kva/delete_teacher_admin/{{elem.teacher_id}}/'>Click here</td>
+                    <td>{{ elem.unencrypted }}</td>   
+                    <td>
+                    {% if elem.ctd.status == 0 %}
+                    <a href='/index/kva/assign_classteacher_admin/{{elem.teacher_id}}/'>Click here To Assign</a>
+                    {% else %}
+                    {{elem.ctd.class_}} {{elem.ctd.sec_}}
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if elem.ctd.status == 0 %}
+                    Not a Class Teacher
+                    {% else %}
+                    <a href='/index/kva/delete_classteacher_admin/{{elem.teacher_id}}/'>Click here to delete Assignment</a>
+                    {% endif %}
+                    </td>             
+                      
+                    <td><a href='/index/kva/delete_teacher_admin/{{elem.teacher_id}}/'>Click here</a></td>
                     </tr>
                 {% endfor %}
             </table></p>

@@ -36,7 +36,7 @@
 	        {% if logintype == 'Admin' %}
                     <p><a href="/index/kva/admin_profile_info/" >Profile</a></p>
                 {% elif logintype == 'Teacher' %}
-                    <p><a href="/teacher_profile_info/" >Profile</a></p>
+                    <p><a href="/index/kva/teacher_profile_info/" >Profile</a></p>
                 {% else %}
                     <p><a href="/student_profile_info/" >Profile</a></p>
             {% endif %}
@@ -64,9 +64,9 @@
             </p>
             <p>
                 <a href="/index/kva/teacher_view_exam/">View Exams.</a>
-                <a href="/index/kva/view_notice/">View Received Notices.</a>
-                <a href="/index/kva/view_notice/">View Sent Notices.</a>
-                <a href="/index/kva/view_calendar/">View Calendar.</a>
+                <a href="/index/kva/teacher_view_received_notice/">View Received Notices.</a>
+                <a href="/index/kva/teacher_view_sent_notice/">View Sent Notices.</a>
+                <a href="/index/kva/teacher_view_calendar/">View Calendar.</a>
                 <b></b>                
             </p>
         </div>

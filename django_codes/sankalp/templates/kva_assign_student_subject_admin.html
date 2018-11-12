@@ -111,6 +111,7 @@
                         <th>Subject Name</th>
                         <th>Subject Code</th>
                         <th>Major/Minor</th>
+                        <th>Subject Teacher</th>
                         <th>Delete Subject Link</th>
                         </tr> 
                   {% for elem in student_subjects %}
@@ -119,7 +120,8 @@
                         <tr>
                         <td>{{ elem.subject_name }}</td> 
                         <td>{{ elem.subject_code }}</td>
-                        <td>{{ elem.is_major }}</td>             
+                        <td>{{ elem.is_major }}</td> 
+                        <td>{{ elem.subject_teacher }}</td>             
                         <td>Click Here</td>
                         </tr>
                       

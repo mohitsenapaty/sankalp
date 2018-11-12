@@ -72,36 +72,58 @@
         </div>
         <div> 
             <p>
-                <h3>View All exams</h3> </br>
+                <h3>View All Events</h3> </br>
             </p>
             <p>
-                <table>
+            Past Events:-<br>
+        {% if status == 1 %}
+            <p><table>
                 <tr>
-                <th>Exam id</th>
-                <th>Exam name</th>
-                <th>Exam date</th>
-                <th>Exam type</th>
+                <th>Event id</th>
                 <th>Session</th>
-                <th>Results declared</th>
-                <th>Term Final</th>
-                <th>Term Number</th>
-                <th>Actions</th>
+                <th>Occasion</th>
+                <th>Details</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 </tr>
-                {% for elem in exam_arr %}
+                {% for elem in beforeEventList %}
                     <tr>
-                    <td>{{ elem.exam_group_id }}</td> 
-                    <td>{{ elem.exam_group_name }}</td> 
-                    <td>{{ elem.exam_group_date }}</td> 
-                    <td>{{ elem.exam_group_type }}</td> 
+                    <td>{{ elem.holiday_id }}</td> 
                     <td>{{ elem.session }}</td> 
-                    <td>{{ elem.results_declared }}</td> 
-                    <td>{{ elem.term_final }}</td>
-                    <td>{{ elem.term_number }}</td> 
-                    <td><a href='/index/kva/teacher_single_exam_view/{{elem.exam_group_id}}/'>Click here to view exam.</td>
+                    <td>{{ elem.occasion }}</td> 
+                    <td>{{ elem.details }}</td>
+                    <td>{{ elem.start_date }}</td>             
+                    <td>{{ elem.end_date }}</td>  
                     </tr>
                 {% endfor %}
-                </table>
-            </p>
+            </table></p>
+
+            Upcoming Events:-<br>
+            <p><table>
+                <tr>
+                <th>Event id</th>
+                <th>Session</th>
+                <th>Occasion</th>
+                <th>Details</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                </tr>
+                {% for elem in afterEventList %}
+                    <tr>
+                    <td>{{ elem.holiday_id }}</td> 
+                    <td>{{ elem.session }}</td> 
+                    <td>{{ elem.occasion }}</td> 
+                    <td>{{ elem.details }}</td>
+                    <td>{{ elem.start_date }}</td>             
+                    <td>{{ elem.end_date }}</td>   
+                    </tr>
+                {% endfor %}
+            </table></p>
+
+        {% else %}
+        
+        {% endif %}
+        </p>
             <p>
             </p>
         </div>

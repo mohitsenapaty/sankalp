@@ -72,6 +72,8 @@
             <p>
                 <a href="/index/kva/assign_teacher_subject_admin/1/">Assign Subject to Teachers.</a>
                 <a href="/index/kva/assign_class_subject_admin/">Assign Subject to Class.</a>
+                <a href="/index/kva/view_hostel_admin/">Add/View Hostels</a>
+                <a href="/index/kva/view_house_admin/">Add/View Houses.</a>
                 <b></b>                
             </p>
         </div>
@@ -91,14 +93,14 @@
                     <th>Fullname</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Unencrypted</th>
+                    <th>Assign Link</th>
                     </tr>  
                     <tr>
                     <td>{{ elem.teacher_id }}</td> 
                     <td>{{ elem.fullname }}</td> 
                     <td>{{ elem.emailid }}</td> 
                     <td>{{ elem.phone }}</td>
-                    <td>{{ elem.unencrypted }}</td>             
+                    <td><a href="/index/kva/assign_teacher_subject_admin/{{ elem.teacher_id }}/">Click here</a></td>             
                     </tr>
                   </table>
                 {% if teacher_id == elem.teacher_id %}
@@ -121,7 +123,7 @@
                         <td>{{ elem.subject_name }}</td> 
                         <td>{{ elem.subject_code }}</td>
                         <td>{{ elem.is_major }}</td>             
-                        <td>Click Here</td>
+                        <td><a href="/index/kva/delete_teacher_subject_admin/{{ elem.teacher_id }}/{{elem.subject_id}}/{{elem.class_field}}/{{elem.section}}/">Click here</a></td>
                         </tr>
                       
                   {% endfor %}

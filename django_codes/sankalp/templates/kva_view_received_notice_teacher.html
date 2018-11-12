@@ -72,32 +72,34 @@
         </div>
         <div> 
             <p>
-                <h3>View All exams</h3> </br>
+                <h3>View All Received Notices</h3> </br>
             </p>
             <p>
                 <table>
                 <tr>
-                <th>Exam id</th>
-                <th>Exam name</th>
-                <th>Exam date</th>
-                <th>Exam type</th>
-                <th>Session</th>
-                <th>Results declared</th>
-                <th>Term Final</th>
-                <th>Term Number</th>
-                <th>Actions</th>
+                <th>Notice id</th>
+                <th>Notice Creator</th>
+                <th>Creator Id</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Created At</th>
+                <th>Recipent type</th>
+                <th>Recipent Id</th>
+                <th>Recipent Class</th>
+                <th>Recipent Section</th>
                 </tr>
-                {% for elem in exam_arr %}
+                {% for elem in noticeList %}
                     <tr>
-                    <td>{{ elem.exam_group_id }}</td> 
-                    <td>{{ elem.exam_group_name }}</td> 
-                    <td>{{ elem.exam_group_date }}</td> 
-                    <td>{{ elem.exam_group_type }}</td> 
-                    <td>{{ elem.session }}</td> 
-                    <td>{{ elem.results_declared }}</td> 
-                    <td>{{ elem.term_final }}</td>
-                    <td>{{ elem.term_number }}</td> 
-                    <td><a href='/index/kva/teacher_single_exam_view/{{elem.exam_group_id}}/'>Click here to view exam.</td>
+                    <td>{{ elem.notification_id }}</td> 
+                    <td>{{ elem.notification_creator }}</td> 
+                    <td>{{ elem.creator_id }}</td>
+                    <td>{{ elem.subject }}</td> 
+                    <td>{{ elem.message }}</td> 
+                    <td>{{ elem.created_at }}</td> 
+                    <td>{{ elem.target_type }}</td> 
+                    <td>{{ elem.target_id }}</td> 
+                    <td>{{ elem.target_class }}</td> 
+                    <td>{{ elem.target_section }}</td> 
                     </tr>
                 {% endfor %}
                 </table>

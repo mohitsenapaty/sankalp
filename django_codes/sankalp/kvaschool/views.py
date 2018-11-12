@@ -25,6 +25,11 @@ URL_DEV='http://127.0.0.1:8000/api/'
 URL_PROD='http://52.27.104.46/api/'
 URL_IN_USE = URL_DEV
 
+api_key_shatabdi = '6db4aded-e001-11e8-a895-0200cd936042'
+api_key_mohit = '41398bea-aaf7-11e8-a895-0200cd936042'
+api_in_use = api_key_shatabdi
+TemplateName = 'School'
+
 
 def home(request):
     returnDict = {}
@@ -95,7 +100,7 @@ def login_page(request):
 def get_authentication(_user, _pass, _t):
     try:
         if _t == 'Student':
-            s1 = StudentLogin.objects.get(emailid=_user).__dict__
+            s1 = StudentLogin.objects.get(enrollment_number=_user).__dict__
             if s1['password'] == hashlib.sha224(_pass).hexdigest():
                 return s1
             else:
@@ -726,6 +731,7 @@ def assign_teacher_subject_admin(request, teacher_id1):
         class_ = request.POST.get("class")
         section_ = request.POST.get("section")
         subject_id_ = request.POST.get("subject_id")
+        print class_, section_, subject_id_
         post_status = 0
         if class_ and section_ and subject_id_:
             try:
@@ -888,6 +894,14 @@ def assign_student_subject_admin(request, student_id1):
             for tsd_obj in tsd_arr:
                 tsd_obj_dict = tsd_obj.__dict__
                 sd_obj = SubjectDetails.objects.get(subject_id=tsd_obj_dict.get('subject_id')).__dict__
+                if TeacherSubjectDetail.objects.filter(subject_id=tsd_obj_dict.get('subject_id'), class_field=sad_obj.get('class_field'), section=sad_obj.get('section')).exists():
+                    pre_tl_dict = TeacherSubjectDetail.objects.get(subject_id=tsd_obj_dict.get('subject_id'), class_field=sad_obj.get('class_field'), section=sad_obj.get('section')).__dict__
+                    tl_dict = TeacherLogin.objects.get(teacher_id=pre_tl_dict.get('teacher_id')).__dict__
+                    tsd_obj_dict['subject_teacher'] = tl_dict.get('fullname')
+                    pass
+                else:
+                    tl_dict = {}
+                    tsd_obj_dict['subject_teacher'] = ''
                 tsd_obj_dict['subject_name'] = sd_obj['subject_name']
                 tsd_obj_dict['subject_code'] = sd_obj['subject_code']
                 tsd_obj_dict['is_major'] = sd_obj['is_major']
@@ -914,6 +928,43 @@ def assign_student_subject_admin(request, student_id1):
         return render(request, 'kva_assign_student_subject_admin.html', returnDict)
     else:
         return render(request, 'kva_assign_teacher_subject_admin.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Admin'})
+
+
+def assign_classteacher_admin(request, teacher_id1):
+    #class_ = request.POST.get("class", "1")
+    #section_ = request.POST.get("section", "A")
+    i_teacher_id = int(teacher_id1)
+    view_result = False
+
+    try:
+        #handle request
+        _class = request.POST.get('class')
+        _sec = request.POST.get('section')
+        if _class and _sec:
+            ctd_entry = ClassTeacherDetail(teacher_id=i_teacher_id, class_field=_class, section=_sec)
+            ctd_entry.save()
+        tl_dict = TeacherLogin.objects.get(teacher_id=i_teacher_id).__dict__
+        if ClassTeacherDetail.objects.filter(teacher_id=i_teacher_id).exists():
+            ctd_dict = ClassTeacherDetail.objects.get(teacher_id=i_teacher_id).__dict__
+            ctd_dict['status']=1
+            ctd_dict['fullname']=tl_dict.get('fullname')
+        else:
+            ctd_dict = {}
+            ctd_dict['status']=0
+            ctd_dict['fullname']=tl_dict.get('fullname')
+            ctd_dict['teacher_id'] = tl_dict.get('teacher_id')
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'status':1}
+        returnDict['sectionList'] = ['A', 'B', 'C']
+        returnDict['classList'] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',]
+        returnDict['ctd']=ctd_dict
+        return render(request, 'kva_assign_classteacher_admin.html', returnDict)
+    else:
+        return render(request, 'kva_assign_classteacher_admin.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Admin'})
 
 
 def view_student_admin(request):
@@ -1098,7 +1149,15 @@ def view_teacher_admin(request):
     try:
         st_arr = TeacherLogin.objects.all()
         for st_obj in st_arr:
-            teacher_list.append(st_obj.__dict__)
+            st_dict = st_obj.__dict__
+            if ClassTeacherDetail.objects.filter(teacher_id=st_dict.get('teacher_id')).exists():
+                ctd_dict = ClassTeacherDetail.objects.get(teacher_id=st_dict.get('teacher_id')).__dict__
+                st_dict['ctd'] = {'status':1, 'class_':ctd_dict.get('class_field'), 'sec_':ctd_dict.get('section')}
+                pass
+            else:
+                st_dict['ctd'] = {'status':0}
+                pass
+            teacher_list.append(st_dict)
         add_result = True
     except Exception as ex:
         add_result = False
@@ -1451,6 +1510,46 @@ def delete_subject_admin(request, subject_id1):
         return render(request, 'kva_view_subject_admin.html', {'msg':'Subject deletion Failed. Details might be already present.', 'status':0, 'logintype':'Admin'})
 
 
+def delete_classteacher_admin(request, teacher_id1):
+    #class_ = request.POST.get("class", "1")
+    #section_ = request.POST.get("section", "A")
+    i_teacher_id = int(teacher_id1)
+    view_result = False
+
+    try:
+        #handle request
+        ClassTeacherDetail.objects.filter(teacher_id=i_teacher_id).delete()
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        return HttpResponseRedirect('/index/kva/view_teacher_admin/')
+    else:
+        return render(request, 'kva_assign_classteacher_admin.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Admin'})
+
+
+def delete_teacher_subject_admin(request, teacher_id1, subject_id1, class_field1, section1):
+    #class_ = request.POST.get("class", "1")
+    #section_ = request.POST.get("section", "A")
+    i_teacher_id = int(teacher_id1)
+    i_subject_id = int(subject_id1)
+    view_result = False
+
+    try:
+        #handle request
+        print i_teacher_id, i_subject_id, class_field1, section1
+        TeacherSubjectDetail.objects.filter(teacher_id=i_teacher_id,subject_id=i_subject_id,class_field=class_field1,section=section1).delete()
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        return HttpResponseRedirect('/index/kva/assign_teacher_subject_admin/'+teacher_id1+'/')
+    else:
+        return render(request, 'kva_view_subject_admin.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Admin'})
+
+
 def teacher_profile_info(request):
     returnDict = {}
     template = 'teacher_profile_info.html'
@@ -1789,7 +1888,7 @@ def teacher_subject_student_view(request, subject_id1, class_field1, section1):
 
         try:
             soa = []
-            subject_name = SubjectDetails.objects.get(subject_id=i_subject_id)
+            subject_name = SubjectDetails.objects.get(subject_id=i_subject_id).__dict__.get('subject_name')
             stud_obj_arr = StudentAcademicEnrollmentDetail.objects.filter( class_field=class_field1, section=section1)
             for s_obj in stud_obj_arr:
                 try:
@@ -2077,4 +2176,496 @@ def teacher_assign_value(request, exam_id1, student_id1, table1, row1, class_fie
         return render(request, template, returnDict) 
     else:
         return HttpResponseRedirect('/index/kva/home')
+
+
+def teacher_send_notice(request, class_field1, section1, student_id1):
+    add_result = False
+    if not request.session.get("type") == 'Teacher':
+        return HttpResponseRedirect('/index/kva/home/')
+    subject_ = request.POST.get('subject')
+    message_ = request.POST.get('message')
+    
+    i_student_id = int(student_id1)
+    
+    try:
+        #verify
+        if StudentAcademicEnrollmentDetail.objects.filter(student_id=i_student_id,class_field=class_field1,section=section1).exists():
+            if TeacherSubjectDetail.objects.filter(teacher_id=request.session.get("id"), class_field=class_field1,section=section1).exists():
+                pass
+            else:
+                print "teacher not assigned to student"
+                return render(request, 'kva_add_.html', {'msg':'Notice Addition Failed. Details might be already present.', 'logintype':'Teacher'})
+            pass
+        else:
+            print "class and subject not assigned to student"
+            return render(request, 'kva_add_.html', {'msg':'Notice Addition Failed. Details might be already present.', 'logintype':'Teacher'})
+        #try to send sms
+        if message_ and subject_:
+            phoneStr = ""
+            sl_dict = StudentLogin.objects.get(student_id=i_student_id).__dict__
+            phoneStr += sl_dict.get('phone') + ','
+            myJSONObject = {"From":"SANKLP", "VAR1":message_, "To":phoneStr , "TemplateName":TemplateName};
+            headers = {'content-type' : 'application/json'}
+            REQUEST_URL = "http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS"
+            rr = requests.post(REQUEST_URL, data = json.dumps(myJSONObject), headers=headers)
+            req_status = rr.status_code
+            response_status = rr.__dict__.get('_content')
+            print req_status, response_status
+            if str(req_status) == '200' and json.loads(response_status).get('Status') == "Success":
+                #create entry into NotificationDetails
+                nd_entry = NotificationDetail(notification_creator='Teacher',creator_id=request.session.get("id"),subject=subject_,message=message_,created_at=datetime.datetime.now())
+                nd_entry.save()
+                #create entry into NotificationTarget
+                nt_entry = NotificationTarget(notification_id=nd_entry.notification_id, target_type='Student', target_id=i_student_id)
+                nt_entry.save()
+                add_result = True
+            print add_result
+        else:
+            sl_dict = StudentLogin.objects.get(student_id=i_student_id).__dict__
+            sa_dict = StudentAcademicEnrollmentDetail.objects.get(student_id=i_student_id).__dict__
+            sl_dict['roll_number'] = sa_dict.get('roll_number')
+            sl_dict['class_val'] = sa_dict.get('class_field')
+            sl_dict['section'] = sa_dict.get('section')
+            returnDict = {'msg':'No message sent', 'logintype':'Teacher', 'studentDict':sl_dict}
+            return render(request, 'kva_teacher_send_notice.html', returnDict)
+            pass
+    except Exception as ex:
+        print 'b'
+        print ex
+    
+    if add_result:
+        return render(request, 'kva_add_.html', {'msg':'Notice Addition Successful', 'logintype':'Teacher'})
+    else:
+        return render(request, 'kva_add_.html', {'msg':'Notice Addition.. Failed. Details might be already present.', 'logintype':'Teacher'})
+
+
+def teacher_send_class_notice(request, subject_id1, class_field1, section1):
+    add_result = False
+    if not request.session.get("type") == 'Teacher':
+        return HttpResponseRedirect('/index/kva/home/')
+    subject_ = request.POST.get('subject')
+    message_ = request.POST.get('message')
+    
+    i_subject_id = int(subject_id1)
+    
+    try:
+        #verify
+        if message_ and subject_:
+            sa_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_field1,section=section1)
+            phoneStr = ""
+            for sa_obj in sa_arr:
+                sa_dict = sa_obj.__dict__
+                if StudentSubjectDetail.objects.filter(student_id=sa_dict.get('student_id'), subject_id=i_subject_id).exists():
+                    sl_dict = StudentLogin.objects.get(student_id=sa_dict.get('student_id')).__dict__
+                    phoneStr += sl_dict.get('phone') + ','
+            if not phoneStr == "":
+                myJSONObject = {"From":"SANKLP", "VAR1":message_, "To":phoneStr , "TemplateName":TemplateName};
+                headers = {'content-type' : 'application/json'}
+                REQUEST_URL = "http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS"
+                rr = requests.post(REQUEST_URL, data = json.dumps(myJSONObject), headers=headers)
+                req_status = rr.status_code
+                response_status = rr.__dict__.get('_content')
+                print req_status, response_status
+                if str(req_status) == '200' and json.loads(response_status).get('Status') == "Success":
+                    #create entry into NotificationDetails
+                    nd_entry = NotificationDetail(notification_creator='Teacher',creator_id=request.session.get("id"),subject=subject_,message=message_,created_at=datetime.datetime.now())
+                    nd_entry.save()
+                    #create entry into NotificationTarget
+                    nt_entry = NotificationTarget(notification_id=nd_entry.notification_id, target_type='Student', target_class=class_field1, target_section=section1)
+                    nt_entry.save()
+                    add_result = True
+                print add_result
+        else:
+            return render(request, 'kva_add_.html', {'msg':'Notice Addition.. Failed. Details might be already present.', 'logintype':'Teacher'})
+            pass
+    except Exception as ex:
+        print 'b'
+        print ex
+    
+    if add_result:
+        return render(request, 'kva_add_.html', {'msg':'Notice Addition Successful', 'logintype':'Teacher'})
+    else:
+        return render(request, 'kva_add_.html', {'msg':'Notice Addition.. Failed. Details might be already present.', 'logintype':'Teacher'})
+
+
+def teacher_view_calendar(request):
+    view_result = False
+    before_event_list = []
+    after_event_list = []
+    returnDict = {}
+    try:
+        current_date_str = datetime.datetime.today().strftime('%Y-%m-%d')
+        st_arr = CalenderEventDetail.objects.all().order_by('start_dt')
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            print st_obj_dict.get('start_dt'), current_date_str
+            if str(st_obj_dict.get('start_dt')) < current_date_str:
+                before_event_list.append(st_obj_dict)
+            else:
+                after_event_list.append(st_obj_dict)
+            #notice_list.append(st_obj_dict)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'status':1, 'logintype':'Teacher'}
+        returnDict['beforeEventList'] = before_event_list
+        returnDict['afterEventList'] = after_event_list
+        return render(request, 'kva_view_event_teacher.html', returnDict)
+    else:
+        return render(request, 'kva_view_event_teacher.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Teacher'})
+
+
+def teacher_view_sent_notice(request):
+    view_result = False
+    notice_list = []
+    returnDict = {}
+    try:
+        st_arr = NotificationDetail.objects.filter(notification_creator='Teacher', creator_id=request.session.get("id")).order_by('-created_at')
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            if NotificationTarget.objects.filter(notification_id=st_obj_dict.get('notification_id')).exists():
+                nt_obj = NotificationTarget.objects.filter(notification_id=st_obj_dict.get('notification_id'))[0].__dict__
+                st_obj_dict['target_type'] = nt_obj.get('target_type')
+                st_obj_dict['target_id'] = nt_obj.get('target_id')
+                st_obj_dict['target_class'] = nt_obj.get('target_class')
+                st_obj_dict['target_section'] = nt_obj.get('target_section')
+                st_obj_dict['creator_name'] = request.session.get("username")
+                notice_list.append(st_obj_dict)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'noticeList':notice_list, 'status':1, 'logintype':'Teacher'}
+        return render(request, 'kva_view_notice_teacher.html', returnDict)
+    else:
+        return render(request, 'kva_view_notice_teacher.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Teacher'})
+
+
+def teacher_view_received_notice(request):
+    view_result = False
+    notice_list = []
+    returnDict = {}
+    try:
+        st_arr = NotificationTarget.objects.filter(target_type='All')
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            if NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id')).exists():
+                nt_obj = NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id'))[0].__dict__
+                nt_obj['target_type'] = st_obj_dict.get('target_type')
+                nt_obj['target_id'] = st_obj_dict.get('target_id')
+                nt_obj['target_class'] = st_obj_dict.get('target_class')
+                nt_obj['target_section'] = st_obj_dict.get('target_section')
+                notice_list.append(nt_obj)
+        st_arr = NotificationTarget.objects.filter(target_type='All Teacher')
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            if NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id')).exists():
+                nt_obj = NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id'))[0].__dict__
+                nt_obj['target_type'] = st_obj_dict.get('target_type')
+                nt_obj['target_id'] = st_obj_dict.get('target_id')
+                nt_obj['target_class'] = st_obj_dict.get('target_class')
+                nt_obj['target_section'] = st_obj_dict.get('target_section')
+                notice_list.append(nt_obj)
+        st_arr = NotificationTarget.objects.filter(target_type='Teacher', target_id=request.session.get("id"))
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            if NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id')).exists():
+                nt_obj = NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id'))[0].__dict__
+                nt_obj['target_type'] = st_obj_dict.get('target_type')
+                nt_obj['target_id'] = st_obj_dict.get('target_id')
+                nt_obj['target_class'] = st_obj_dict.get('target_class')
+                nt_obj['target_section'] = st_obj_dict.get('target_section')
+                notice_list.append(nt_obj)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'noticeList':notice_list, 'status':1, 'logintype':'Teacher'}
+        return render(request, 'kva_view_received_notice_teacher.html', returnDict)
+    else:
+        return render(request, 'kva_view_received_notice_teacher.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Teacher'})
+
+
+def student_profile_info(request):
+    returnDict = {}
+    template = 'teacher_profile_info.html'
+    is_logged_in = 0
+    if not request.session.get("type") == 'Student':
+        return HttpResponseRedirect('/index/kva/home/')
+    _username = request.session.get("username")
+    if not _username == None:
+        #return HttpResponseRedirect('/combined_app/')
+        is_logged_in = 1
+
+        student_object = StudentLogin.objects.get(enrollment_number=_username).__dict__
+        sa_dict = StudentAcademicEnrollmentDetail.objects.get(student_id=request.session.get('id')).__dict__
+        if StudentHouseDetail.objects.filter(student_id=request.session.get('id')).exists():    
+            shd_dict = StudentHouseDetail.objects.get(student_id=request.session.get('id')).__dict__
+        else:
+            shd_dict = {}
+
+        if StudentResidentialDetail.objects.filter(student_id=request.session.get('id')).exists(): 
+            srd_dict = StudentResidentialDetail.objects.get(student_id=request.session.get('id')).__dict__
+            if srd_dict.get('hostel_resident') == 'Yes':
+                hd_dict = HostelDetail.objects.get(hostel_id=srd_dict.get('hostel_id')).__dict__
+                srd_dict['hostel_name'] = hd_dict.get('hostel_name')
+        else:
+            srd_dict = {}
+        student_object['sa_dict'] = sa_dict
+        student_object['shd_dict'] = shd_dict
+        student_object['srd_dict'] = srd_dict
+
+        if student_object == None:
+            #return error page
+            template = 'kva_student_profile_info.html'
+            returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"),'logintype':request.session.get('type'), 'error':'Some network or Internal Error. Try after some time.'}
+            return render(request, template, returnDict)            
+
+        template = 'kva_student_profile_info.html'
+        returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"),'logintype':request.session.get('type'), 'error':'None', 'student_login':student_object}
+        return render(request, template, returnDict) 
+    else:
+        return HttpResponseRedirect('/index/kva/home')
+
+
+def student_view_received_notice(request):
+    view_result = False
+    notice_list = []
+    returnDict = {}
+    try:
+        st_arr = NotificationTarget.objects.filter(target_type='All')
+        sa_dict = StudentAcademicEnrollmentDetail.objects.get(student_id=request.session.get('id')).__dict__
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            if NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id')).exists():
+                nt_obj = NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id'))[0].__dict__
+                nt_obj['target_type'] = st_obj_dict.get('target_type')
+                nt_obj['target_id'] = st_obj_dict.get('target_id')
+                nt_obj['target_class'] = st_obj_dict.get('target_class')
+                nt_obj['target_section'] = st_obj_dict.get('target_section')
+                nt_obj['creator_name'] = 'Admin'
+                notice_list.append(nt_obj)
+        st_arr = NotificationTarget.objects.filter(target_type='All Student')
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            if NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id')).exists():
+                nt_obj = NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id'))[0].__dict__
+                nt_obj['target_type'] = st_obj_dict.get('target_type')
+                nt_obj['target_id'] = st_obj_dict.get('target_id')
+                nt_obj['target_class'] = st_obj_dict.get('target_class')
+                nt_obj['target_section'] = st_obj_dict.get('target_section')
+                nt_obj['creator_name'] = 'Admin'
+                notice_list.append(nt_obj)
+        st_arr = NotificationTarget.objects.filter(target_type='Student', target_id=request.session.get("id"))
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            if NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id')).exists():
+                nt_obj = NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id'))[0].__dict__
+                if nt_obj.get('notification_creator') == 'Teacher':
+                    if TeacherLogin.objects.filter(teacher_id=int(nt_obj.get('creator_id'))).exists():
+                        tl_dict = TeacherLogin.objects.get(teacher_id=int(nt_obj.get('creator_id'))).__dict__
+                        nt_obj['creator_name'] = tl_dict.get('fullname')
+                    else:
+                        nt_obj['creator_name'] = 'Invalid'    
+                    #nt_obj['creator_name'] = 'Admin'
+                else:
+                    nt_obj['creator_name'] = 'Admin'
+                nt_obj['target_type'] = st_obj_dict.get('target_type')
+                nt_obj['target_id'] = st_obj_dict.get('target_id')
+                nt_obj['target_class'] = st_obj_dict.get('target_class')
+                nt_obj['target_section'] = st_obj_dict.get('target_section')
+                notice_list.append(nt_obj)
+        st_arr = NotificationTarget.objects.filter(target_type='Student', target_class=sa_dict.get('class_field'), target_section=sa_dict.get('section'))
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            if NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id')).exists():
+                nt_obj = NotificationDetail.objects.filter(notification_id=st_obj_dict.get('notification_id'))[0].__dict__
+                nt_obj['target_type'] = st_obj_dict.get('target_type')
+                nt_obj['target_id'] = st_obj_dict.get('target_id')
+                nt_obj['target_class'] = st_obj_dict.get('target_class')
+                nt_obj['target_section'] = st_obj_dict.get('target_section')
+                notice_list.append(nt_obj)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'noticeList':notice_list, 'status':1, 'logintype':'Student'}
+        return render(request, 'kva_view_received_notice_student.html', returnDict)
+    else:
+        return render(request, 'kva_view_received_notice_student.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Student'})
+
+
+def student_view_calendar(request):
+    view_result = False
+    before_event_list = []
+    after_event_list = []
+    returnDict = {}
+    try:
+        current_date_str = datetime.datetime.today().strftime('%Y-%m-%d')
+        st_arr = CalenderEventDetail.objects.all().order_by('start_dt')
+        for st_obj in st_arr:
+            st_obj_dict = st_obj.__dict__
+            print st_obj_dict.get('start_dt'), current_date_str
+            if str(st_obj_dict.get('start_dt')) < current_date_str:
+                before_event_list.append(st_obj_dict)
+            else:
+                after_event_list.append(st_obj_dict)
+            #notice_list.append(st_obj_dict)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'status':1, 'logintype':'Student'}
+        returnDict['beforeEventList'] = before_event_list
+        returnDict['afterEventList'] = after_event_list
+        return render(request, 'kva_view_event_student.html', returnDict)
+    else:
+        return render(request, 'kva_view_event_student.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Student'})
+
+
+def student_view_subjects(request):
+    view_result = False
+    subject_list = []
+    returnDict = {}
+    try:
+        #current_date_str = datetime.datetime.today().strftime('%Y-%m-%d')
+        st_arr = StudentSubjectDetail.objects.filter(student_id=request.session.get('id'))
+        for st_obj in st_arr:
+            sa_dict = StudentAcademicEnrollmentDetail.objects.get(student_id=request.session.get('id')).__dict__
+            st_obj_dict = st_obj.__dict__
+            sd_dict = SubjectDetails.objects.get(subject_id=st_obj_dict.get('subject_id'))
+            if TeacherSubjectDetail.objects.filter(subject_id=st_obj_dict.get('subject_id'),class_field=sa_dict.get('class_field'),section=sa_dict.get('section')).exists():
+                tsd_dict = TeacherSubjectDetail.objects.get(subject_id=st_obj_dict.get('subject_id'),class_field=sa_dict.get('class_field'),section=sa_dict.get('section')).__dict__
+                tl_dict = TeacherLogin.objects.get(teacher_id=tsd_dict.get('teacher_id'))
+                st_obj_dict['tl'] = tl_dict
+            else:
+                st_obj_dict['tl'] = {}
+            st_obj_dict['sa'] = sa_dict
+            st_obj_dict['sd'] = sd_dict
+            subject_list.append(st_obj_dict)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'status':1, 'logintype':'Student'}
+        returnDict['subjectList'] = subject_list
+        return render(request, 'kva_student_view_subjects.html', returnDict)
+    else:
+        return render(request, 'kva_student_view_subjects.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Student'})
+
+
+def student_view_exam(request):
+    view_result = False
+    before_event_list = []
+    after_event_list = []
+    returnDict = {}
+    try:
+        exam_objs = ExamGroupDetail.objects.all()
+        exam_arr = []
+        for exam_obj in exam_objs:
+            exam_arr.append(exam_obj.__dict__)
+            #notice_list.append(st_obj_dict)
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'status':1, 'logintype':'Student'}
+        returnDict['examList'] = exam_arr
+        return render(request, 'kva_student_view_exam.html', returnDict)
+    else:
+        return render(request, 'kva_student_view_exam.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Student'})
+
+
+def student_single_exam_view(request, exam_id1):
+    i_exam_id = int(exam_id1)
+    view_result = False
+    minor_subject_list = []
+    major_subject_list = []
+    returnDict = {}
+    csa_dict = {}
+    pt_dict = {}
+    ahs_dict = {}
+    remarks_dict = {}
+    try:
+        ed_dict = ExamGroupDetail.objects.get(exam_group_id=i_exam_id).__dict__
+        egs_arr = ExamGroupScoring.objects.filter(exam_group_id=i_exam_id,student_id=request.session.get('id'))
+        sl_dict = StudentLogin.objects.filter(student_id=request.session.get('id')).__dict__
+        sa_dict = StudentAcademicEnrollmentDetail.objects.filter(student_id=request.session.get('id')).__dict__
+        if ed_dict.get('term_final') == 'Y':
+            #add csa, ahs, pt and remarks
+            if StudentCsa.objects.filter(exam_group_id=i_exam_id, student_id=request.session.get('id')).exists:
+                csa_dict = StudentCsa.objects.get(exam_group_id=i_exam_id, student_id=request.session.get('id'))
+                csa_dict['status'] = 1
+                pass
+            else:
+                csa_dict['status'] = 0
+                pass
+            if StudentPersonalTrait.objects.filter(exam_group_id=i_exam_id, student_id=request.session.get('id')).exists:
+                pt_dict = StudentPersonalTrait.objects.get(exam_group_id=i_exam_id, student_id=request.session.get('id'))
+                pt_dict['status'] = 1
+                pass
+            else:
+                pt_dict['status'] = 0
+                pass
+            if StudentAhs.objects.filter(exam_group_id=i_exam_id, student_id=request.session.get('id')).exists:
+                ahs_dict = StudentAhs.objects.get(exam_group_id=i_exam_id, student_id=request.session.get('id'))
+                ahs_dict['status'] = 1
+                pass
+            else:
+                csa_dict['status'] = 0
+                pass
+            if StudentRemarks.objects.filter(exam_group_id=i_exam_id, student_id=request.session.get('id')).exists:
+                remarks_dict = StudentRemarks.objects.get(exam_group_id=i_exam_id, student_id=request.session.get('id'))
+                remarks_dict['status'] = 1
+                pass
+            else:
+                remarks_dict['status'] = 0
+                pass
+            pass
+        else:
+            csa_dict['status'] = 0
+            pt_dict['status'] = 0
+            ahs_dict['status'] = 0
+            remarks_dict['status'] = 0
+            #don't add
+            pass
+        sl_dict['sa'] = sa_dict
+        if len(egs_arr) == 0:
+            return render(request, 'kva_student_view_single_exam.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Student'})
+        for egs_obj in egs_arr:
+            egs_dict = egs_obj.__dict__
+            sd_dict = SubjectDetails.objects.get(subject_id=egs_dict.get('subject_id')).__dict__
+            egs_dict['subject_name'] = sd_dict.get('subject_name')
+            egs_dict['is_major'] = sd_dict.get('is_major')
+            if egs_dict['is_major'] == 'Major':
+                major_subject_list.append(egs_dict)
+            else:
+                minor_subject_list.append(egs_dict)
+
+        add_result = True
+    except Exception as ex:
+        add_result = False
+        print ex
+    if add_result:
+        returnDict = {'msg':'Teacher Addition Successful', 'status':1, 'logintype':'Student'}
+        returnDict['examDict'] = ed_dict
+        returnDict['studentDict'] = sl_dict
+        returnDict['minorSubjectList'] = minor_subject_list
+        returnDict['majorSubjectList'] = major_subject_list
+        returnDict['csa'] = csa_dict
+        returnDict['pt'] = pt_dict
+        returnDict['ahs'] = ahs_dict
+        returnDict['remarks'] = remarks_dict
+        return render(request, 'kva_student_view_single_exam.html', returnDict)
+    else:
+        return render(request, 'kva_student_view_single_exam.html', {'msg':'Teacher Addition Failed. Details might be already present.', 'status':0, 'logintype':'Student'})
+
 

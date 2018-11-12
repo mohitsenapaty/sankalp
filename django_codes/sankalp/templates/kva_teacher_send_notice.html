@@ -71,45 +71,23 @@
             </p>
         </div>
         <div> 
-            {% if subject_students > 0 %}
             <p>
-              <b>Following students have appeared the exam for Class: {{class_value}} Section: {{section}} and Subject {{subject_name}}:-</b>
-              <p>
-                <table>
-                <tr>
-                <th>Student id</th>
-                <th>Roll Number</th>
-                <th>Full Name</th>
-                <th>Class</th>
-                <th>Section</th>
-                <th>Send Notice Link</th>
-                </tr>
-                {% for elem in subject_students_arr %}
-                    <tr>
-                    <td>{{ elem.student_id }}</td> 
-                    <td>{{ elem.roll_number }}</td> 
-                    <td>{{ elem.fullname }}</td> 
-                    <td>{{ elem.class_field }}</td>
-                    <td>{{ elem.section }}</td>
-                    <td>
-                        <a href="/index/kva/teacher_send_notice/{{elem.class_field}}/{{elem.section}}/{{elem.student_id}}/">Link to send notice</a>
-                    </td>
-                    </tr>
-                {% endfor %}
-                </table>
-              </p>
+            {{msg}}
             </p>
+
             <p>
-                <b>Send Notice to the class:</b> </br>
-                <form action="/index/kva/teacher_send_class_notice/{{subject_id}}/{{class_value}}/{{section}}/" method="post" enctype="multipart/form-data">
+                <b>Create Notice:</b> </br>
+                <form action="/index/kva/teacher_send_notice/{{studentDict.class_val}}/{{studentDict.section}}/{{studentDict.student_id}}/" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   Notice Subject:<br>
                   <input type="text" name="subject" required="required" style="border: 1px solid black; padding: 5px;"><br>
                   Notice Message:<br>
                   <TEXTAREA name="message" required="required" style="border: 1px solid black; padding: 5px;" rows="6" cols="100"></TEXTAREA> <br>
                   Notice For:<br>
-                  {{class_value}} {{section}}
-
+                  {{studentDict.roll_number}} <br>
+                  {{studentDict.class_val}}<br>
+                  {{studentDict.section}}<br>
+                  {{studentDict.fullname}}<br>
                   <br>
                   
                   <p></p>
@@ -118,21 +96,7 @@
                    style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
                 </form>
             </p>
-            {% else %}
-            <p>
-              <b>No subjects have been assigned to you.</b>
-            </p>
-            {% endif %}
-            
-            {% if cld_status == 0 %}
-            <p>
-              <b>You are not a class teacher.</b>
-            </p>
-            {% else %}
-            <p>
-              <b>You are class teacher of {{cld.class_field}} {{cld.section}}.</b><br>
-            </p>
-            {% endif %}
+
             <p>
             </p>
         </div>
