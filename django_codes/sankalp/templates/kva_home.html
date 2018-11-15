@@ -5,6 +5,44 @@
     <HEAD>
         <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
         <TITLE>SANKALP</TITLE>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/common/new_home_style.css'%}">
+        <script src="{% static 'js/new_home.js' %}?v=00000001"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+  .collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+
+  .active, .collapsible:hover {
+    background-color: #555;
+  }
+
+  .content_collapsible {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+  }
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  th {
+    height:20px;
+  }
+  th, td {
+      padding: 5px;
+  }
+  </style>
     </HEAD>
     <BODY>
 	<div class="header" id="myHeader">
@@ -17,39 +55,39 @@
                 <div class="hl_2"><h2><a href="/team/">Team</a></h2></div>
                 <div class="hl_3"><h2><a href="/contact/">Contact</a></h2></div>
                 <div class="hl_4"><h2><a href="/blog/">Blog</a></h2></div>
+                <div class="hl_5">
+                    {% if is_logged_in == 0 %}
+                    <h2>
+                        <a href="/index/kva/login_page/">Go To Login</a>
+                    </h2>
+                    {% else %}
+                    <h2 class="dropbtn1">
+                    {{ username }}: {{ logintype }}
+                    </h2>
+                        {% if logintype == 'Teacher' %}
+                        <div class="dropdown-content1">
+                            <a href="/teacher_profile_info/" >Teacher Profile</a>
+                            <a href="/index/kva/log_out/" >Log Out</a>
+                        </div>
+                        {% elif logintype == 'Admin' %}
+                        <div class="dropdown-content1">
+                            <a href="/index/kva/admin_profile_info/" >Admin Profile</a>
+                            <a href="/index/kva/log_out/" >Log Out</a>
+                        </div>
+                        {% else %}
+                        <div class="dropdown-content1">
+                            <a href="/student_profile_info/" >Student Profile</a>
+                            <a href="/index/kva/log_out/" >Log Out</a>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="content">
+        
             WELCOME TO KVA.
-            <div class="hl_5">
-
-                {% if is_logged_in == 0 %}
-                <h2>
-                    <a href="/index/kva/login_page/">Go To Login<a>
-                </h2>
-                {% else %}
-                <h2 class="dropbtn1">
-                {{ username }}
-                </h2>
-                    {% if logintype == 'Teacher' %}
-                    <div class="dropdown-content1">
-                        <a href="/teacher_profile_info/" >Teacher Profile</a>
-                        <a href="/index/kva/log_out/" >Log Out</a>
-                    </div>
-                    {% elif logintype == 'Admin' %}
-                    <div class="dropdown-content1">
-                        <a href="/index/kva/admin_profile_info/" >Admin Profile</a>
-                        <a href="/index/kva/log_out/" >Log Out</a>
-                    </div>
-                    {% else %}
-                    <div class="dropdown-content1">
-                        <a href="/student_profile_info/" >Student Profile</a>
-                        <a href="/index/kva/log_out/" >Log Out</a>
-                    </div>
-                    {% endif %}
-                {% endif %}
-
-            </div>
+            
         </div>
     </BODY>
 </HTML>

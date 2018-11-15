@@ -6,51 +6,83 @@
         <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
         <TITLE>SANKALP - KVA</TITLE>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/common/new_home_style.css'%}">
+        <script src="{% static 'js/new_home.js' %}?v=00000001"></script>
+        <style>
+  .collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+
+  .active, .collapsible:hover {
+    background-color: #555;
+  }
+
+  .content_collapsible {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+  }
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  th {
+    height:20px;
+  }
+  th, td {
+      padding: 5px;
+  }
+  </style>
     </HEAD>
     <body>
         <div class="header" id="myHeader">
             <div class="main-header">
-            <h1>Learn With Dharna</h1>
+            <h1>SANKALP FOR KVA</h1>
             </div>
             <div class="header_links">
-                
-                <div class="hl_1"><h2><a href="/">Home</a></h2></div>
+
+                <div class="hl_1"><h2><a href="/index/kva/home/">KVA Home</a></h2></div>
                 <div class="hl_2"><h2><a href="/team/">Team</a></h2></div>
                 <div class="hl_3"><h2><a href="/contact/">Contact</a></h2></div>
                 <div class="hl_4"><h2><a href="/blog/">Blog</a></h2></div>
-                <!--div class="hl_6"><h2><a href="/live_demo/">Live Demo</a></h2-->
-                
-                <div class="hl_5">
-                
-                {% if is_logged_in == 0 %} 
-                <h2>
-                <a href="/index/kva/login_page/">Login</a>
-                </h2>
-                {% else %}
-                <h2 class="dropbtn1">
-                {{ username }}
-                </h2>
-                    {% if logintype == 'Teacher' %}
-                    <div class="dropdown-content1">
-                        <a href="/index/kva/teacher_profile_info/" >Teacher Profile</a>
-                        <a href="/index/kva/log_out/" >Log Out</a>
-                    </div>
-                    {% elif logintype == 'Admin' %}
-                    <div class="dropdown-content1">
-                        <a href="/index/kva/admin_profile_info/" >Admin Profile</a>
-                        <a href="/index/kva/log_out/" >Log Out</a>
-                    </div>
+                <div class="hl_6">
+                    {% if is_logged_in == 0 %}
+                    <h2>
+                        <a href="/index/kva/login_page/">Go To Login</a>
+                    </h2>
                     {% else %}
-                    <div class="dropdown-content1">
-                        <a href="/index/kva/student_profile_info/" >Student Profile</a>
-                        <a href="/index/kva/log_out/" >Log Out</a>
-                    </div>
+                    <h2 class="dropbtn1">
+                    {{ username }}: {{ logintype }}
+                    </h2>
+                        {% if logintype == 'Teacher' %}
+                        <div class="dropdown-content1">
+                            <a href="/teacher_profile_info/" >Teacher Profile</a>
+                            <a href="/index/kva/log_out/" >Log Out</a>
+                        </div>
+                        {% elif logintype == 'Admin' %}
+                        <div class="dropdown-content1">
+                            <a href="/index/kva/admin_profile_info/" >Admin Profile</a>
+                            <a href="/index/kva/log_out/" >Log Out</a>
+                        </div>
+                        {% else %}
+                        <div class="dropdown-content1">
+                            <a href="/student_profile_info/" >Student Profile</a>
+                            <a href="/index/kva/log_out/" >Log Out</a>
+                        </div>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-                
                 </div>
             </div>
-            <!--div style="clear: both;"></div--> 
         </div>
 
         <div class="content">
