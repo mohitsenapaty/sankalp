@@ -7,6 +7,11 @@ var crypto = require('crypto');
 
 var request = require('request');
 
+var api_key_shatabdi = '6db4aded-e001-11e8-a895-0200cd936042';
+var api_key_mohit = '41398bea-aaf7-11e8-a895-0200cd936042';
+var api_in_use = api_key_shatabdi;
+var TemplateName = 'School'
+
 router.post('/:schoolName/', function(req, resp, next){
 
 	console.log(req.body);
@@ -92,12 +97,12 @@ router.post('/:schoolName/', function(req, resp, next){
             //login_data['success'] = 1;
             if (res.rows[0].current_time && (res.rows[0].current_time - res.rows[0].request_time > 4)){
               var message = 'You have requested password for ' + username + ". The password is " + res.rows[0].unencrypted + ". Note you can request password only once a day.";
-              var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":res.rows[0].phone , "TemplateName":"Basic"};
+              var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":res.rows[0].phone , "TemplateName":TemplateName};
               console.log(myJSONObject);
               try{
                 request(
                   {
-                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                    url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS",
                     method:"POST", 
                     json:true, 
                     body:myJSONObject
@@ -229,12 +234,12 @@ router.post('/:schoolName/', function(req, resp, next){
             //login_data['success'] = 1;
             if (res.rows[0].current_time && (res.rows[0].current_time - res.rows[0].request_time > 4*60*60)){
               var message = 'You have requested password for ' + username + ". The password is " + res.rows[0].unencrypted + ". Note you can request password only once a day.";
-              var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":res.rows[0].phone , "TemplateName":"Basic"};
+              var myJSONObject = {"From":"SANKLP", "VAR1":message, "To":res.rows[0].phone , "TemplateName":TemplateName};
               console.log(myJSONObject);
               try{
                 request(
                   {
-                    url:"http://2factor.in/API/V1/41398bea-aaf7-11e8-a895-0200cd936042/ADDON_SERVICES/SEND/TSMS", 
+                    url:"http://2factor.in/API/V1/"+api_in_use+"/ADDON_SERVICES/SEND/TSMS",
                     method:"POST", 
                     json:true, 
                     body:myJSONObject

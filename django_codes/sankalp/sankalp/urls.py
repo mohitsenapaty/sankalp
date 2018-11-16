@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^$', main_views.home, name='home'),
     url(r'^kva/home/$', kvaschool_views.home, name='kva_home'),
     url(r'^kva/login_page/$', kvaschool_views.login_page, name='kva_login_page'),
+    url(r'^kva/forgot_password/$', kvaschool_views.forgot_password, name='kva_forgot_password'),
     url(r'^kva/log_out/$', kvaschool_views.log_out, name='kva_logout_page'),
     #admin
     url(r'^kva/admin_profile_info/$', kvaschool_views.admin_profile_info, name='kva_admin_profile_info'),

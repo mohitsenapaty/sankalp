@@ -90,11 +90,81 @@ def login_page(request):
 
     #endregion
     #import pdb; pdb.set_trace();
-    
-
     template = 'kva_login_page.html'
     returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username")}
     return render(request, template, returnDict)
+
+
+def forgot_password(request):
+    is_logged_in = 0
+    if not request.session.get("username") == None:
+        #return HttpResponseRedirect('/combined_app/')
+        is_logged_in = 1
+        return HttpResponseRedirect('/index/kva/home/')
+
+    #region: authenticate login
+    #import pdb; pdb.set_trace();
+    _username = request.POST.get("username")
+    _phone = request.POST.get("phone")
+    _type = request.POST.get("logintype")
+
+    if not _username:
+        template = 'kva_forgot_password.html'
+        returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"), 'error_message':'None', 'logintype':request.session.get('type')}
+        return render(request, template, returnDict)
+    print _username, _phone, _type
+
+    try:
+        if _type == 'Teacher':
+            if TeacherLogin.objects.filter(phone=_phone, emailid=_username).exists():   
+                tl_dict = TeacherLogin.objects.get(phone=_phone, emailid=_username).__dict__
+                headers = {'content-type' : 'application/json'}
+                URL_ADDR = URL_ADDR = URL_IN_USE+'getPasswordSMS/kaanger_valley_academy_raipur/'
+                post_data = {'username':_username, 'loginType':'Teacher', 'phone':_phone}
+                rr = requests.post(URL_ADDR, data = json.dumps(post_data), headers=headers)
+                req_status = rr.status_code
+                response_status = rr.__dict__.get('_content')
+                
+                if str(req_status) == '200' and json.loads(response_status).get('success') == 1:
+                    auth_result = 1
+                else:
+                    auth_result = 2
+            else:
+                auth_result = 2
+        elif _type == 'Student':
+            if StudentLogin.objects.filter(phone=_phone, enrollment_number=_username).exists():
+                sl_dict = StudentLogin.objects.get(phone=_phone, enrollment_number=_username).__dict__
+                headers = {'content-type' : 'application/json'}
+                URL_ADDR = URL_ADDR = URL_IN_USE+'getPasswordSMS/kaanger_valley_academy_raipur/'
+                post_data = {'username':_username, 'loginType':'Student', 'phone':_phone}
+                rr = requests.post(URL_ADDR, data = json.dumps(post_data), headers=headers)
+                req_status = rr.status_code
+                response_status = rr.__dict__.get('_content')
+                
+                if str(req_status) == '200' and json.loads(response_status).get('success') == 1:
+                    auth_result = 1
+                else:
+                    auth_result = 2
+            else:
+                auth_result = 2
+        else:
+            auth_result = 2
+    except:
+        auth_result = 2
+
+    if auth_result == 0:
+        template = 'kva_forgot_password.html'
+        returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"), 'error_message':'None', 'logintype':request.session.get('type')}
+        return render(request, template, returnDict)
+    elif auth_result == 2:
+        template = 'kva_forgot_password.html'
+        returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"), 'error_message':"Wrong phone/Non-existent Account",'logintype':request.session.get('type')}
+        return render(request, template, returnDict)
+    else:
+        template = 'kva_forgot_password.html'
+        returnDict = {'is_logged_in':is_logged_in, 'username':request.session.get("username"), 'error_message':"SMS has been sent successfully. Check your phone number.",'logintype':request.session.get('type')}
+        return render(request, template, returnDict)
+        pass
 
 
 def get_authentication(_user, _pass, _t):
