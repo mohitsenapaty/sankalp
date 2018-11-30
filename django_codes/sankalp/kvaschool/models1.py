@@ -274,6 +274,25 @@ class StudentAhs(models.Model):
         unique_together = (('exam_group_id', 'student_id'),)
 
 
+class StudentAlternateContactNumber(models.Model):
+    id_field = models.AutoField(db_column='id_', primary_key=True)  # Field renamed because it ended with '_'.
+    student_id = models.IntegerField(blank=True, null=True)
+    contact_number = models.CharField(max_length=15, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_alternate_contact_number'
+
+
+class StudentCorrespondenceAddress(models.Model):
+    student_id = models.IntegerField(primary_key=True)
+    address = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_correspondence_address'
+
+
 class StudentCsa(models.Model):
     exam_group_id = models.IntegerField()
     student_id = models.IntegerField()

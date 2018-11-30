@@ -264,3 +264,16 @@ ALTER TABLE student_personal_trait ADD COLUMN id_ SERIAL;
 ALTER TABLE student_remarks ADD COLUMN id_ SERIAL;
 
 ALTER TABLE notification_target ADD COLUMN id_ SERIAL;
+
+create table student_correspondence_address(
+    student_id int not null,
+    address varchar(500),
+    primary key (student_id)
+);
+
+create table student_alternate_contact_number(
+    id_ serial not null,
+    student_id int,
+    contact_number varchar(15),
+    primary key (id_)
+);

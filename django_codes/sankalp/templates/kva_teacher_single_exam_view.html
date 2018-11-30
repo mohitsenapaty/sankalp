@@ -5,8 +5,9 @@
     <HEAD>
         <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
         <TITLE>SANKALP</TITLE>
-	<link rel="stylesheet" type="text/css" href="{% static 'styles/common/home_style.css'%}">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/common/new_home_style.css'%}">
+  <script src="{% static 'js/new_home.js' %}?v=00000001"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <style>
   table, th, td {
           border: 1px solid black;
@@ -21,30 +22,46 @@
   </style>
     </HEAD>
     <BODY>
-	<div class="top"> 
-		<p>
-		<center> KVA SCHOOL ADMIN LOGIN</center>	
-		</p>
-	</div>
-	<div class="left">
-		
-  	    {% if is_logged_in == 0 %} 
-		<p>You are not logged in</p>
-	  		<p><a href="#" id ="a_log_in">Live Learning Login</a></p>
-	    {% else %}
-		<p>Welcome, {{ username }} Logined as {{ logintype }}</p>
-	        {% if logintype == 'Admin' %}
-                    <p><a href="/index/kva/admin_profile_info/" >Profile</a></p>
-                {% elif logintype == 'Teacher' %}
-                    <p><a href="/index/kva/teacher_profile_info/" >Profile</a></p>
-                {% else %}
-                    <p><a href="/student_profile_info/" >Profile</a></p>
-            {% endif %}
-		<p><a href="/index/kva/log_out/" id ="a_log_out">Log out</a></p>
-		{% endif %}
-		<p><a href="/index/kva/home/">Main Page</a></p>
-  		
-	</div>
+	<div class="header" id="myHeader"> 
+    <div class="main-header">
+        <p>
+        <center> <h1>KVA SCHOOL LOGIN</h1></center> 
+        </p>
+    </div>
+    <div class="header_links">
+    <div class="hl_1"><h2><a href="/index/kva/home/">Home</a></h2></div>
+    <div class="hl_2"><h2><a href="/index/kva/team/">Team</a></h2></div>
+    <div class="hl_3"><h2><a href="/index/kva/contact/">Contact</a></h2></div>
+    <div class="hl_6">
+        <h2 class="dropbtn">Teacher Views</h2>
+        <div class="dropdown-content">
+            <a href="/index/kva/teacher_view_exam/">View Exams.</a>
+            <a href="/index/kva/teacher_view_received_notice/">View Received Notices.</a>
+            <a href="/index/kva/teacher_view_sent_notice/">View Sent Notices.</a>
+            <a href="/index/kva/teacher_view_calendar/">View Calendar.</a>
+        </div>
+    </div>
+    <div class="hl_5">
+        {% if is_logged_in == 0 %} 
+    <p>You are not logged in</p>
+        <p><a href="#" id ="a_log_in">Live Learning Login</a></p>
+      {% else %}
+    <p><h2 class="dropbtn1">{{ username }}: {{ logintype }}</h2></p>
+      <div class="dropdown-content1">
+              {% if logintype == 'Admin' %}
+                        <p><a href="/index/kva/admin_profile_info/" >Profile</a></p>
+                    {% elif logintype == 'Teacher' %}
+                        <p><a href="/index/kva/teacher_profile_info/" >Profile</a></p>
+                    {% else %}
+                        <p><a href="/student_profile_info/" >Profile</a></p>
+                {% endif %}
+
+        <p><a href="/index/kva/log_out/" id ="a_log_out">Log out</a></p>
+        {% endif %}
+      </div>
+    </div>  
+  </div>
+    </div>
 	<div class="main">
 	{% if error_message != 'None' %}
 		<div><p>{{ error_message }}</p></div>
@@ -121,11 +138,6 @@
             </p>
         </div>
         {% endif %}
-	</div>
-	<div class="topleft">
-		<p>
-	    <center>Learn With Dharna</center>
-		</p>
 	</div>
     </BODY>
 <script type="text/javascript"> 

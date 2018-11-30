@@ -9,6 +9,7 @@ from collections import OrderedDict
 from django.core.files.storage import FileSystemStorage
 from django.utils.encoding import smart_str
 from django.core.files import File
+import xlrd, xlwt, re
 # Create your views here.
 encrypt_dict = {
     1:'573e73a5fec8d493bee2696c00cafd7b',
@@ -29,6 +30,7 @@ api_key_shatabdi = '6db4aded-e001-11e8-a895-0200cd936042'
 api_key_mohit = '41398bea-aaf7-11e8-a895-0200cd936042'
 api_in_use = api_key_shatabdi
 TemplateName = 'School'
+phone_regex = re.compile(r"[0-9]+-?[0-9]+")
 
 
 def home(request):
@@ -244,7 +246,82 @@ def student_excel_upload(request):
     file_name = class_+"_" + section + "_student_excel.xls"
     filename = fs.save(file_name, excel_file)
     if filename:
-        return render(request, 'kva_student_excel_upload.html', {'msg':'Upload Successful'})
+        try:
+            excel_dict_list = []
+            excel_dict = OrderedDict()
+            book = xlrd.open_workbook(filename)
+            num_sheet = len(book.sheet_names())
+            for j_j in range(num_sheet):
+                print j_j
+                first_sheet = book.sheet_by_index(j_j)
+                num_rows = first_sheet.nrows
+                excel_col_names = [u'S No.', u'Class', u'Sec', u'Enr. No.', u"Student's Name", u'Father Name', u'Mother Name', u'Address for Correspondence', u'Mobile No ', u'DOB']
+                excel_col_names1 = [u'S No.', u'Class', u'Sec', u'Enr. No.', u"Student's Name", u'Father Name', u'Mother Name', u'Address for Correspondence', u'Mobile No', u'DOB']
+                excel_col_names2 = [u'S No.', u'Class', u'Sec', u'Enr. No.', u"Student's Name", u'Father Name', u'Mother Name', u'Address for Correspondence', u'MobileNo', u'DOB']
+                class_roman_dict = {'I':1, 'II':2, 'III':3, 'IV':4, 'V':5, 'VI':6, 'VII':7, 'VIII':8, 'IX':9, 'X':10, 'XI':11, 'XII':12, }
+                got_col_names = False
+                print num_rows
+                for i_ in range(num_rows):
+                    ignore_row = False
+                    col_list = first_sheet.row_values(i_)
+                    for j_ in col_list:
+                        if j_ == '':
+                            ignore_row = True
+                            break
+                    if ignore_row == True:
+                        print i_, 'ignore'
+                        continue
+                    if got_col_names == False:
+                        print i_, 'not got col names'
+                        print col_list
+                        if col_list == excel_col_names or col_list == excel_col_names1 or col_list == excel_col_names2:
+                            got_col_names = True
+                            print i_, 'got col names'
+                        continue
+                    #get student details now.
+                    _roll_number = int(col_list[0])
+                    #print "aaaa"
+                    student_class = class_roman_dict.get(col_list[1].strip())
+                    student_section = col_list[2].strip()
+                    if isinstance(col_list[3], float):
+                        _enrollment_number = int(col_list[3])
+                    else:
+                        _enrollment_number = col_list[3].strip()
+                    student_name = col_list[4].strip()
+                    _father_name = col_list[5].strip()
+                    _mother_name = col_list[6].strip()
+                    corr_addr = col_list[7].strip()
+                    phone_str = col_list[8].strip()
+                    dob_ = datetime.datetime(*xlrd.xldate_as_tuple(col_list[9], book.datemode)).strftime('%Y-%m-%d')
+                    _unencrypted = id_generator()
+                    _encrypt_password = hashlib.sha224(_unencrypted).hexdigest()
+                    all_phone = phone_regex.findall(phone_str)
+                    _email = 'a@a.a'
+                    if len(all_phone) > 0:
+                        _main_phone = all_phone[0]
+                    else:
+                        _main_phone = '111'
+                    #insert student details
+                    student_login_entry = StudentLogin(fullname=student_name,emailid=_email,phone=_main_phone,password=_encrypt_password,unencrypted=_unencrypted,enrollment_number=_enrollment_number,father_name=_father_name,mother_name=_mother_name)
+                    student_login_entry.save()
+                    _student_id = StudentLogin.objects.get(enrollment_number=_enrollment_number).student_id
+                    student_academic_detail_entry = StudentAcademicEnrollmentDetail(student_id=_student_id,roll_number=_roll_number,class_field=student_class,section=student_section)  
+                    student_academic_detail_entry.save()
+                    sca_entry = StudentCorrespondenceAddress(student_id=_student_id,address=corr_addr)
+                    sca_entry.save()
+                    if len(all_phone) > 0:
+                        for i_i in range(1, len(all_phone)):
+                            sacn_entry = StudentAlternateContactNumber(student_id=_student_id,contact_number=all_phone[i_i])
+                            sacn_entry.save()
+                    col_length = len(col_list)
+            is_success = 1
+        except Exception as ex:
+            print ex
+            is_success = 0
+        if is_success == 1:
+            return render(request, 'kva_student_excel_upload.html', {'msg':'Upload Successful'})
+        else:
+            return render(request, 'kva_student_excel_upload.html', {'msg':'Upload failed'})
     else:
         return render(request, 'kva_student_excel_upload.html', {'msg':'Upload Failed'})
 
@@ -349,6 +426,7 @@ def add_student(request):
         _fullname = request.POST.get("fullname")
         _email = request.POST.get("email")
         _phone = request.POST.get("phone")
+        _address = request.POST.get("address")
         _enrollment_number = request.POST.get("enrollment_number")
         _father_name = request.POST.get("father_name")
         _mother_name = request.POST.get("mother_name")
@@ -364,6 +442,8 @@ def add_student(request):
         _student_id = StudentLogin.objects.get(enrollment_number=_enrollment_number).student_id
         student_academic_detail_entry = StudentAcademicEnrollmentDetail(student_id=_student_id,roll_number=_roll_number,class_field=_class,section=_sec)  
         student_academic_detail_entry.save()
+        sca_entry = StudentCorrespondenceAddress(student_id=_student_id,address=_address)
+        sca_entry.save()
         add_result = True      
     except Exception as ex:
         print 'b'    
@@ -1437,6 +1517,7 @@ def delete_student_admin(request, student_id1):
         StudentHouseDetail.objects.filter(student_id=i_student_id).delete()
         StudentPwdRequest.objects.filter(student_id=i_student_id).delete()
         StudentResidentialDetail.objects.filter(student_id=i_student_id).delete()
+        StudentCorrespondenceAddress.objects.filter(student_id=i_student_id).delete()
 
         st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_).order_by('roll_number')
         for st_obj in st_arr:
