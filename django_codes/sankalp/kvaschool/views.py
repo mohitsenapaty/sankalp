@@ -382,7 +382,7 @@ def admin_perform_view(request, exam_id1):
             student_pdf_dict[_cls] = OrderedDict()
             for _sec in sec_arr:
                 student_pdf_dict[_cls][_sec] = OrderedDict()
-                student_acad_enroll_objs = StudentAcademicEnrollmentDetail.objects.filter(class_field=_cls, section=_sec).order_by('roll_number')
+                student_acad_enroll_objs = StudentAcademicEnrollmentDetail.objects.filter(class_field=_cls, section=_sec)
                 for student_obj in student_acad_enroll_objs:
                     student_id_1 = int(student_obj.__dict__.get('student_id'))
                     roll_number = student_obj.__dict__.get('roll_number')
@@ -1123,7 +1123,7 @@ def view_student_admin(request):
     view_result = False
     student_list = []
     try:
-        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_).order_by('roll_number')
+        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_)
         for st_obj in st_arr:
             st_id = st_obj.__dict__.get("student_id")
             st_full_obj = StudentLogin.objects.get(student_id=st_id).__dict__
@@ -1203,7 +1203,7 @@ def admin_student_performance_view(request, exam_id1):
     view_result = False
     student_list = []
     try:
-        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_).order_by('roll_number')
+        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_)
         for st_obj in st_arr:
             if not ExamGroupScoring.objects.filter(student_id=st_obj.__dict__.get("student_id"), exam_group_id=i_exam_id).exists():
                 continue
@@ -1240,7 +1240,7 @@ def admin_student_value_view(request, exam_id1):
     view_result = False
     student_list = []
     try:
-        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_).order_by('roll_number')
+        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_)
         for st_obj in st_arr:
             st_id = st_obj.__dict__.get("student_id")
             st_full_obj = StudentLogin.objects.get(student_id=st_id).__dict__
@@ -1519,7 +1519,7 @@ def delete_student_admin(request, student_id1):
         StudentResidentialDetail.objects.filter(student_id=i_student_id).delete()
         StudentCorrespondenceAddress.objects.filter(student_id=i_student_id).delete()
 
-        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_).order_by('roll_number')
+        st_arr = StudentAcademicEnrollmentDetail.objects.filter(class_field=class_,section=section_)
         for st_obj in st_arr:
             if not ExamGroupScoring.objects.filter(student_id=st_obj.__dict__.get("student_id"), exam_group_id=i_exam_id).exists():
                 continue

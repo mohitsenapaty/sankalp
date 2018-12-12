@@ -4,6 +4,7 @@ var router = express.Router();
 var pg = require('pg');
 var conString1 = "postgres://postgres:postgres@localhost:5432/sankalp_";
 var crypto = require('crypto');
+var globalExports = require('./globalExports');
 
 router.post('/:pwd/:schoolName/', function(req, resp, next){
 
@@ -11,7 +12,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
   //console.log(next);
   var schoolName = (req.params.schoolName).toLowerCase();
   //console.log(schoolName);
-  var conString = conString1 + schoolName;
+  var conString = globalExports.school_conn_db_dict[schoolName];
   //console.log(conString);
 
   var userid = req.body.user_id;
@@ -28,6 +29,12 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
   var node_date = new Date(node_date_str);
   
   var login_data = {'success':0,'data':[],'token':''};
+
+  if (!conString){
+    console.log(conString);
+    resp.send(login_data);
+    return;
+  }
   //console.log(SHA224(password, "utf8").toString('hex'));
   //enc_pwd = SHA224(password, "utf8").toString('hex');
   try{
