@@ -1,7 +1,7 @@
 const express = require('express');
 const proxy = require('http-proxy-middleware');
-const static_dev = '/var/www/emotion_detector/static/';
-const static_prod = '/var/www/emotion_detector/static/';
+const static_dev = '/var/www/sankalp/static/';
+const static_prod = '/var/www/sankalp/static/';
 const static_in_use = static_dev;
 // Config
 const { routes } = require('./config.json');
