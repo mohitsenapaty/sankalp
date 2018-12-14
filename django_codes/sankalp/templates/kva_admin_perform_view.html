@@ -96,7 +96,7 @@
                     {% for sec_, rn_dict in sec_dict.items %}
                     Section: {{sec_}} </br>
                         {% for roll_number, exam_dict in rn_dict.items %}
-                        Roll Number: {{roll_number}} Report Link: <a href='/index/kva/admin_download_file/{{exam_dict.report_file_name}}/'>{{exam_dict.report_file_name}}</a></br>
+                        Roll Number: {{roll_number}} Report Link: <a href='/index/kva/admin_download_file/{{exam_dict.report_file_name}}/'>{{exam_dict.report_file_name}}</a> Remote Link: <a href='{{exam_dict.remote_link}}'>REMOTE LINK</a></br>
                         {% endfor %}
                     {% endfor %}
                 {% endfor %}

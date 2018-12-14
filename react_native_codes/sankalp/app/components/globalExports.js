@@ -6,7 +6,7 @@ var GLOB_IP_DEV='http://127.0.0.1:8000/api'
 
 export const globalAssets = {
   background: require('../img/kva_background.jpg'),
-  IP_IN_USE: GLOB_IP_PROD,
+  IP_IN_USE: GLOB_IP_DEV,
 }
 
 const stylesLogin = StyleSheet.create({

@@ -9,12 +9,17 @@ var globalExports = require('./globalExports');
 //-----
 var fs = require('fs');
 var async = require('async');
+const AWS = require('aws-sdk');
 //var maths = require('maths');
 //-----
 
 //---
 var gradeDict = {'A+':6, 'A':5, 'B+':4, 'B':3, 'C':2, 'D':1, 'E':0};
 var gradeArr = ['E', 'D', 'C', 'B', 'B+', 'A', 'A+'];
+var access_key_id='AKIAJL7PKMZWIBBKU72A';
+var secret_access_key='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';
+
+const s3 = new AWS.S3({accessKeyId: access_key_id, secretAccessKey: secret_access_key});
 
 router.post('/:pwd/:schoolName/', function(req, resp, next){
 
@@ -38,7 +43,7 @@ router.post('/:pwd/:schoolName/', function(req, resp, next){
     console.log(conString);
     resp.send(login_data);
     return;
-  }
+  } 
   //console.log(SHA224(password, "utf8").toString('hex'));
   //enc_pwd = SHA224(password, "utf8").toString('hex');
   try{

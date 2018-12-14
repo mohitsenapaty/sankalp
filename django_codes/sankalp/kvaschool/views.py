@@ -723,7 +723,7 @@ def declare_result(request, exam_id1):
     
     try:
         headers = {'content-type' : 'application/json'}
-        URL_ADDR = URL_ADDR = URL_IN_USE+'addEvents/'+request_key+'/kaanger_valley_academy_raipur/'
+        URL_ADDR = URL_ADDR = URL_IN_USE+'declareExams/'+request_key+'/kaanger_valley_academy_raipur/'
         post_data = {'user_id':int(admin_id), 'loginType':'Admin', 'exam_group_id':i_exam_id}
         rr = requests.post(URL_ADDR, data = json.dumps(post_data), headers=headers)
         req_status = rr.status_code

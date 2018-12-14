@@ -9,10 +9,15 @@ var globalExports = require('./globalExports');
 //-----
 var fs = require('fs');
 var async = require('async');
+const AWS = require('aws-sdk');
 //-----
 
 var gradeDict = {'A+':6, 'A':5, 'B+':4, 'B':3, 'C':2, 'D':1, 'E':0};
 var gradeArr = ['E', 'D', 'C', 'B', 'B+', 'A', 'A+'];
+var access_key_id='AKIAJL7PKMZWIBBKU72A';
+var secret_access_key='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';
+
+const s3 = new AWS.S3({accessKeyId: access_key_id, secretAccessKey: secret_access_key});
 
 var schoolName = '';
 
@@ -408,27 +413,57 @@ async function generate_pdf(student_id, exam_group_id, conString){
                 if (result == '2'){
                   //means success
                   var reportLoc='/var/tmp/'+enc_file_name+'.pdf';
-                  db_client.query("insert into exam_group_reports_single(exam_group_id,student_id,report_loc,remote_link,status) values($1,$2,$3,$4,$5);"
-                    ,[exam_group_id, student_id, reportLoc, 'None', 'A'] //A for report added
-                    , function(err2, res2)
-                  {
-                    if (err2){
-                      console.log(err2); 
-                      db_client.end(function(err3){
-
-                        if (err3){console.log(err3);}
+                  var remoteTarget=enc_file_name+'.pdf';
+                  var remoteLink = '';
+                  fs.readFile(reportLoc, (err_err, data) => {
+                    if (err_err) {console.log(err_err);
+                      db_client.end(function(err1){
+                        if (err1){console.log(err1);}
                       });
                     }
-                    else
-                    { //console.log(res);
-                      console.log(res.rows.length);
-                      //close connection
-                      db_client.end(function(err3){
+                    else{
+                      const params = {
+                          Bucket: 'sankalp-report-storage', // pass your bucket name
+                          Key: remoteTarget, // file will be saved as testBucket/contacts.csv
+                          Body: JSON.stringify(data, null, 2),
+                          ACL: 'public-read',
+                      };
+                      s3.upload(params, function(s3Err, data) {
+                          if (s3Err) { console.log(s3Err); 
+                            db_client.end(function(err1){
+                              if (err1){console.log(err1);}
+                            });
 
-                        if (err3){console.log(err3);}
+                          }
+                          else{
+                            console.log(`File uploaded successfully at ${data.Location}`);
+                            remoteLink=data.Location;
+                            db_client.query("insert into exam_group_reports_single(exam_group_id,student_id,report_loc,remote_link,status) values($1,$2,$3,$4,$5);"
+                              ,[exam_group_id, student_id, reportLoc, remoteLink, 'A'] //A for report added
+                              , function(err2, res2)
+                            {
+                              if (err2){
+                                console.log(err2); 
+                                db_client.end(function(err3){
+
+                                  if (err3){console.log(err3);}
+                                });
+                              }
+                              else
+                              { //console.log(res);
+                                console.log(res.rows.length);
+                                //close connection
+                                db_client.end(function(err3){
+
+                                  if (err3){console.log(err3);}
+                                });
+                              }
+                            });
+                          }
                       });
                     }
                   });
+                  
                 }
               }
             });
@@ -998,28 +1033,53 @@ async function generate_pdf_full(student_id, exam_group_id, conString){
                 if (result == '2'){
                   //means success
                   var reportLoc='/var/tmp/'+enc_file_name+'.pdf';
-                  db_client.query("insert into exam_group_reports_single(exam_group_id,student_id,report_loc,remote_link,status) values($1,$2,$3,$4,$5);"
-                    ,[exam_group_id, student_id, reportLoc, 'None', 'A'] //A for report added
-                    , function(err2, res2)
-                  {
-                    if (err2){
-                      console.log(err2); 
-                      db_client.end(function(err3){
-
-                        if (err3){console.log(err3);}
+                  var remoteTarget=enc_file_name+'.pdf';
+                  var remoteLink = '';
+                  fs.readFile(reportLoc, (err_err, data) => {
+                    if (err_err) {console.log(err_err);
+                      db_client.end(function(err1){
+                        if (err1){console.log(err1);}
                       });
                     }
-                    else
-                    { //console.log(res);
-                      console.log(res.rows.length);
+                    else{
+                      const params = {
+                          Bucket: 'sankalp-report-storage', // pass your bucket name
+                          Key: remoteTarget, // file will be saved as testBucket/contacts.csv
+                          Body: JSON.stringify(data, null, 2),
+                          ACL: 'public-read',
+                      };
+                      s3.upload(params, function(s3Err, data) {
+                          if (s3Err) { console.log(s3Err); 
+                            db_client.end(function(err1){
+                              if (err1){console.log(err1);}
+                            });
 
-                      //console.log(res.rows.length);
+                          }
+                          else{
+                            console.log(`File uploaded successfully at ${data.Location}`);
+                            remoteLink=data.Location;
+                            db_client.query("insert into exam_group_reports_single(exam_group_id,student_id,report_loc,remote_link,status) values($1,$2,$3,$4,$5);"
+                              ,[exam_group_id, student_id, reportLoc, remoteLink, 'A'] //A for report added
+                              , function(err2, res2)
+                            {
+                              if (err2){
+                                console.log(err2); 
+                                db_client.end(function(err3){
 
-                      //resp.send(login_data);
-                      //close connection
-                      db_client.end(function(err3){
+                                  if (err3){console.log(err3);}
+                                });
+                              }
+                              else
+                              { //console.log(res);
+                                console.log(res.rows.length);
+                                //close connection
+                                db_client.end(function(err3){
 
-                        if (err3){console.log(err3);}
+                                  if (err3){console.log(err3);}
+                                });
+                              }
+                            });
+                          }
                       });
                     }
                   });
